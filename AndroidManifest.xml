@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.exadios.g_meter"
     android:versionCode="1"
@@ -8,11 +9,18 @@
         android:targetSdkVersion="17" />
 
     <application>
-        <service android:name=".g_meter" />
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <service
+            android:name="com.exadios.g_meter.Main"
+            android:enabled="true"
+            android:exported="true"
+            android:icon="@drawable/g_meter"
+            android:label="@string/g_meter"
+            android:process="g_meter"
+        </service>
     </application>
 
 </manifest>
