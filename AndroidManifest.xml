@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <service
+        <service>
             android:name="com.exadios.g_meter.Main"
             android:enabled="true"
             android:exported="true"
