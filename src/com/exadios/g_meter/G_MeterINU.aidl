@@ -5,5 +5,5 @@ package com.exadios.g_meter;
 
 /** Example service interface */
 interface G_MeterINU {
-  void start();
+
 }

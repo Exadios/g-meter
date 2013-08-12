@@ -4,13 +4,13 @@ import com.exadios.g_meter.G_MeterINU;
 import android.os.Binder;
 import android.os.IBinder;
 
-public final class Inu implements G_MeterINU {
+public final class Inu extends Thread {
 
-  public void start() {
+  public final void run() {
     // TODO start the INU.
   };
 
-  public Binder asBinder() {
+  public final Binder asBinder() {
     /*
      * No need to return a Binder for this thread.
      */
