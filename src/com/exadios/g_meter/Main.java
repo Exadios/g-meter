@@ -18,6 +18,9 @@ public class Main extends Service {
 	}
 	private final IBinder binder = new LocalBinder();
 	
+  private Thread ipcThread;
+  private Thread inuThread;
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		Log.d(TAG, "onBind");
@@ -32,11 +35,16 @@ public class Main extends Service {
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "onDestroy");
+    this.stopSelf();
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStart");
+    this.ipcThread = new Ipc();
+    ipcThread.run();
+    this.inuThread = new Inu();
+    inuThread.run();
 		return START_STICKY;
 	}
 

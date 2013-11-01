@@ -7,58 +7,72 @@ import android.os.IBinder;
 public final class Ipc extends Thread {
 
   private final G_MeterIPC.Stub INU_Ipc = new G_MeterIPC.Stub () {
-    private final class GeodeticPosition {
+    class GeodeticPosition {
       public double phi;
       public double lambda;
       public double h;
+      public synchronized GeodeticPosition position() {
+        return this;
+      };
     };
 
-    private final class GeodeticVelocity {
+    class GeodeticVelocity {
       public double phi;
       public double lambda;
       public double h;
+      public synchronized GeodeticVelocity velocity() {
+        return this;
+      };
     };
 
-    private GeodeticPosition position_gps;
-    private GeodeticPosition position_inu;
-    private GeodeticVelocity velocity_gps;
-    private GeodeticVelocity velocity_inu;
+    class Position {
+      public GeodeticPosition gps;
+      public GeodeticPosition inu;
+    };
+
+    class Velocity {
+      public GeodeticVelocity gps;
+      public GeodeticVelocity inu;
+    };
+
+    private Position position;
+    private Velocity velocity;
 
     public double position_gps_phi() {
-      return this.position_gps.phi;
+      return this.position.gps.phi;
     };
     public double position_gps_lambda() {
-      return this.position_gps.lambda;
+      return this.position.gps.lambda;
     };
     public double position_gps_h() {
-      return position_gps.h;
+      return this.position.gps.h;
     };
     public double position_inu_phi() {
-      return position_inu.phi;
+      return this.position.inu.phi;
     };
     public double position_inu_lambda() {
-      return position_inu.lambda;
+      return this.position.inu.lambda;
     };
     public double position_inu_h() {
-      return position_inu.h;
+      return this.position.inu.h;
     };
     public double velocity_gps_phi() {
-      return velocity_gps.phi;
+      return this.velocity.gps.phi;
     };
     public double velocity_gps_lambda() {
-      return velocity_gps.lambda;
+      return this.velocity.gps.lambda;
     };
     public double velocity_gps_h() {
-      return velocity_gps.h;
+      return this.velocity.gps.h;
     };
     public double velocity_inu_phi() {
-      return velocity_inu.phi;
+      return this.velocity.inu.phi;
     };
     public double velocity_inu_lambda() {
-      return velocity_inu.lambda;
+      return this.velocity.inu.lambda;
     };
     public double velocity_inu_h() {
-      return velocity_inu.h;
+      return this.velocity.inu.h;
     };
   };
 
