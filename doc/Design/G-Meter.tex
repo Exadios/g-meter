@@ -1,0 +1,883 @@
+% This file was converted to LaTeX by Writer2LaTeX ver. 0.5
+% see http://www.hj-gym.dk/~hj/writer2latex for more info
+\documentclass[a4paper]{report}
+\usepackage[ascii]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{amsmath,amssymb,amsfonts,textcomp}
+\usepackage{color}
+\usepackage{array}
+\usepackage{supertabular}
+\usepackage{hhline}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=blue, pagecolor=blue, urlcolor=blue, pdftitle="G-Meter Variometer", pdfauthor=pfb, pdfsubject=, pdfkeywords=}
+\usepackage[pdftex]{graphicx}
+% Text styles
+\newcommand\textstyleEmphasis[1]{\textit{#1}}
+% Outline numbering
+\setcounter{secnumdepth}{4}
+\renewcommand\thesection{\arabic{chapter}.\arabic{section}}
+\renewcommand\thesubsection{\arabic{chapter}.\arabic{section}.\arabic{subsection}}
+\renewcommand\thesubsubsection{\arabic{chapter}.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\renewcommand\theparagraph{\arabic{chapter}.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}}
+\makeatletter
+\newcommand\arraybslash{\let\\\@arraycr}
+\makeatother
+% Figure numbering
+\renewcommand{\thefigure}{\arabic{chapter}.\arabic{figure}}
+\newcommand{\Section}[1]{\section{#1} \setcounter{figure}{1}}
+% Footnote rule
+\setlength{\skip\footins}{1.2mm}
+\renewcommand\footnoterule{\vspace*{-0.18mm}\setlength\leftskip{0pt}\setlength\rightskip{0pt plus 1fil}\noindent\textcolor{black}{\rule{0.25\columnwidth}{0.18mm}}\vspace*{1.02mm}}
+% Pages styles
+\makeatletter
+\newcommand\ps@NewChapter{
+  \renewcommand\@oddhead{}
+  \renewcommand\@evenhead{}
+  \renewcommand\@oddfoot{}
+  \renewcommand\@evenfoot{}
+  \renewcommand\thepage{\arabic{page}}
+}
+\newcommand\ps@Standard{
+  \renewcommand\@oddhead{}
+  \renewcommand\@evenhead{}
+  \renewcommand\@oddfoot{}
+  \renewcommand\@evenfoot{}
+  \renewcommand\thepage{\arabic{page}}
+}
+\newcommand\ps@FirstPage{
+  \renewcommand\@oddhead{}
+  \renewcommand\@evenhead{}
+  \renewcommand\@oddfoot{}
+  \renewcommand\@evenfoot{}
+  \renewcommand\thepage{\arabic{page}}
+}
+\newcommand\ps@Contents{
+  \renewcommand\@oddhead{}
+  \renewcommand\@evenhead{}
+  \renewcommand\@oddfoot{}
+  \renewcommand\@evenfoot{}
+  \renewcommand\thepage{\roman{page}}
+}
+\makeatother
+\pagestyle{plain}
+\setlength\tabcolsep{1mm}
+\renewcommand\arraystretch{1.3}
+\newcounter{Text}[section]
+\numberwithin{equation}{chapter}
+\renewcommand\theText{\thesection.\arabic{Text}}
+\pagenumbering{arabic}
+\renewcommand{\thepage}{\arabic{chapter}.\arabic{page}}
+
+\newcommand{\mat}[1]{\boldsymbol{#1}}
+
+\title{G Meter Variometer Design}
+
+\begin{document}
+\maketitle
+\date{April 2012}
+
+\clearpage\setcounter{page}{1}
+\thispagestyle{Contents}
+
+\tableofcontents
+
+\clearpage\setcounter{page}{1}
+\thispagestyle{Contents}
+
+\listoffigures
+
+
+\clearpage\setcounter{page}{1}
+\chapter[Introduction]{Introduction}
+
+\section[Purpose]{Purpose}
+
+The purpose of this design document is to describe an instrument that will provide the glider pilot with real time data that is compariable to the data presently provided by the traditional Variometer. However, this data will be derived in a completely different manner from the manner in which the traditional Variometer data is derived.
+
+\bigskip
+
+A glider climbs as a result of an acceleration normal to the Geod. By observing the normal acceleration the climb velocity may be determined.
+\begin{equation}
+\label{BasicVarioEquation}
+v = \int{\left( a - g \right)} dt
+\end{equation}
+where $a$ is the observed acceleration normal to to the Geoid, $g$ is the acceleration due to gravity (which, by definition, is normal to the Geod) and $v$ is the velocity normal to the Geod.
+
+\bigskip
+
+In addition the described instrument will be capable of providing precision accelerations, velocities and postitions which will be better than the GPS data over the short term. Also the instrument will provide accurate attitude data.
+
+\clearpage\setcounter{page}{1}
+\chapter[Context]{Context}
+
+Here, a rotation from the $i$ basis to the $j$ basis is performed by the rotation matrix (Direction Cosine Matrix)
+
+\begin{equation}
+R^j_i =
+\begin{bmatrix}
+\cos \left( \psi \right) \cos \left( \theta \right) &
+\sin \left( \psi \right) \cos \left( \phi \right) + \cos \left( \theta \right) \sin \left( \theta \right) \sin \left( \phi \right) &
+\sin \left( \psi \right) \sin \left( \phi \right) - \cos \left( \psi \right) \sin \left( \theta \right) \cos \left( \phi \right) \\
+-\sin \left( \psi \right) \cos \left( \theta \right) &
+\cos \left( \psi \right) \cos \left( \phi \right) - \sin \left( \psi \right) \sin \left( \theta \right) \sin \left( \phi \right) &
+\cos \left( \psi \right) \cos \left( \phi \right) \\
+\sin \left( \theta \right) &
+-\sin \left( \phi \right) \cos \left( \theta \right) &
+\cos \left( \theta \right) \cos \left( \phi \right)
+\end{bmatrix}
+\end{equation}
+
+where
+
+$\psi$ is a rotation about the $Z$ axis
+
+$\theta$ is a rotation about the $Y$ axis
+
+$\phi$ is a rotation about the $X$ axis
+
+\bigskip
+
+And
+
+\begin{equation}
+\mat{R}^j_i = \left( \mat{R}^i_j \right) ^{\mathrm{T}}
+\end{equation}
+
+\bigskip
+
+The Similarity Transform applies. If
+
+\begin{equation}
+\mat{v}^i = \mat{A} \mat{r}^i
+\end{equation}
+then
+\begin{equation}
+\mat{v}^j = \mat{R}^j_i \mat{A} \mat{R}^i_j \mat{r}^j
+\end{equation}
+
+\section[Bases]{Bases}
+
+\subsection[Earth Centered Inertial Fixed Basis]{Earth Centered Inertial Fixed Basis}
+
+\bigskip
+
+This basis, $i_X, i_Y, i_Z$, has its origin at the (nominal) center of the earth and rotationally fixed in inertial space. By convention the $Y$ domain of this basis is aligned with the center of the earth's rotation and the $Z$ domain intersects the equator at the point that inertial navigation is started (i.e. at time, $t$, zero). The $X$ domain is othoragonal to $Z$ and $Y$.
+
+This basis is denoted by $i$ as a super or sub script and is abreviated as ECIF.
+
+\bigskip
+
+\subsection[Earth Centered Earth Fixed Basis]{Earth Centered Earth Fixed Basis}
+
+\bigskip
+
+Like the ECIF basis this basis, $e_X, e_Y, e_Z$, has its origin at the nominal center of the earth. However this basis rotates in intertial space in sympathy with the earth. In epoch terms the $e$ basis and the $i$ basis are coincident at $t_0$.
+
+\bigskip
+
+The $e$ basis is related to the $i$ basis by
+
+\bigskip
+
+\begin{equation}
+\mat{R}^e_i =
+\begin{bmatrix}
+\cos \left( \lambda \left( t \right) \right) & 0 & -\sin \left( \lambda \left( t \right) \right) \\
+0 & 1 & 0 \\
+\sin \left( \lambda \left( t \right) \right) & 0 & \cos \left( \lambda \left( t \right) \right)
+
+\end{bmatrix}
+\end{equation}
+
+\bigskip
+
+where
+
+$t$ is the time in the epoch - i.e. the time since $t_0$.
+
+$\lambda$ is the angle in the equatorial plane between the $e$ and $i$ bases.
+
+\bigskip
+
+This basis is given the abreviation ECEF.
+
+\subsection[Local Geodetic Basis]{Local Geodetic Basis}
+
+This basis, $g_X, g_Y, g_Z$, has its origin at the center of the IMU. It is oriented so that the $Y$ domain is aligned to north, the $X$ domain is aligned with east and the $Z$ domain is aligned with up (ENU).
+
+\bigskip
+
+This basis is given the abreviation LG.
+
+\bigskip
+
+The transform from the $e$ basis to the $g$ basis is given by
+
+\begin{equation}
+\mat{R}^g_e =
+\begin{bmatrix}
+\cos \left( \lambda \right) & 0 & -\sin \left( \lambda \right) \\
+-\sin \left( \lambda \right) \sin \left( \phi \right) &
+\cos \left( \phi \right) &
+-\cos \left( \lambda \right) \sin \left( \phi \right) \\
+\cos \left( \phi \right) \sin \left( \lambda \right) &
+\sin \left( \phi \right) &
+\cos \left( \lambda \right) \cos \left( \phi \right)
+\end{bmatrix}
+\end{equation}
+
+\subsection[Navigation Basis]{Navigation Basis}
+
+This basis, $n_X, n_Y, n_Z$, is the $g$ basis rotated about the $Z$ axis by a wander angle, $\alpha$. This basis is introduced to avoid navigation problems at the poles.
+
+\bigskip
+
+The transform from the $e$ basis to the $n$ basis is
+
+\begin{equation}
+\mat{R}^n_e =
+\begin{bmatrix}
+\cos \left( \lambda \right) \cos \left( \alpha \right) - \sin \left( \lambda \right) \sin \left( \phi \right) \sin \left( \alpha \right) &
+\cos \left( \phi \right) \sin \left( \alpha \right) &
+-\cos \left( \lambda \right) \sin \left( \phi \right) \sin \left( \alpha \right) \\
+-\cos \left( \lambda \right) \sin \left( \alpha \right) - \sin \left( \lambda \right) \sin \left( \phi \right) \cos \left( \alpha \right) &
+\cos \left( \alpha \right) \cos \left( \phi \right) &
+\sin \left( \lambda \right) \sin \left( \alpha \right) - \cos \left( \lambda \right) \sin \left( \phi \right) \cos \left( \alpha \right) \\
+\cos \left( \phi \right) \sin \left( \lambda \right) &
+\sin \left( \phi \right) &
+\cos \left( \lambda \right) \sin \left( \phi \right)
+\end{bmatrix}
+\end{equation}
+
+\bigskip
+
+The transform from the $g$ basis to the $n$ basis is
+
+\begin{equation}
+\mat{R}^n_g =
+\begin{bmatrix}
+\cos \left( \alpha \right) & \sin \left( \alpha \right) & 0 \\
+-\sin \left( \alpha \right) & \cos \left( \alpha \right) & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+\end{equation}
+
+\bigskip
+
+It should be evident the the value of the $Z$ domain in either the $g$ or $n$ bases is the signal of interest in eqn. \ref{BasicVarioEquation}.
+
+\subsection[Relative Angular Velocity of Bases]{Relative Angular Velocity of Bases}
+
+When talking of an angular velocity it is necessary to ask with respect to what and in which basis is it observed. So an angular velocity, $\omega$, of basis $j$ relative to basis $i$ and expressed in the $j$ basis's domains is
+
+\begin{equation}
+\mat{\omega}^j_{ij} =
+\begin{bmatrix}
+\omega^j_{ij,X} & \omega^j_{ij,Y} & \omega^j_{ij,Z}
+\end{bmatrix} ^{\mathrm{T}}
+\end{equation}
+
+\subsection[Skew Symmetrix Matrices]{Skew Symmetrix Matrices}
+
+\begin{equation}
+\mat{a} \times \mat{b} = \mat{A} \mat{b}
+\end{equation}
+
+where $\mat{A}$ is the skew matrix form of $\mat{a}$. The skew matrix form is
+
+\begin{equation}
+\mat{A} =
+\begin {bmatrix}
+0 & -a_3 & a_2 \\
+a_3 & 0 & -a_1 \\
+-a_2 & a_1 & 0
+\end{bmatrix}
+\end{equation}
+
+\section[Geodesy]{Geodesy}
+
+\subsection[Geodetic Variables and Constants]{Geodetic Variables and Constants}
+
+The rotational rate of the earth, $\omega_e$, is:
+
+\begin{equation}
+\omega_e = 7292115.0 \times 10^{-11}  rad / s
+\end{equation}
+
+In the earth coordinate system:
+
+\begin{equation}
+\mat{\omega}^e_{ie} = 
+\begin{bmatrix}
+ 0 & \omega_e & 0
+ \end{bmatrix}
+\end{equation}
+
+The semimajor axis of the earth (WGS84), $r_a$, is:
+
+\begin{equation}
+r_a = 6378137 m
+\end{equation}
+
+The semiminor axis of the earth (WGS84), $r_b$, is:
+
+\begin{equation}
+r_b = 6399592 m
+\end{equation}
+
+The eccentricity of the earth (WGS84), $\epsilon$, is:
+
+\begin{equation}
+\epsilon = \sqrt{1 - \frac{r^2_b}{r^2_a}} = 0.0818191908426
+\end{equation}
+
+The meridional (north-south) radius of curvature, $r_m$, is:
+
+\begin{equation}
+r_m = \frac{r_a \left(1 - \epsilon^2 \right)}{\left(1 - \epsilon^2\sin^2\left(\phi\right)\right)^{3/2}}
+\end{equation}
+
+The normal (east-west) radius of curvature, $r_n$, is:
+
+\begin{equation}
+r_n = \frac{r_a}{\sqrt{\left(1 - \epsilon^2\sin^2\left(\phi\right)\right)}}
+\end{equation}
+
+The gavitational magnitude, $g$, is approximated by:
+
+\begin{equation}
+g = \frac{\mu}{r^2}\left(1 - \frac{3}{4}J_2\left(1 - 3\cos\left(2\phi\right)\right)\right) - r\omega^2_e\cos^2\left(\phi\right)
+\end{equation}
+
+Where:
+
+\begin{equation}
+\mu = \left(3.9860307 \pm 0.000000311 \right) \times 10^{11} m^3/sec^2
+\end{equation}
+
+\begin{equation}
+J_2 = \left(1.08230 \pm 0.00020 \right) \times 10^{-3}
+\end{equation}
+
+\begin{equation}
+r = r_a \left(1 - \epsilon\sin^2\left(\phi\right)\right) + h
+\end{equation}
+
+The gavitational model in the navigation basis is:
+
+\begin{equation}
+\mat{g}^n = 
+\begin{bmatrix}
+0 \\
+0 \\
+g
+\end{bmatrix}
+\end{equation}
+
+\clearpage\setcounter{page}{1}
+\chapter[Design]{Design}
+
+In order to observe $a$ it is necessary to have an accelerometer vector which is aligned with the Geodetical normal. This requires a level stable platform. This platform will consist of a "strapdown" inertial measurement unit (IMU).
+
+\bigskip
+
+Given the quality of avaliable inertial sensors (gyros, accelerometers) it is unrealistic to attempt to build a stand alone dead reckoning inertial platform. It will be necessary to couple the platform to a GPS solution of position ($\phi$, $\lambda$, $h$, $t$). This coupling will need to be moderately tight - time constants will need to be less than sixty seconds.
+
+\bigskip
+
+The necessary integration of the intertial platform and the GPS solution will be effected using a suitably designed Kalman Filter. The output of the filter is position ($\phi$, $\lambda$ and $h$) and velocity ($v_N$, $v_E$ and $v_h$). The height, $h$, is the height above the Elipsoid in use (WGS84). The vertical velocity is normal to the Elipsoid which, for the purposes of this application, is close enough to the Geodetic normal that the two are considered equal. The general arrangement is shown in \ref{fig:001}.
+\begin{figure}
+\centering
+\includegraphics{G-Meter-fig-001.png}
+\caption[INS/GPS integration using a Kalman Filter]{INS/GPS integration using a Kalman Filter}
+\label{fig:001}
+\end{figure}
+
+\section[INS Solution]{INS Solution}
+
+In the following the $b$ super or sub script denote a variable in the body (aircraft) domain and the $e$ super or sub script denote a variable in the Earth Centered Earth Fixed (ECEF) domain.
+\begin{equation}
+\mat{f}^e = \mat{R}^e_b \mat{f}^b
+\label{eqn:BodytoECEFForce}
+\end{equation}
+where
+
+  $\mat{f}^e$ is a force vector in the $e$ domain
+
+  $\mat{f}^b$ is a force vector in the $b$ domain which is read from the accelerometers
+
+  $\mat{R}^e_b$ is the transformation matrix from the $b$ domain to the $e$ domain.
+
+\begin{equation}
+\begin{bmatrix}
+\dot{\mat{x}^e}\\
+\dot{\mat{v}^e}\\
+\dot{\mat{R}^e_b}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\mat{v}^e\\
+\mat{f}^e - 2\mat{\Omega}^e_{ie} \mat{v}^e + \mat{g}^e \left( \mat{x}^e \right)\\
+\mat{R}^e_b \mat{\Omega}^b_{eb}
+\end{bmatrix}
+\label{eqn:dynamic}
+\end{equation}
+where
+
+  $\mat{x}^e$ is the position vector in the $e$ domain
+
+  $\mat{v}^e$ is the velocity vector in the $e$ domain
+
+  $\mat{\Omega}^e_{ie}$ is the skew-symentric matrix of the earth's rotation rate, $\mat{\omega}^e_{ie}$, which is well known
+
+  $\mat{\Omega}^b_{eb}$ is the skew-symetric matrix of the angular velocity vector of the $b$ domain w.r.t. the $e$ domain, $\mat{\omega}^b_{eb}$, coordinated in the $b$ domain
+
+  $\mat{g}^e \left( \mat{x}^e \right)$ is the force due to gravity at the current $e$ domain position, $\mat{x}^e$.
+
+\bigskip
+
+The earth's rotation rate, $\mat{\omega}^e_{ie}$, is:
+
+\begin{equation}
+\mat{\omega}^e_{ie} =
+\begin{bmatrix}
+0 & \omega_e & 0
+\end{bmatrix}
+\end{equation}
+where,
+\begin{equation}
+\omega_e = 7292115.0 \times 10^{-11}
+\end{equation} Rads/sec
+
+\bigskip
+
+The vectors are functions of time and the super dots denote derivatives with respect to time, $t$. The skew-dynamtic matrices are of the form
+\begin{equation}
+\mat{\Omega} =
+\begin{bmatrix}
+0 & - \omega_z & \omega_y\\
+\omega_z & 0 & - \omega_x\\
+- \omega_y & \omega_x & 0
+\end{bmatrix}
+\end{equation}
+
+The angular velocity vector, $\mat{\omega}^b_{eb}$, is given by
+\begin{equation}
+\mat{\omega}^b_{eb} = \mat{\omega}^b_{ib} - \mat{R}^b_e \mat{\omega}^e_{ie}
+\text{, }
+\mat{R}^b_e = \mat{R}^{e\mathrm{T}}_b
+\end{equation}
+where
+
+  $\mat{\omega}^b_{ib}$ the measured angular velocities from the gyros w.r.t. the inertial frame in the body domain.
+
+\begin{equation}
+\mat{\Omega}^b_{eb} = \mat{\omega}^b_{ib} - \mat{R}^b_e \mat{\omega}^e_{ie}
+\end{equation}
+
+\subsection[Discrete Time Navigation System]{Discrete Time Navigation System}
+
+Consider a system in which the IMU is sampled at regular intervals, $t_{k+1} - t_k = \delta{T}$, then (\ref{eqn:dynamic}) becomes
+\begin{equation}
+\mat{R}^e_b \left( t_{k + 1} \right) = \mat{R}^e_b \left( t_k \right) e^{\left( \mat{\Omega}^b_{eb} \left( t_k \right) \delta{T} \right)}
+\end{equation}
+\begin{equation}
+\dot{\mat{v}}^e \left( t_k \right) = \mat{R}^e_b \left( t_k \right) \mat{f}^b - 2 \mat{\Omega}^e_{ib} \left( t_k \right) \mat{v}^e \left( t_k \right) + \mat{g}^e \left( \mat{x}^e \left( t_k \right) \right)
+\end{equation}
+
+For computational efficiency the (1, 1) Pade approximation of $e^{\left( \mat{\Omega}^b_{eb} \left( t_k \right) \delta{T} \right)}$, $P \left(e^{\left( \mat{\Omega}^b_{eb} \left( t_k \right) \delta{T} \right)} \right)$, is
+\begin{equation}
+P \left( e^{\left( \mat{\Omega}^b_{eb} \left( t_k \right) \delta{T} \right)} \right) = \left( 2\mat{I} + \mat{\Omega}^b_{eb} \left( t_k \right) \delta{T} \right)\left( 2\mat{I} - \mat{\Omega}^b_{eb} \left( t_k \right) \delta{T} \right)^{-1}
+\end{equation}
+
+\bigskip
+
+The implementation equations are
+\begin{equation}
+\hat{\mat{\Omega}}^b_{eb} \left( t_k \right) = \mat{\omega}^b_{ib} \left( t_k \right) - \left( \hat{\mat{R}}^e_b \left( t_k \right) \right)^{\mathrm{T}} \mat{\omega}^e_{ie}
+\end{equation}
+\begin{equation}
+\hat{\mat{R}}^e_b \left( t_{k + 1} \right) = \hat{\mat{R}}^e_b \left( t_k \right) \left( 2\mat{I} + \hat{\mat{\Omega}}^b_{eb} \left( t_k \right) \delta{T} \right)\left( 2\mat{I} - \hat{\mat{\Omega}}^b_{eb} \left( t_k \right) \delta{T} \right)^{-1}
+\end{equation}
+\begin{equation}
+\hat{\dot{\mat{v}}}^e \left( t_k \right) = \hat{\mat{R}}^e_b \left( t_k \right) \hat{\mat{f}}^b - 2 \hat{\mat{\Omega}}^e_{eb} \left( t_k \right) \hat{\mat{v}}^e \left( t_k \right) + \mat{g}^e \left( \hat{\mat{x}}^e \left( t_k \right) \right)
+\end{equation}
+where
+
+  $\hat{\mat{R}}^e_b$ is the estimate of the transformation matrix from the $b$ to the $e$ domains
+
+  $\hat{\mat{\Omega}}^e_{eb}$ is the estimate of the skew-symetric matrix of the angular velocity vector of the $b$ domain, w.r.t. the $e$ domain, $\mat{\omega}_{eb}$ , coordinated in the $b$ domain
+
+  $\mat{\omega}^b_{ib}$ is the body rotation rate read from the hardware gyros in the body domain.
+
+  $\mat{\omega}^e_{ie}$ is the well know earth rotation rate in the ECEF basis.
+
+  $\hat{\dot{\mat{v}}}^e$ is the estimate of the accelerations in the $e$ domain
+
+  $\hat{\mat{f}}^b$ is the estimate of the forces from the IMU in the $b$ domain
+
+  $\hat{\mat{v}}^e$ is the estimate of the velocities from the Kalman Filter in the $e$ domain
+
+  $\hat{g}^e \left( \hat{\mat{x}}^e \left(t_k \right) \right)$ is the estimate of the gravity force using the position from the Kalman Filter.
+
+\section[IMU Systematic Error Model]{IMU Systematic Error Model}
+
+The solution to $R^e_b \left( t \right)$ of (\ref{eqn:BodytoECEFForce}) is
+\begin{equation}
+\mat{R}^e_b \left( t \right) = \mat{R}^e_b \left( 0 \right) e^{\mat{\Omega}^b_{eb} t}
+\label{eqn:DifferentialSolution}
+\end{equation}
+when $\mat{\Omega}^b_{eb}$ is constant. Let the angular velocity errors of $\mat{\omega}^b_{eb}$ caused by gyro drifts be $\Delta \mat{\omega}^b_{eb}$, giving drifts $\Delta \mat{\Omega}^b_{eb}$ in $\mat{\Omega}^b_{eb}$ and $\Delta \mat{R}^e_b \left( t \right)$ in $\mat{R}^e_b \left( t \right)$. Then (\ref{eqn:DifferentialSolution}) can become
+\begin{equation}
+\mat{R}^e_b \left( t \right) + \Delta \mat{R}^e_b \left( t \right) = \mat{R}^e_b \left( 0 \right) e^{\left( \mat{\Omega}^b_{eb} + \Delta \mat{\Omega}^b_{eb} t \right)} = \mat{R}^e_b \left( t \right) + \mat{R}^e_b \left( 0 \right) \Delta \mat{\Omega}^e_{eb} \left( t \right) + \dotsb
+\end{equation}
+Let accelerometer bias be $\Delta \mat{f}^b$, then
+\begin{equation}
+\left( \mat{R}^e_b \left( t \right) + \mat{R}^e_b \left( 0 \right) \Delta \mat{\Omega}^b_{eb} t \right) \left( f^b + \Delta \mat{f}^b \right) = \mat{f}^e + \mat{R}^e_b \left( t \right) \Delta \mat{f}^b + R^e_b \left( 0 \right) \Delta \mat{\Omega}^b_{eb} \left( \mat{f}^b + \Delta \mat{f}^b \right) t
+\end{equation}
+That is
+\begin{equation}
+\left( \mat{R}^e_b \left( t \right) + \mat{R}^e_b \left( 0 \right) \Delta \mat{\Omega}^b_{eb} t \right) \left( \mat{f}^b + \Delta \mat{f}^b \right) = \mat{f}^e + \Delta \mat{f}^e_g + \Delta \mat{f}^e_a t
+\end{equation}
+where
+
+$\Delta \mat{f}^e_g = \mat{R}^e_b \Delta \mat{f}^b$ is the gyro drifts
+
+$\Delta \mat{f}^e_a = \mat{R}^e_b \Delta \mat{\Omega}^b_{eb} \left( \mat{f}^b + \Delta \mat{f}^b \right)$ is the accelerometer biases.
+
+
+\section[Kalman Filter]{Kalman Filter}
+
+Let the state space model of the Kalman Filter used to integrate the data be
+\begin{equation}
+x =
+\begin{bmatrix}
+\mat{x}^e_p\\
+b_p\\
+\dot{\mat{x}^e_p}\\
+\dot{b_p}\\
+\Delta \mat{f}^e_g\\
+\Delta \mat{f}^e_a
+\end{bmatrix}
+\label{StateSpaceModel}
+\end{equation}
+where
+
+$\mat{x}^e_p$ is the system position vector in the ECEF domain
+
+$b_p$ is the GPS clock bias scalar
+
+$\dot{\mat{x}^e_p}$ is the system velocity vector in the ECEF domain
+
+$\dot{b_p}$ is the GPS rate of change of the clock bias scalar
+
+$\Delta \mat{f}^e_g$ is the gyro drift vector
+
+$\Delta \mat{f}^e_a$ is the accelerometer bias vector.
+
+\bigskip
+
+The plant model is
+\begin{equation}
+\hat{\mat{x}} \left( t_{k + 1} | t_k \right) = \mat{A}_k \hat{\mat{x}} \left( t_k | t_k \right) + \mat{B} \mat{u} \left( t_k \right)
+\label{eqn:PlantModel}
+\end{equation}
+In this case the INS accelerations, $\dot{\mat{v}}^e$, are introduced into the model via $\mat{u} \left( t_k \right)$ and the time interval, $t_{k + 1} - t_k$, is equal to $\delta T$, the INS sample rate. The GPS sample rate is very likely to be more that a order of magnitude less than the INS sample rate. In the case where the two sample rates are synchronous then the filter can be implemented without additional observation error. In the case that they are not synchronous then the same filter is assumed (or hoped) that the introduced noise has a white Gaussian distribution. The GPS sample rate is $\Delta T = m \delta T$ where m is some integer in the synchronous case and a real number in the asynchronous case. (However, if m is an integer the sample rates are not necessarilly synchronous!)
+
+\bigskip
+
+So
+\begin{equation}
+\mat{u} =
+\begin{bmatrix}
+\dot{v^e_x}\\
+\dot{v^e_y}\\
+\dot{v^e_z}
+\end{bmatrix}
+\end{equation}
+and
+\begin{equation}
+\mat{B} =
+\begin{bmatrix}
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\delta T & 0 & 0\\
+0 & \delta T & 0\\
+0 & 0 & \delta T\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+0 & 0 & 0\\
+\end{bmatrix}
+\end{equation}
+
+\bigskip
+
+The transition matrix is
+\begin{equation}
+\mat{A}_k =
+\begin{bmatrix}
+\mat{A}_{11} & \mat{A}_{12}\\
+\mat{0} & \mat{A}_{22}
+\end{bmatrix}
+\end{equation}
+where
+\begin{equation}
+\mat{A}_{11} =
+\begin{bmatrix}
+1 & 0 & 0 & 0 & \delta T & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 0 & \delta T & 0 & 0\\
+0 & 0 & 1 & 0 & 0 & 0 & \delta T & 0\\
+0 & 0 & 0 & 1 & 0 & 0 & 0 & \delta T\\
+0 & 0 & 0 & 0 & 1 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 1 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 1 & 0\\
+0 & 0 & 0 & 0 & 0 & 0 & 0 & 1\\
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+\mat{A}_{12P} =
+\begin{bmatrix}
+0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 & 0 & 0\\
+\Delta T & 0 & 0 & \Delta T^2 & 0 & 0\\
+0 & \Delta T & 0 & 0 & \Delta T^2 & 0\\
+0 & 0 & \Delta T & 0 & 0 & \Delta T^2\\
+0 & 0 & 0 & 0 & 0 & 0\\
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+\mat{A}_{22P} =
+\begin{bmatrix}
+q_G \mat{I}_{3 \times 3} & \mat{0}_{3 \times 3}\\
+\mat{0}_{3 \times 3} & q_A \mat{I}_{3 \times 3}
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+\mat{A}_{12} =
+\begin{cases}
+\mat{A}_{12P} & \text{if $k = mN$}\\
+\mat{0}_{8 \times 6} & \text{otherwise}
+\end{cases}
+\end{equation}
+\begin{equation}
+\mat{A}_{22} =
+\begin{cases}
+\mat{A}_{22P} & \text{if $k = mN$}\\
+\mat{0}_{6 \times 6} & \text{otherwise}
+\end{cases}
+\end{equation}
+where $q_G$ and $q_A$ are the arbitary aging rates for the angular velocity drifts and the accelerometer biases.
+
+\bigskip
+
+The observation model is
+\begin{equation}
+\mat{z} \left( t_k \right) = \mat{O}^{\mathrm{T}} \left( t_k \right) \mat{x} \left( t_k \right)
+\end{equation}
+\begin{equation}
+\mat{O}^{\mathrm{T}} \left( t_k \right) =
+\begin{cases}
+\mat{I}_{8 \times 8} & \text{if $k = mN$}\\
+\mat{0} & \text{otherwise}\\
+\end{cases}
+\end{equation}
+where $\mat{x} \left( t_k \right)$ is the observed data from the GPS here.
+
+\subsection[Initialization]{Initialization}
+
+\begin{equation}
+\hat{\mat{x}} \left( 0 | 0 \right) = \mat{x} \left( 0 \right)
+\end{equation}
+\begin{equation}
+\mat{P} \left( 0 | 0 \right) = \mat{P} \left( 0 \right)
+\end{equation}
+
+\subsection[Innovation]{Innovation}
+
+\begin{equation}
+\hat{\mat{x}} \left( t_k | t_{k - 1} \right) = \mat{A} \left( t_{k - 1} \right) \hat{\mat{x}} \left( t_{k - 1} | t_{k - 1} \right) + \mat{B} \left( t_{k - 1} \right) \mat{u} \left( t_{k - 1} \right)
+\end{equation}
+\begin{equation}
+\mat{P}_P \left( t_k | t_{k - 1} \right) = \mat{A}_{11} \mat{P}_P \left( t_{k - 1} | t_{k - 1} \right) \mat{A}^{\mathrm{T}}_{11} + \mat{Q}_P \left( t_{k - 1} \right)
+\end{equation}
+
+\subsection[Update]{Update}
+
+\begin{equation}
+\mat{K}_P \left( t_k \right) = \mat{P}_P \left( t_k | t_{k - 1} \right) \mat{O}_P \left( t_k \right) \left[ \mat{O}^{\mathrm{T}}_P \left( t_k \right) \mat{P}_P \left( t_k | t_{k - 1} \right) \mat{O}_P \left( t_k \right) + \mat{R} \left( t_k \right) \right]^{-1}
+\end{equation}
+\begin{equation}
+\mat{P}_P \left( t_k | t_k \right) = \left[ \mat{I} - \mat{K}_P \left( t_k \right) \mat{O}_P^{\mathrm{T}} \left( t_k \right) \right] \mat{P}_P \left( t_k | t_{k - 1} \right)
+\end{equation}
+\begin{equation}
+\hat{\mat{x}} \left( t_k | t_k \right) = \hat{\mat{x}} \left( t_k | t_{k - 1} \right) + \mat{K} \left( t_k \right) \left[ \mat{z} \left( t_k \right) - \mat{O}_P^{\mathrm{T}} \left( t_k \right) \hat{\mat{x}} \left( t_k | t_{k - 1} \right) \right]
+\end{equation}
+\begin{equation}
+\mat{K} \left( t_k \right) =
+\begin{cases}
+\begin{bmatrix}
+\mat{K}_P \left( t_k \right)\\
+\mat{K}_I \left( t_k \right)_{6 \times 8}\\
+\end{bmatrix}
+& \text{, if $ k = mN$} \\
+\mat{0} & \text{, otherwise}
+\end{cases}
+\end{equation}
+where the Kalman gain of the three gyro drift and three accelerometer biases is
+
+\begin{equation}
+\mat{K}_I \left( t_k \right)_{6 \times 8} =
+\begin{bmatrix}
+\mat{0}_{3 \times 3} & g_g I_{3 \times 3} & \mat{0}_{3 \times 2}\\
+\mat{0}_{3 \times 3} & g_a I_{3 \times 3} & \mat{0}_{3 \times 2}\\
+\end{bmatrix}
+\end{equation}
+and $g_g$ and $g_a$ are design constants and are typically less than one.
+
+\section[Simulation and Testing]{Simulation and Testing}
+
+For the puposes of testing the system it is usefull to have a testing simulator. This simulator takes the eviromental and user data in order to generate simulated accelerometer and gyro output which then may be used as input to the solution.
+
+\subsection[Accelerometer Signal]{Accelerometer Signal}
+
+\begin{equation}
+\dot{\mat{v}}^n = \mat{a}^n - \left( \mat{\Omega}^n_{en} + 2 \mat{\Omega}^n_{ie} \right) \mat{v}^n - \mat{g}^n
+\end{equation}
+So,
+\begin{equation}
+\mat{a}^b = \mat{R}^b_n \left( \dot{\mat{v}}^n + \left( \mat{\Omega}^n_{en} + 2 \mat{\Omega}^n_{ie} \right) \mat{v}^n + \mat{g}^n \right)
+\end{equation}
+where
+\begin{equation}
+\dot{\mat{R}^b_n} = \mat{R}^b_n  \mat{\Omega}^n_{bn}
+\end{equation}
+where $\mat{R}^n_b$ is the rotation from the $b$ to $n$ bases and is initialized by the caller at $t = 0$ and the body rotations, $\mat{\Omega}^n_{bn}$, are supplied by the user.
+\begin{equation}
+\mat{\Omega}^n_{ie} = \mat{R}^n_e \mat{\Omega}^e_{ie} \mat{R}^e_n
+\end{equation}
+\begin{equation}
+\dot{\alpha} = \dot{\lambda} \sin \left( \phi \right), \alpha \left( t_0 \right) = 0
+\end{equation}
+\begin{equation}
+\mat{v}^n = \mat{R}^n_g \mat{v}^g
+\end{equation}
+\begin{equation}
+\mat{v}^g =
+\begin{bmatrix}
+\dot{\lambda} \left( r_{nor} + h \right) \cos \left( \phi \right) \\
+\dot{\phi} \left( r_{mer} + h \right) \\
+\dot{h}
+\end{bmatrix}
+\end{equation}
+\begin{equation}
+\mat{\omega}^n_{en} = \mat{R}^n_g
+\begin{bmatrix}
+-\dot{\phi} \\
+\dot{\lambda} \cos \left( \phi \right) \\
+0
+\end{bmatrix}
+\end{equation}
+
+\subsection[Gyro Signal]{Gyro Signal}
+
+\begin{equation}
+\mat{\Omega}^b_{ib} = R^b_n \left( \mat{\Omega}^n_{ie} + \mat{\Omega}^n_{en} + \mat{\Omega}^n_{nb} \right)
+\end{equation}
+The body rotations $\mat{\Omega}^n_{nb}$ are given by the caller.
+
+\clearpage\setcounter{page}{1}
+\chapter[Energy]{Energy}
+
+\clearpage\setcounter{page}{1}
+\chapter[Using the Internal GPS on Android Devices]{Using the Internal GPS on Android Devices}
+
+In general the receiver bias errors are not avaliable at the API in the Android context. Therefore these are set to zero.
+
+\clearpage\setcounter{page}{1}
+\chapter[XCSoar Integration]{XCSoar Integration}
+
+The GPS call back is invoked every 1000mS. This is setup in android/src/InternalGPS.java in the InternalGPS::run() method.
+
+\section[IMU Major States]{IMU Major States}
+
+\subsection[Align]{Align}
+
+\subsubsection[Coarse Align]{Coarse Align}
+
+\subsubsection[Fine Align]{Fine Align}
+
+\subsection[Navigate]{Navigation}
+
+\subsection[Aided]{Aided}
+
+\section[Instrument as a Android Service]{Instrument as a Android Service}
+
+The G-Meter will be presented to XCSoar as an Android service.
+
+\appendix
+
+\clearpage\setcounter{page}{1}
+\chapter[Kalman Filter Algorithm]{Kalman Filter Algorithm}
+
+\section[The Discrete Kalman Filter Algorithm]{The Discrete Kalman Filter Algorithm}
+
+The Kalman Filter Algorithm is implemented as a two step process. The first step is to generate an innovation at time $t_{k-1}$ by using the state of the system at time $t_{k - 1}$ and the model of the plant to produce the state at $t_k$. The second step is to introduce corrections to the innovation at time $t_k$ from observations made at $t_k$.
+
+\bigskip
+
+In the following the notation $x \left( t_k|t_i \right)$ donates the state $x$ at $t_k$ using knowledge from $t_i$. Further
+
+$\hat{x}$= System state estimate
+
+$u$ = Any control input that may be applied directly to the $\hat{x}$
+
+$A$ = The matrix with maps $\hat{x} \left( t_{k - 1}|t_{k - 1} \right)$ to $\hat{x} \left( t_k|t_{k - 1} \right)$
+
+$B$ = The matrix which maps $u$ to $\hat{x}$
+
+$H$ = The matrix which maps $\hat{x} \left( t_k|t_{k - 1} \right)$ to $z \left( t_k|t_k \right)$
+
+$P$ = Process covariance
+
+$K$ = Kalman gain
+
+$z$ = Observation
+
+$Q$ = Process noise
+
+$R$ = Observation noise
+
+\subsubsection[Innovation]{Innovation}
+
+\begin{equation}
+\hat{x} \left( t_k|t_{k-1} \right) = A\hat{x} \left( t_{k-1}|t_{k-1} \right) + Bu \left( t_k \right)
+\end{equation}
+
+\begin{equation}
+P \left( t_k|t_{k-1} \right) = A P \left( t_{k-1}|t_{k-1} \right) A^{\mathrm{T}} + Q
+\end{equation}
+
+\subsubsection[Observation]{Observation}
+
+\begin{equation}
+K \left( t_k|t_k \right) = P \left( t_k|t_{k-1} \right) H^{\mathrm{T}} \left( HP \left( t_k|t_{k-1} \right) H^{\mathrm{T}} + R \right) ^{-1}
+\end{equation}
+
+\begin{equation}
+\hat{x} \left( t_k|t_k \right) = \hat{x} \left( t_k|t_{k-1} \right) + K \left( t_k|t_k \right) \left( z \left(t_k \right) - H\hat{x} \left( t_k|t_{k-1} \right) \right)
+\end{equation}
+
+\begin{equation}
+P \left( t_k|t_k \right) = \left( I - K \left( t_k|t_k \right)H \right) P \left( t_k|t_{k-1} \right)
+\end{equation}
+
+\end{document}
