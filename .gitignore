@@ -3,3 +3,13 @@ gen/*
 .metadata/*
 *.swp
 .classpath
+doc/Design/*.png
+*.pyc
+*.pyo
+*.aux
+*.lof
+*.out
+*.pdf
+*.toc
+*.zip
+*.swp
