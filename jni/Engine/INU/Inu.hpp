@@ -1,7 +1,7 @@
 /* Copyright_License {
 
-  XCSoar Glide Computer - http://www.xcsoar.org/
-  Copyright (C) 2000-2012 The XCSoar Project
+  G-Meter INU.
+  Copyright (C) 2013-2014 Peter F Bradshaw
   A detailed list of copyright holders can be found in the file "AUTHORS".
 
   This program is free software; you can redistribute it and/or
@@ -23,14 +23,14 @@
 #define INU_HPP
 
 /**
- * \ingroup Engine_Navigation_INU
+ * \ingroup Engine_INU
  * @{
  */
 
 #include <valarray>
 #include <Math/fixed.hpp>
-#include <Math/kalman/kalman/kvector.hpp>
-#include <Math/kalman/kalman/kmatrix.hpp>
+#include <Engine/Kalman/kalman/kvector.hpp>
+#include <Engine/Kalman/kalman/kmatrix.hpp>
 
 typedef Kalman::KVector<fixed, false> IMUvector;
 typedef Kalman::KMatrix<fixed, false> IMUmatrix;
