@@ -39,10 +39,34 @@ class NativeRunnable
   Resources resources;
   Thread thread;
 
+  private static NativeRunnable reference = null;
+
+  /**
+   * The public accessable call to create the Singleton object of this class.
+   */
+  public static NativeRunnable getInstance() {
+    return NativeRunnable.reference;
+    }
+
   public NativeRunnable(Activity context, Handler quitHandler) {
     this.quitHandler = quitHandler;
     this.resources = context.getResources();
+    reference = this;
   }
+
+  /**
+   * To be used by objects that are 'in the know' that this object is
+   * deregistered.
+   */
+  public void DeRegister() {
+    NativeRunnable.reference = null;
+  }
+
+  /**
+   * Global access. This assumes that the object of this class is a Singleton.
+   * This Singleton behavour is not enforced. Do not abuse this requirement!
+   */
+  static public NativeRunnable singleton;
 
   private void start() {
     thread = new Thread(this, "NativeMain");
@@ -66,7 +90,9 @@ class NativeRunnable
   protected native void resumeNative();
   protected native void setBatteryPercent(int level, int plugged);
   protected native void setHapticFeedback(boolean on);
-
+  protected native void onCreateNative();
+  protected native void onDestroyNative();
+  protected native void onStartNative();
   public void onResume() {
     resumeNative();
   }
@@ -75,6 +101,29 @@ class NativeRunnable
     pauseNative();
   }
 
+  
   public void exitApp() {
+    NativeRunnable.reference = null;
+  }
+
+  /**
+   * Used by the service to indicate onCreate() to the native code.
+   */
+  public void onCreate() {
+    onCreateNative();
+  }
+
+  /**
+   * Used by the service to indicate onDestroy() to the native code.
+   */
+  public void onDestroy() {
+    onDestroyNative();
+  }
+
+  /**
+   * Used by the service to indicate onStart() to the native code.
+   */
+  public void onStart() {
+    onStartNative();
   }
 }

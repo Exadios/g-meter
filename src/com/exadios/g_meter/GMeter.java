@@ -41,16 +41,14 @@ import android.provider.Settings;
 public class GMeter extends Activity {
   private static final String TAG = "GMeter";
 
-  private static NativeRunnable nativeRunnable;
-
   BroadcastReceiver batteryReceiver = new BroadcastReceiver() {
     @Override public void onReceive(Context context, Intent intent) {
-      if (nativeRunnable == null)
+      if (NativeRunnable.getInstance() == null)
         return;
 
       int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
       int plugged = intent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 0);
-      nativeRunnable.setBatteryPercent(level, plugged);
+      NativeRunnable.getInstance().setBatteryPercent(level, plugged);
     }
   };
 
@@ -97,7 +95,7 @@ public class GMeter extends Activity {
   private void quit() {
     Log.d(TAG, "in quit()");
 
-    nativeRunnable = null;
+    NativeRunnable.getInstance().DeRegister();
 
     Log.d(TAG, "stopping service");
 
@@ -117,8 +115,8 @@ public class GMeter extends Activity {
 
 
   @Override protected void onPause() {
-    if (nativeRunnable != null)
-      nativeRunnable.onPause();
+    if (NativeRunnable.getInstance() != null)
+      NativeRunnable.getInstance().onPause();
     super.onPause();
   }
 
@@ -132,23 +130,22 @@ public class GMeter extends Activity {
       hapticFeedbackEnabled = false;
     }
 
-    if (nativeRunnable != null)
-      nativeRunnable.setHapticFeedback(hapticFeedbackEnabled);
+    if (NativeRunnable.getInstance() != null)
+      NativeRunnable.getInstance().setHapticFeedback(hapticFeedbackEnabled);
   }
 
   @Override protected void onResume() {
     super.onResume();
 
-    nativeRunnable.onResume();
+    NativeRunnable.getInstance().onResume();
     getHapticFeedbackSettings();
   }
 
   @Override protected void onDestroy() {
     Log.d(TAG, "in onDestroy()");
 
-    if (nativeRunnable != null) {
-      nativeRunnable.exitApp();
-      nativeRunnable = null;
+    if (NativeRunnable.getInstance() != null) {
+      NativeRunnable.getInstance().exitApp();
     }
 
     super.onDestroy();
