@@ -38,15 +38,18 @@ public class GMeterService extends Service {
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "onCreate");
+    NativeRunnable.getInstance().onCreate();
 	}
 
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "onDestroy");
+    NativeRunnable.getInstance().onDestroy();
 	}
 	
 	@Override
 	public void onStart(Intent intent, int startid) {
 		Log.d(TAG, "onStart");
+    NativeRunnable.getInstance().onStart();
 	}
 }
