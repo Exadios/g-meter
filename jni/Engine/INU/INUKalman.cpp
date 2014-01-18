@@ -26,7 +26,7 @@
 #include "Engine/Navigation/INU/INUKalman.hpp"
 
 //------------------------------------------------------------------------------
-INUKalman::INUKalman(fixed dT, int m)
+INUKalman::INUKalman(float dT, int m)
   : dT(dT),
     m(m),
     s(0)
@@ -52,9 +52,9 @@ INUKalman::makeBaseA()
 
   for (i = 0; i < 14; i++)
     for (j = 0; j < 14; j++)
-      this->A(i, j) = fixed(0);
+      this->A(i, j) = float(0);
   for (i = 0; i < 8; i++)
-    this->A(i, i) = fixed(1.0);
+    this->A(i, i) = float(1.0);
   for (i = 0; i < 4; i++)
     this->A(i, i + 4) = this->dT;
   }
@@ -65,9 +65,9 @@ INUKalman::makeBaseH()
   {
   for (size_t i = 0; i < 14; i++)
     for (size_t j = 0; j < 14; j++)
-      H(i, j) = fixed(0.0);
+      H(i, j) = float(0.0);
   for (size_t i = 0; i < 8; i++)
-    H(i, i) = fixed(1.0);
+    H(i, i) = float(1.0);
   }
 
 //------------------------------------------------------------------------------
@@ -96,9 +96,9 @@ INUKalman::makeBaseQ()
   Vector w;
 	w.resize(8);
   for (size_t i = 0; i < 4; i++)
-    w(i) = fixed(0.1);
+    w(i) = float(0.1);
   for (size_t i = 4; i < 8; i++)
-    w(i) = fixed(0.5);
+    w(i) = float(0.5);
   for (size_t i = 0; i < 8; i++)
     for (size_t j = 0; j < 8; j++)
       Q(i, j) = w(i) * w(j);
@@ -163,6 +163,6 @@ INUKalman::makeMeasure()
   for (size_t i = 0; i < 8; i++)
     z(i) = x(i);
   for (size_t i = 8; i < 14; i++)
-    z(i) = fixed(0.0);
+    z(i) = float(0.0);
   }
 

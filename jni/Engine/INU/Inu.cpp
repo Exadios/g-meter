@@ -1,7 +1,7 @@
 /* Copyright_License {
 
   G-Meter INU.
-  Copyright (C) 2013-2014
+  Copyright (C) 2013-2014 Peter F Bradshaw
   A detailed list of copyright holders can be found in the file "AUTHORS".
 
   This program is free software; you can redistribute it and/or
@@ -25,7 +25,7 @@
 #include "Inu.hpp"
 
 //-----------------------------------------------------------------------------
-Inu::Inu(fixed dt)
+Inu::Inu(float dt)
   : omega_ie(0.00007292115) // Rads / sec
   {
   this->dt = dt;
@@ -43,7 +43,7 @@ Inu::Inu(fixed dt)
   }
 
 //-----------------------------------------------------------------------------
-Inu::Inu(fixed dt, fixed x, fixed y, fixed z)
+Inu::Inu(float dt, float x, float y, float z)
   : omega_ie(0.00007292115) // Rads / sec
   {
   this->dt = dt;
@@ -61,7 +61,7 @@ Inu::Inu(fixed dt, fixed x, fixed y, fixed z)
   }
 
 //-----------------------------------------------------------------------------
-Inu::Inu(fixed dt, IMUmatrix R)
+Inu::Inu(float dt, IMUmatrix R)
   : omega_ie(0.00007292115) // Rads / sec
   {
   this->dt = dt;
@@ -80,7 +80,7 @@ Inu::Inu(fixed dt, IMUmatrix R)
 
 //-----------------------------------------------------------------------------
 void
-Inu::R0(fixed x, fixed y, fixed z)
+Inu::R0(float x, float y, float z)
   {
   this->R(0, 0) = cos(z) * cos(y);
   this->R(0, 1) = sin(z) * cos(x) + cos(y) * sin(y) * sin(x);
@@ -107,7 +107,7 @@ Inu::~Inu()
 
 //----------------------------------------------------------------------------
 bool
-Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, fixed gx)
+Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, float gx)
   {
   // For clarity write out the system in full and let the optimizer do
   // its work.
@@ -122,7 +122,7 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, fixed gx)
   this->a(0) = this->R(0, 0) * f(0) +
                this->R(0, 1) * f(1) +
                this->R(0, 2) * f(2) -
-               fixed(2) *
+               float(2) *
                (this->Omega(0, 0) * v(0) +
                 this->Omega(0, 1) * v(1) +
                 this->Omega(0, 2) * v(2)) +
@@ -130,7 +130,7 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, fixed gx)
   this->a(1) = this->R(1, 0) * f(1) +
                this->R(1, 1) * f(1) +
                this->R(1, 2) * f(2) -
-               fixed(2) *
+               float(2) *
                (this->Omega(1, 0) * v(0) +
                 this->Omega(1, 1) * v(1) +
                 this->Omega(1, 2) * v(2)) +
@@ -138,7 +138,7 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, fixed gx)
   this->a(2) = this->R(2, 0) * f(1) +
                this->R(2, 1) * f(1) +
                this->R(2, 2) * f(2) -
-               fixed(2) *
+               float(2) *
                (this->Omega(2, 0) * v(0) +
                 this->Omega(2, 1) * v(1) +
                 this->Omega(2, 2) * v(2)) +
@@ -147,27 +147,27 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, fixed gx)
 
   // Compute eqn 3.12 - R(t_k + 1)
   IMUmatrix Num(3, 3), Inv(3, 3);
-  Num(0, 0) = fixed(2) + this->Omega(0, 0) * this->dt;
-  Num(0, 1) = fixed(0) + this->Omega(0, 1) * this->dt;
-  Num(0, 2) = fixed(0) + this->Omega(0, 2) * this->dt;
-  Num(1, 0) = fixed(0) + this->Omega(1, 0) * this->dt;
-  Num(1, 1) = fixed(2) + this->Omega(1, 1) * this->dt;
-  Num(1, 2) = fixed(0) + this->Omega(1, 2) * this->dt;
-  Num(2, 0) = fixed(0) + this->Omega(2, 0) * this->dt;
-  Num(2, 1) = fixed(0) + this->Omega(2, 1) * this->dt;
-  Num(2, 2) = fixed(2) + this->Omega(2, 2) * this->dt;
-  Inv(0, 0) = fixed(2) - this->Omega(0, 0) * this->dt;
-  Inv(0, 1) = fixed(0) - this->Omega(0, 1) * this->dt;
-  Inv(0, 2) = fixed(0) - this->Omega(0, 2) * this->dt;
-  Inv(1, 0) = fixed(0) - this->Omega(1, 0) * this->dt;
-  Inv(1, 1) = fixed(2) - this->Omega(1, 1) * this->dt;
-  Inv(1, 2) = fixed(0) - this->Omega(1, 2) * this->dt;
-  Inv(2, 0) = fixed(0) - this->Omega(2, 0) * this->dt;
-  Inv(2, 1) = fixed(0) - this->Omega(2, 1) * this->dt;
-  Inv(2, 2) = fixed(2) - this->Omega(2, 2) * this->dt;
+  Num(0, 0) = float(2) + this->Omega(0, 0) * this->dt;
+  Num(0, 1) = float(0) + this->Omega(0, 1) * this->dt;
+  Num(0, 2) = float(0) + this->Omega(0, 2) * this->dt;
+  Num(1, 0) = float(0) + this->Omega(1, 0) * this->dt;
+  Num(1, 1) = float(2) + this->Omega(1, 1) * this->dt;
+  Num(1, 2) = float(0) + this->Omega(1, 2) * this->dt;
+  Num(2, 0) = float(0) + this->Omega(2, 0) * this->dt;
+  Num(2, 1) = float(0) + this->Omega(2, 1) * this->dt;
+  Num(2, 2) = float(2) + this->Omega(2, 2) * this->dt;
+  Inv(0, 0) = float(2) - this->Omega(0, 0) * this->dt;
+  Inv(0, 1) = float(0) - this->Omega(0, 1) * this->dt;
+  Inv(0, 2) = float(0) - this->Omega(0, 2) * this->dt;
+  Inv(1, 0) = float(0) - this->Omega(1, 0) * this->dt;
+  Inv(1, 1) = float(2) - this->Omega(1, 1) * this->dt;
+  Inv(1, 2) = float(0) - this->Omega(1, 2) * this->dt;
+  Inv(2, 0) = float(0) - this->Omega(2, 0) * this->dt;
+  Inv(2, 1) = float(0) - this->Omega(2, 1) * this->dt;
+  Inv(2, 2) = float(2) - this->Omega(2, 2) * this->dt;
 
   // Check for non sigularity.
-  fixed D = Inv(0, 0) * (Inv(1, 1) * Inv(2, 2) - Inv(2, 1) * Inv(1, 2)) -
+  float D = Inv(0, 0) * (Inv(1, 1) * Inv(2, 2) - Inv(2, 1) * Inv(1, 2)) -
             Inv(0, 1) * (Inv(1, 0) * Inv(2, 2) - Inv(2, 0) * Inv(1, 2)) +
             Inv(0, 2) * (Inv(1, 0) * Inv(2, 1) - Inv(2, 0) * Inv(1, 2));
   if ((double )fabs(D) < (10 * DBL_MIN))
@@ -228,10 +228,10 @@ Inu::v_dot_super_e() const
   }
 
 //------------------------------------------------------------------------------
-#define G_0 fixed(9.80665)   // m/s^2
-#define R_m fixed(6371009)   // m
-fixed
-Inu::gfh(fixed h) const
+#define G_0 float(9.80665)   // m/s^2
+#define R_m float(6371009)   // m
+float
+Inu::gfh(float h) const
   {
-  return fixed(G_0) * (R_m / (h + R_m)) * (R_m / (h + R_m));
+  return G_0 * (R_m / (h + R_m)) * (R_m / (h + R_m));
   }

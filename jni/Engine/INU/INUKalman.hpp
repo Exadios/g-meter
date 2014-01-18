@@ -28,9 +28,6 @@
  */
 
 #include <Thread/Mutex.hpp>
-#include <Math/fixed.hpp>
-//#include <Math/VectorT.hpp>
-//#include <Math/MatrixT.hpp>
 #include<Math/kalman/kalman/kvector.hpp>
 #include<Math/kalman/kalman/kmatrix.hpp>
 #include<Math/kalman/kalman/kfilter.hpp>
@@ -41,16 +38,12 @@
  * optimal manner.
  */
 
-//typedef VectorT<fixed, 14> INUKalmanState;
-//typedef VectorT<fixed, 3> INUUpdate;
-//typedef VectorT<fixed, 8> INUObservation;
-//typedef MatrixT<fixed, 14, 14>INUSystemMatrix;
-typedef Kalman::KVector<fixed, false> INUKalmanState;
-typedef Kalman::KVector<fixed, false> INUUpdate;
-typedef Kalman::KVector<fixed, false> INUObservation;
-typedef Kalman::KMatrix<fixed, false> INUSystemMatrix;
+typedef Kalman::KVector<float, false> INUKalmanState;
+typedef Kalman::KVector<float, false> INUUpdate;
+typedef Kalman::KVector<float, false> INUObservation;
+typedef Kalman::KMatrix<float, false> INUSystemMatrix;
 
-class INUKalman : public Kalman::KFilter<fixed, false, false, false>
+class INUKalman : public Kalman::KFilter<float, false, false, false>
   {
   public:
     /**
@@ -58,7 +51,7 @@ class INUKalman : public Kalman::KFilter<fixed, false, false, false>
      * @param dT the IMU sample period in seconds.
      * @param m The ratio between the IMU sample period and the GPS sample rate.
      */
-    INUKalman(fixed dT, int m);
+    INUKalman(float dT, int m);
 
     /**
      * Dtor.
@@ -119,7 +112,7 @@ class INUKalman : public Kalman::KFilter<fixed, false, false, false>
     /**
      * The IMU sample period, \f$\delta T\f$.
      */
-    fixed dT;
+    float dT;
 
     /**
      * The integer ratio (assuming synchronous sampling) between the IMU sample
@@ -132,7 +125,7 @@ class INUKalman : public Kalman::KFilter<fixed, false, false, false>
     /**
      * The GPS sample period, \f$\Delta T\f$.
      */
-    fixed DT;
+    float DT;
 
     /**
 

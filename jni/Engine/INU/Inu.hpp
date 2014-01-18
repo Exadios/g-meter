@@ -28,12 +28,11 @@
  */
 
 #include <valarray>
-#include <Math/fixed.hpp>
 #include <Engine/Kalman/kalman/kvector.hpp>
 #include <Engine/Kalman/kalman/kmatrix.hpp>
 
-typedef Kalman::KVector<fixed, false> IMUvector;
-typedef Kalman::KMatrix<fixed, false> IMUmatrix;
+typedef Kalman::KVector<float, false> IMUvector;
+typedef Kalman::KMatrix<float, false> IMUmatrix;
 
 /**
  * @file
@@ -50,7 +49,7 @@ public:
    * set to (0, 0, 0)
    * @param dt The IMU sample rate in seconds.
    */
-  Inu(fixed dt);
+  Inu(float dt);
 
   /**
    * Ctor.
@@ -59,14 +58,14 @@ public:
    * @y Roatation about the $y$ axis, Radians.
    * @z Roatation about the $z$ axis, Radians.
    */
-  Inu(fixed dt, fixed x, fixed y, fixed z);
+  Inu(float dt, float x, float y, float z);
 
   /**
    * Ctor.
    * @param dt The IMU sample rate in seconds.
    * @R The initial rotation matrix from the body basis to the ECEF basis.
    */
-  Inu(fixed dt, IMUmatrix R);
+  Inu(float dt, IMUmatrix R);
 
   /**
    * Set the initial rotation matrix from the body basis to the ECEF basis.
@@ -74,7 +73,7 @@ public:
    * @y Roatation about the $y$ axis, Radians.
    * @z Roatation about the $z$ axis, Radians.
    */
-  void R0(fixed x, fixed y, fixed z);
+  void R0(float x, float y, float z);
 
   /**
    * Set the initial rotation matrix from the body basis to the ECEF basis.
@@ -97,7 +96,7 @@ public:
    *           'e' domain.
    * @result If a result can be computed then true, false otherwise.
    */
-  bool Update(IMUvector& w, IMUvector& f, IMUvector& v, fixed gx);
+  bool Update(IMUvector& w, IMUvector& f, IMUvector& v, float gx);
 
   /**
    * Give the body angular velocities, $\Omega_{eb}^b$, in the body basis.
@@ -123,7 +122,7 @@ public:
    * @param h Height above the Geog in meters.
    * @return Gravitational acceleration at h.
    */
-  fixed gfh(fixed h) const;
+  float gfh(float h) const;
 
 private:
      
@@ -147,7 +146,7 @@ private:
   /**
    * The IMU sample rate in seconds.
    */
-  fixed dt;
+  float dt;
 
   /**
    * The attitude state in the 'e' domain.
@@ -172,7 +171,7 @@ private:
   /**
    * The value of the instrinsic earth rotation rate.
    */
-  const fixed omega_ie;
+  const float omega_ie;
   };
 
 /*
