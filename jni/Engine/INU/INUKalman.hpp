@@ -27,10 +27,10 @@
  * @{
  */
 
-#include <Thread/Mutex.hpp>
-#include<Math/kalman/kalman/kvector.hpp>
-#include<Math/kalman/kalman/kmatrix.hpp>
-#include<Math/kalman/kalman/kfilter.hpp>
+#include "../../Utility/Mutex.hpp"
+#include "../Kalman/kalman/kvector.hpp"
+#include "../Kalman/kalman/kmatrix.hpp"
+#include "../Kalman/kalman/kfilter.hpp"
 
 /**
  * @file

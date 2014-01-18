@@ -22,8 +22,8 @@
 
 #include <limits>
 #include <float.h>
-#include "Engine/Navigation/INU/Inu.hpp"
-#include "Engine/Navigation/INU/INUKalman.hpp"
+#include "Inu.hpp"
+#include "INUKalman.hpp"
 
 //------------------------------------------------------------------------------
 INUKalman::INUKalman(float dT, int m)
