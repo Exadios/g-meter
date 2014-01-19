@@ -21,8 +21,12 @@ Copyright_License {
 }
 */
 
-#include "Mutex.hpp"
+#ifndef XCSOAR_THREAD_FAST_MUTEX_HXX
+#define XCSOAR_THREAD_FAST_MUTEX_HXX
 
-#ifndef NDEBUG
-ThreadLocalInteger thread_locks_held;
+#include "PosixMutex.hpp"
+
+class FastMutex : public PosixMutex {
+};
+
 #endif

@@ -21,8 +21,48 @@ Copyright_License {
 }
 */
 
-#include "Mutex.hpp"
+#ifndef XCSOAR_THREAD_HANDLE_HPP
+#define XCSOAR_THREAD_HANDLE_HPP
 
-#ifndef NDEBUG
-ThreadLocalInteger thread_locks_held;
+#include "Compiler.h"
+
+#include <pthread.h>
+
+/**
+ * A low-level handle for a thread.  Designed to work with existing
+ * threads, such as the main thread.  Mostly useful for debugging
+ * code.
+ */
+class ThreadHandle
+  {
+  pthread_t handle;
+
+public:
+  /**
+   * No initialisation.
+   */
+  ThreadHandle() = default;
+
+  constexpr ThreadHandle(pthread_t _handle):handle(_handle) {}
+
+  static const ThreadHandle GetCurrent()
+    {
+    return pthread_self();
+    }
+
+  gcc_pure
+  bool operator==(const ThreadHandle &other) const
+    {
+    return pthread_equal(handle, other.handle);
+    }
+
+  /**
+   * Check if this thread is the current thread.
+   */
+  bool IsInside() const
+    {
+    return *this == GetCurrent();
+    }
+  };
+
 #endif

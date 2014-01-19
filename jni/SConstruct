@@ -19,6 +19,29 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 
+import os
 
-SharedLibrary('g_meter', ['Engine/INU/INUKalman.cpp', 'Engine/INU/Inu.cpp'])
+topdir = '../'
+topsrcdir = topdir + 'jni/'
+
+env     = Environment(ENV = os.environ)
+verbose = ARGUMENTS.get('verbose', 'n')
+debug   = ARGUMENTS.get('debug', 'y')
+
+env.Append(CXXFLAGS = '-std=gnu++11')
+
+if verbose == 'n':
+    env['CXXCOMSTR']  = 'Compiling $TARGET'
+    env['CCCOMSTR']   = 'Compiling $TARGET'
+    env['LINKCOMSTR'] = 'Linking $TARGET'
+    env['ARCOMSTR']   = 'Archiving $TARGET'
+    env['CPPCOMSTR']  = 'Processing $TARGET'
+    env['PERLCOMSTR'] = 'Generating $TARGET'
+
+githash = os.popen('git rev-parse --short --verify HEAD 2>/dev/null').read()
+version = os.popen('cat ' + topdir + 'VERSION.txt').read()
+
+env.SharedLibrary('g_meter', ['Engine/INU/INUKalman.cpp',
+                              'Engine/INU/Inu.cpp',
+                              'Engine/Kalman/kstatics.cpp'])
 

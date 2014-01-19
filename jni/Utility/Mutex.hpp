@@ -1,8 +1,8 @@
 /*
 Copyright_License {
 
-  XCSoar Glide Computer - http://www.xcsoar.org/
-  Copyright (C) 2000-2013 The XCSoar Project
+  G-Meter INU.
+  Copyright (C) 2000-2014 The XCSoar Project and Peter F Bradshaw
   A detailed list of copyright holders can be found in the file "AUTHORS".
 
   This program is free software; you can redistribute it and/or
@@ -36,13 +36,13 @@ Copyright_License {
 #ifndef XCSOAR_THREAD_MUTEX_HXX
 #define XCSOAR_THREAD_MUTEX_HXX
 
-#include "Thread/FastMutex.hpp"
+#include "FastMutex.hpp"
 
 #include <assert.h>
 
 #ifndef NDEBUG
-#include "Thread/Handle.hpp"
-#include "Thread/Local.hpp"
+#include "Handle.hpp"
+#include "Local.hpp"
 extern ThreadLocalInteger thread_locks_held;
 #endif
 
@@ -50,7 +50,8 @@ extern ThreadLocalInteger thread_locks_held;
  * This class wraps an OS specific mutex.  It is an object which one
  * thread can wait for, and another thread can wake it up.
  */
-class Mutex {
+class Mutex
+  {
   FastMutex mutex;
 
 #ifndef NDEBUG
@@ -77,16 +78,17 @@ public:
 #ifndef NDEBUG
     :locked(false)
 #endif
-  {
-  }
+    {
+    }
 
 #ifndef NDEBUG
   /**
    * Deletes the Mutex
    */
-  ~Mutex() {
+  ~Mutex()
+    {
     assert(!locked);
-  }
+    }
 #endif
 
 public:
@@ -97,28 +99,31 @@ public:
    * in optimised builds.
    */
   gcc_pure
-  bool IsLockedByCurrent() const {
+  bool IsLockedByCurrent() const
+    {
     debug_mutex.Lock();
     bool result = locked && owner.IsInside();
     debug_mutex.Unlock();
     return result;
-  }
+    }
 #endif
 
   /**
    * Locks the Mutex
    */
-  void Lock() {
+  void Lock()
+    {
 #ifdef NDEBUG
     mutex.Lock();
 #else
-    if (!mutex.TryLock()) {
+    if (!mutex.TryLock())
+      {
       /* locking has failed - at this point, "locked" and "owner" are
          either not yet update, or "owner" is set to another thread */
       assert(!IsLockedByCurrent());
 
       mutex.Lock();
-    }
+      }
 
     /* we have just obtained the mutex; the "locked" flag must not be
        set */
@@ -130,18 +135,20 @@ public:
 
     ++thread_locks_held;
 #endif
-  };
+    };
 
   /**
    * Tries to lock the Mutex
    */
-  bool TryLock() {
-    if (!mutex.TryLock()) {
+  bool TryLock()
+    {
+    if (!mutex.TryLock())
+      {
 #ifndef NDEBUG
       assert(!IsLockedByCurrent());
 #endif
       return false;
-    }
+      }
 
 #ifndef NDEBUG
     debug_mutex.Lock();
@@ -153,12 +160,13 @@ public:
     ++thread_locks_held;
 #endif
     return true;
-  };
+    };
 
   /**
    * Unlocks the Mutex
    */
-  void Unlock() {
+  void Unlock()
+    {
 #ifndef NDEBUG
     debug_mutex.Lock();
     assert(locked);
@@ -172,8 +180,8 @@ public:
 #ifndef NDEBUG
     --thread_locks_held;
 #endif
-  }
-};
+    }
+  };
 
 /**
  * A class for an easy and clear way of handling mutexes
@@ -186,20 +194,24 @@ public:
  * and unlock the Mutex again.
  * @author JMW
  */
-class ScopeLock {
+class ScopeLock
+  {
   Mutex &scope_mutex;
 
 public:
-  ScopeLock(Mutex& the_mutex):scope_mutex(the_mutex) {
+  ScopeLock(Mutex& the_mutex):scope_mutex(the_mutex)
+    {
     scope_mutex.Lock();
-  };
-  ~ScopeLock() {
+    };
+
+  ~ScopeLock()
+    {
     scope_mutex.Unlock();
-  }
+    }
 
   ScopeLock(const ScopeLock &other) = delete;
   ScopeLock &operator=(const ScopeLock &other) = delete;
-};
+  };
 
 /**
  * A debug-only class that changes internal debug flags to indicate
@@ -207,33 +219,38 @@ public:
  * class shall wrap function calls that will temporarily unlock the
  * mutex, such as pthread_cond_wait().
  */
-class TemporaryUnlock {
+class TemporaryUnlock
+  {
 #ifndef NDEBUG
   Mutex &mutex;
 
 public:
-  TemporaryUnlock(Mutex &_mutex):mutex(_mutex) {
+  TemporaryUnlock(Mutex &_mutex):mutex(_mutex) 
+    {
     mutex.debug_mutex.Lock();
     assert(mutex.locked);
     assert(mutex.owner.IsInside());
     mutex.locked = false;
     mutex.debug_mutex.Unlock();
-  }
+    }
 
-  ~TemporaryUnlock() {
+  ~TemporaryUnlock()
+    {
     mutex.debug_mutex.Lock();
     assert(!mutex.locked);
     mutex.owner = ThreadHandle::GetCurrent();
     mutex.locked = true;
     mutex.debug_mutex.Unlock();
-  }
+    }
 #else
 public:
-  constexpr TemporaryUnlock(Mutex &_mutex) {}
+  constexpr TemporaryUnlock(Mutex &_mutex)
+    {
+    }
 #endif
 
   TemporaryUnlock(const TemporaryUnlock &other) = delete;
   TemporaryUnlock &operator=(const TemporaryUnlock &other) = delete;
-};
+  };
 
 #endif
