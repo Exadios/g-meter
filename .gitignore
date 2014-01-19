@@ -17,3 +17,4 @@ doc/Design/*.png
 *.os
 *.so
 build/*
+*.dblite
