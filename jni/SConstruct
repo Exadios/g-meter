@@ -52,7 +52,16 @@ linkflags    = { 'UNIX32'   : '',
                  'ANDROID7' : '--sysroot ' + current_ndk + 'platforms/android-14/arch-arm' }
 targetdst    = 'build/' + target + '/'
 
-env.Append(CXXFLAGS = '-std=gnu++11 -I./')
+env.Append(CXXFLAGS = '-std=gnu++11 -I./ ' +
+                      '-ffast-math  -fno-exceptions -fno-rtti ' +
+                      '-fno-threadsafe-statics -fmerge-all-constants ' +
+                      '-fconserve-space -fno-operator-names ' +
+                      '-fvisibility=hidden -finput-charset=utf-8 ' +
+                      '-Wall -Wextra -Wwrite-strings -Wcast-qual ' +
+                      '-Wpointer-arith -Wsign-compare -Wundef ' +
+                      '-Wmissing-declarations -Wmissing-noreturn ' +
+                      '-Wno-unused-parameter -Wno-missing-field-initializers '
+                      '-Wcast-align -Werror ')
 
 if debug == 'n':
     env.Append(CXXFLAGS = '-O2')
