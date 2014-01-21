@@ -27,7 +27,7 @@
  * @{
  */
 
-#include "/Utility/Mutex.hpp"
+#include "Utility/Mutex.hpp"
 #include "Engine/Kalman/kalman/kvector.hpp"
 #include "Engine/Kalman/kalman/kmatrix.hpp"
 #include "Engine/Kalman/kalman/kfilter.hpp"
