@@ -27,21 +27,58 @@ topsrcdir = topdir + 'jni/'
 env     = Environment(ENV = os.environ)
 verbose = ARGUMENTS.get('verbose', 'n')
 debug   = ARGUMENTS.get('debug', 'y')
+target  = ARGUMENTS.get('target', 'UNIX32')
 
-env.Append(CXXFLAGS = '-std=gnu++11')
+# NOTE: Be prepared to update these two following variables on every release
+# of the NDK.
+current_ndk = '~/opt/android-ndk-r8d/'
+ndk_bin = 'toolchains/arm-linux-androideabi-4.7/prebuilt/linux-x86/bin/'
+
+native_target_cxx = os.popen('which g++').read()
+targetmap    = { 'UNIX32'   : 'Unix',
+                 'ANDROID7' : 'Android' }
+targetdefine = { 'UNIX32'   : '-DUNIX',
+                 'ANDROID7' : '-DANDROID' }
+cxx          = { 'UNIX32'   : 'g++',
+                 'ANDROID7' : current_ndk + ndk_bin +
+                              'arm-linux-androideabi-g++' }
+cxxflags     = { 'UNIX32'   : '',
+                 'ANDROID7' : '--sysroot ' + current_ndk + 'platforms/android-14/arch-arm ' +
+                              '-isystem ' + current_ndk + 'sources/cxx-stl/gnu-libstdc++/4.7/include ' +
+                              '-isystem ' + current_ndk + 'sources/cxx-stl/gnu-libstdc++/4.7/libs/armeabi-v7a/include' }
+libpath      = { 'UNIX32'   : '',
+                 'ANDROID7' :current_ndk + 'platforms/android-14/arch-arm/usr/lib' }
+linkflags    = { 'UNIX32'   : '',
+                 'ANDROID7' : '--sysroot ' + current_ndk + 'platforms/android-14/arch-arm' }
+targetdst    = 'build/' + target + '/'
+
+env.Append(CXXFLAGS = '-std=gnu++11 -I./')
+
+if debug == 'n':
+    env.Append(CXXFLAGS = '-O2')
+else:
+    env.Append(CXXFLAGS = '-g -O0')
 
 if verbose == 'n':
-    env['CXXCOMSTR']  = 'Compiling $TARGET'
-    env['CCCOMSTR']   = 'Compiling $TARGET'
-    env['LINKCOMSTR'] = 'Linking $TARGET'
-    env['ARCOMSTR']   = 'Archiving $TARGET'
-    env['CPPCOMSTR']  = 'Processing $TARGET'
-    env['PERLCOMSTR'] = 'Generating $TARGET'
+    env['CXXCOMSTR']    = 'Compiling $TARGET'
+    env['SHCXXCOMSTR']  = 'Compiling $TARGET'
+    env['CCCOMSTR']     = 'Compiling $TARGET'
+    env['LINKCOMSTR']   = 'Linking $TARGET'
+    env['SHLINKCOMSTR'] = 'Linking $TARGET'
+    env['ARCOMSTR']     = 'Archiving $TARGET'
+    env['CPPCOMSTR']    = 'Processing $TARGET'
+    env['PERLCOMSTR']   = 'Generating $TARGET'
+
+env.Append(CXXFLAGS = targetdefine[target])
+env['CXX'] = cxx[target]
+env.Append(CXXFLAGS = cxxflags[target])
+env['LIBPATH'] = libpath[target]
+env['LINKFLAGS'] = linkflags[target]
 
 githash = os.popen('git rev-parse --short --verify HEAD 2>/dev/null').read()
 version = os.popen('cat ' + topdir + 'VERSION.txt').read()
 
-env.SharedLibrary('g_meter', ['Engine/INU/INUKalman.cpp',
-                              'Engine/INU/Inu.cpp',
-                              'Engine/Kalman/kstatics.cpp'])
+Export('env')
 
+print "Build target " + target
+env.SConscript('./SConscript', variant_dir = targetdst, duplicate = 0)
