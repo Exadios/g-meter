@@ -27,7 +27,8 @@ javahclasses = [ cd + 'InternalGPS.class',
                  cd + 'NativeRunnable.class',
                  cd + 'NonGPSSensors.class',
                  cd + 'Timer.class' ]
-env.JavaH(target = 'native', source = javahclasses, JAVACLASSDIR = cp)
+env.JavaH(target = '../../Native',
+          source = javahclasses, JAVACLASSDIR = cp)
 env.SharedLibrary('g_meter', ['Engine/INU/INUKalman.cpp',
                               'Engine/INU/Inu.cpp',
                               'Engine/Kalman/kstatics.cpp'])

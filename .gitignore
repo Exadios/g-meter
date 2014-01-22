@@ -17,4 +17,5 @@ doc/Design/*.png
 *.os
 *.so
 jni/build/*
+jni/Native/*
 *.dblite
