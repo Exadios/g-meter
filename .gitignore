@@ -16,5 +16,5 @@ doc/Design/*.png
 *.log
 *.os
 *.so
-build/*
+jni/build/*
 *.dblite
