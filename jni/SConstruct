@@ -77,6 +77,8 @@ if verbose == 'n':
     env['ARCOMSTR']     = 'Archiving $TARGET'
     env['CPPCOMSTR']    = 'Processing $TARGET'
     env['PERLCOMSTR']   = 'Generating $TARGET'
+    env['JAVAHCOMSTR']  = 'Generating $TARGET'
+    env['JAVACOMSTR']   = 'Compiling $TARGET'
 
 env.Append(CXXFLAGS = targetdefine[target])
 env['CXX'] = cxx[target]
