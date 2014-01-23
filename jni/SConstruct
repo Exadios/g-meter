@@ -20,9 +20,14 @@
 #}
 
 import os
+import sys
 
 topdir = '../'
 topsrcdir = topdir + 'jni/'
+env     = Environment(CPPPATH = ['./', 
+                                 'Engine/INU',
+                                 'Engine/Kalman/kalman',
+                                 'Native'])
 
 env     = Environment(ENV = os.environ)
 verbose = ARGUMENTS.get('verbose', 'n')
@@ -52,7 +57,7 @@ linkflags    = { 'UNIX32'   : '',
                  'ANDROID7' : '--sysroot ' + current_ndk + 'platforms/android-14/arch-arm' }
 targetdst    = 'build/' + target + '/'
 
-env.Append(CXXFLAGS = '-std=gnu++11 -I./ ' +
+env.Append(CXXFLAGS = '-std=gnu++11 -I./' +
                       '-ffast-math  -fno-exceptions -fno-rtti ' +
                       '-fno-threadsafe-statics -fmerge-all-constants ' +
                       '-fconserve-space -fno-operator-names ' +

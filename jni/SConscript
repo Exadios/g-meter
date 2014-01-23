@@ -19,16 +19,25 @@
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #}
 
+import os
+import sys
 Import('*')
 
 cp = '../../../bin/classes'
 cd = cp + '/com/exadios/g_meter/'
-javahclasses = [ cd + 'InternalGPS.class',
-                 cd + 'NativeRunnable.class',
-                 cd + 'NonGPSSensors.class',
-                 cd + 'Timer.class' ]
+javahclasses = [cd + 'InternalGPS.class',
+                cd + 'NativeRunnable.class',
+                cd + 'NonGPSSensors.class',
+                cd + 'Timer.class']
 env.JavaH(target = '../../Native',
           source = javahclasses, JAVACLASSDIR = cp)
-env.SharedLibrary('g_meter', ['Engine/INU/INUKalman.cpp',
-                              'Engine/INU/Inu.cpp',
-                              'Engine/Kalman/kstatics.cpp'])
+#env.StaticLibrary('Java', ['Java/com_exadios_g_meter_InternalGPS.cpp'])
+env.SharedLibrary('g_meter',
+                  ['Engine/INU/INUKalman.cpp',
+                   'Engine/INU/Inu.cpp',
+                   'Engine/Kalman/kstatics.cpp',
+                   'Java/com_exadios_g_meter_InternalGPS.cpp'])
+#env.Depends('Java/com_exadios_g_meter_InternalGPS.cpp',
+#            'Native/com_exadios_g_meter_InternalGPS.h')
+#env.Requires('Java/com_exadios_g_meter_InternalGPS.cpp',
+#             'Native/com_exadios_g_meter_InternalGPS.h')
