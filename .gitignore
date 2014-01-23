@@ -16,6 +16,8 @@ doc/Design/*.png
 *.log
 *.os
 *.so
+*.o
+jni/.Makefile.depends
 jni/build/*
 jni/Native/*
 *.dblite
