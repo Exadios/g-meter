@@ -31,7 +31,6 @@ javahclasses = [cd + 'InternalGPS.class',
                 cd + 'Timer.class']
 env.JavaH(target = '../../Native',
           source = javahclasses, JAVACLASSDIR = cp)
-#env.StaticLibrary('Java', ['Java/com_exadios_g_meter_InternalGPS.cpp'])
 env.SharedLibrary('g_meter',
                   ['Engine/INU/INUKalman.cpp',
                    'Engine/INU/Inu.cpp',
