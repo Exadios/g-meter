@@ -22,12 +22,14 @@
 
 
 #include "Native/com_exadios_g_meter_InternalGPS.h"
+#include "Executive/Android/GPSSensor.hpp"
 
 JNIEXPORT void
 JNICALL Java_com_exadios_g_1meter_InternalGPS_setConnected(JNIEnv *env,
                                                            jobject obj,
                                                            jint connected)
   {
+  GPSSensor::Instance().Connected(env, obj, connected);
   }
 
 JNIEXPORT void
@@ -48,4 +50,12 @@ JNICALL Java_com_exadios_g_1meter_InternalGPS_setLocation(JNIEnv *env,
                                                           jboolean hasAcc,
                                                           jdouble acc)
   {
+  GPSSensor::Instance().State(env, obj,
+                              time, n_birds,
+                              lambda, phi,
+                              hasAlt, alt,
+                              hasBearing, bearing,
+                              hasSpeed, speed,
+                              hasError, error,
+                              hasAcc, acc);
   }
