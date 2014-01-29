@@ -96,7 +96,7 @@ public:
 
 private:
   /**
-   * Ctor. Called from GPSSensor::Ref() only.
+   * Ctor. Called from GPSSensor::Instance() only.
    */
   GPSSensor();
 
