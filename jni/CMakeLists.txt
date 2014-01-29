@@ -6,6 +6,7 @@ set(CMAKE_CXX_FLAGS "-std=gnu++11 -I../ -ffast-math  -fno-exceptions -fno-rtti -
 add_library(GMeter SHARED Engine/INU/Inu.cpp 
                           Engine/INU/INUKalman.cpp 
                           Engine/Kalman/kstatics.cpp 
+                          Executive/Android/GPSSensor.cpp
                           Java/com_exadios_g_meter_InternalGPS.cpp 
                           Java/com_exadios_g_meter_NativeRunnable.cpp 
                           Java/com_exadios_g_meter_NonGPSSensors.cpp 
