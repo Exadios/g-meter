@@ -77,22 +77,22 @@ public:
    * @param hasAcc Valid GPS acceleration: true or false.
    * @param acc GPS acceleration.
    */
-  void Status(JNIEnv *env,
-              jobject obj,
-              jlong time,
-              jint n_birds,
-              jdouble lambda,
-              jdouble phi,
-              jboolean hasAlt,
-              jdouble alt,
-              jboolean hasBearing,
-              jdouble bearing,
-              jboolean hasSpeed,
-              jdouble speed,
-              jboolean hasError,
-              jdouble error,
-              jboolean hasAcc,
-              jdouble acc);
+  void State(JNIEnv *env,
+             jobject obj,
+             jlong time,
+             jint n_birds,
+             jdouble lambda,
+             jdouble phi,
+             jboolean hasAlt,
+             jdouble alt,
+             jboolean hasBearing,
+             jdouble bearing,
+             jboolean hasSpeed,
+             jdouble speed,
+             jboolean hasError,
+             jdouble error,
+             jboolean hasAcc,
+             jdouble acc);
 
 private:
   /**

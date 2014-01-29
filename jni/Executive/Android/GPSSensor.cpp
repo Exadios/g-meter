@@ -39,22 +39,22 @@ GPSSensor::Connected(JNIEnv *env, jobject obj, jint connected)
 
 //-----------------------------------------------------------------------------
 void
-GPSSensor::Status(JNIEnv *env,
-                  jobject obj,
-                  jlong time,
-                  jint n_birds,
-                  jdouble lambda,
-                  jdouble phi,
-                  jboolean hasAlt,
-                  jdouble alt,
-                  jboolean hasBearing,
-                  jdouble bearing,
-                  jboolean hasSpeed,
-                  jdouble speed,
-                  jboolean hasError,
-                  jdouble error,
-                  jboolean hasAcc,
-                  jdouble acc)
+GPSSensor::State(JNIEnv *env,
+                 jobject obj,
+                 jlong time,
+                 jint n_birds,
+                 jdouble lambda,
+                 jdouble phi,
+                 jboolean hasAlt,
+                 jdouble alt,
+                 jboolean hasBearing,
+                 jdouble bearing,
+                 jboolean hasSpeed,
+                 jdouble speed,
+                 jboolean hasError,
+                 jdouble error,
+                 jboolean hasAcc,
+                 jdouble acc)
   {
   }
 
