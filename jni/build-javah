@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# This script is in lew of a cmake method to build JNI headers. I cannot find
+# how to do this in cmake so this script will do in the interval. Just remember
+# to run it when the natives in the JAVAH_CLASSFILES change!
+
+TARGET=./Native
+CLASSES=../bin/classes
+G_METER=com.exadios.g_meter
+_G_METER=$(echo ${G_METER} | sed -e 's:\.:_:g')
+JAVAH_CLASSFILES="${G_METER}.InternalGPS.class \
+                  ${G_METER}.NativeRunnable.class \
+                  ${G_METER}.NonGPSSensors.class \
+                  ${G_METER}.Timer.class"
+
+for class in ${JAVAH_CLASSFILES}
+do
+  echo "Building ${TARGET}/$(basename ${class} .class)"
+  javah -d ${TARGET} -classpath ${CLASSES} $(basename ${class} .class)
+done
+
