@@ -10,6 +10,5 @@ add_library(GMeter SHARED Engine/INU/Inu.cpp
                           Java/com_exadios_g_meter_NativeRunnable.cpp 
                           Java/com_exadios_g_meter_NonGPSSensors.cpp 
                           Java/com_exadios_g_meter_Timer.cpp)
-#add_subdirectory(Engine)
-#add_subdirectory(Utility)
-#add_subdirectory(Java)
+
+
