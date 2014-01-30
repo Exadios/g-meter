@@ -46,11 +46,6 @@ public:
   static GPSSensor& Instance();
   
   /**
-   * Dtor.
-   */
-  virtual ~GPSSensor();
-
-  /**
    * Set the GPS status.
    * @param env The JNI enviroment.
    * @param obj The JNI object.
