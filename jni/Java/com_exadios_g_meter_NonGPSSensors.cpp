@@ -22,6 +22,7 @@ Copyright_License {
 */
 
 #include "Native/com_exadios_g_meter_NonGPSSensors.h"
+#include "Executive/Android/NonGPSSensors.hpp"
 
 /*
  * Class:     com_exadios_g_meter_NonGPSSensors
@@ -29,8 +30,9 @@ Copyright_License {
  * Signature: (FFF)V
  */
 JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setAcceleration
-  (JNIEnv *, jobject, jfloat, jfloat, jfloat)
+  (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
   {
+  NonGPSSensors::Instance().Acceleration(env, obj, x, y, z);
   }
 
 /*
@@ -39,8 +41,9 @@ JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setAcceleration
  * Signature: (FFF)V
  */
 JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setRotation
-  (JNIEnv *, jobject, jfloat, jfloat, jfloat)
+  (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
   {
+  NonGPSSensors::Instance().Rotation(env, obj, x, y, z);
   }
 
 /*
@@ -49,8 +52,9 @@ JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setRotation
  * Signature: (FFF)V
  */
 JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setMagneticField
-  (JNIEnv *, jobject, jfloat, jfloat, jfloat)
+  (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
   {
+  NonGPSSensors::Instance().MagneticField(env, obj, x, y, z);
   }
 
 /*
@@ -59,7 +63,8 @@ JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setMagneticField
  * Signature: (FF)V
  */
 JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setBarometricPressure
-  (JNIEnv *, jobject, jfloat, jfloat)
+  (JNIEnv *env, jobject obj, jfloat p, jfloat v)
   {
+  NonGPSSensors::Instance().BarometricPressure(env, obj, p, v);
   }
 
