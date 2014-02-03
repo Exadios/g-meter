@@ -23,42 +23,49 @@
 package com.exadios.g_meter;
 
 import android.os.Handler;
+import android.os.SystemClock;
 
 /**
  * A periodic timer used by the native code.
  */
-class Timer implements Runnable {
-  static Handler handler;
+class Timer implements Runnable
+   {
+   static Handler handler;
 
-  /**
-   * Global initialization of the class.  Must be called from the main
-   * event thread, because the Handler object must be bound to that
-   * thread.
-   */
-  public static void Initialize() {
-    handler = new Handler();
-  }
+   /**
+    * Global initialization of the class.  Must be called from the main
+    * event thread, because the Handler object must be bound to that
+    * thread.
+    */
+   public static void Initialize()
+     {
+     handler = new Handler();
+     }
 
-  long ptr;
-  int period;
+   static long dt = 1000; // 1000 milliseconds.
+   long t;
 
-  Timer(long _ptr, int _period) {
-    ptr = _ptr;
-    period = _period;
-    install();
-  }
+   Timer()
+     {
+     }
 
-  private void install() {
-    handler.postDelayed(this, period);
-  }
+   private void install()
+     {
+     this.t = SystemClock.uptimeMillis() + dt;
+     handler.postAtTime(this, this.t);
+     }
 
-  private void uninstall() {
-    handler.removeCallbacks(this);
-  }
+   private void uninstall()
+     {
+     handler.removeCallbacks(this);
+     }
 
-  private native void run(long ptr);
+   private native void run(long dt);
 
-  @Override public void run() {
-    run(ptr);
-  }
-}
+   @Override public void run()
+     {
+     this.t = this.t + dt;
+     handler.postAtTime(this, this.t);
+     run(this.t - dt);
+     }
+   }

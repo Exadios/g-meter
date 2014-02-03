@@ -21,15 +21,20 @@ Copyright_License {
 }
 */
 
-#include "Native/com_exadios_g_meter_Timer.h"
+#include "Timer.hpp"
 
-/*
- * Class:     com_exadios_g_meter_Timer
- * Method:    run
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_com_exadios_g_1meter_Timer_run
-  (JNIEnv *env, jobject obj, jlong t)
+
+//-----------------------------------------------------------------------------
+Timer&
+Timer::Instance()
   {
-  Timer::Instance().Tick(env, obj, t);
+  static Timer instance;
+  return instance;
   }
+
+//-----------------------------------------------------------------------------
+void
+Timer::Tick(JNIEnv env, jobject obj, jlong t)
+  {
+  }
+
