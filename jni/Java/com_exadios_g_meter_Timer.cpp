@@ -22,6 +22,7 @@ Copyright_License {
 */
 
 #include "Native/com_exadios_g_meter_Timer.h"
+#include "Executive/Android/Timer.hpp"
 
 /*
  * Class:     com_exadios_g_meter_Timer
