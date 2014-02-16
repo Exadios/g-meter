@@ -24,14 +24,6 @@ Copyright_License {
 #include "GPSSensor.hpp"
 
 //-----------------------------------------------------------------------------
-GPSSensor&
-GPSSensor::Instance()
-  {
-  static GPSSensor instance;
-  return instance;
-  }
-
-//-----------------------------------------------------------------------------
 void
 GPSSensor::Connected(JNIEnv *env, jobject obj, jint connected)
   {

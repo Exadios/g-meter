@@ -43,7 +43,12 @@ public:
    * @return The reference the object. This reference is always valid at the
    *         time theis function is called.
    */
-  static GPSSensor& Instance();
+  static GPSSensor& Instance()
+      {
+      static GPSSensor instance;
+      return instance;
+      }
+
   
   /**
    * Set the GPS status.
