@@ -25,12 +25,13 @@ Copyright_License {
 #define GPSSENSORS_HPP
 
 #include <jni.h>
+#include "Utility/PosixMutex.hpp"
 
 /**
  * This class is a singleton. Its purpose is to handle communication to and
- * from the Android sensors.
+ * from the Android GPS systems.
  *
- * Note: This class is not thread safe.
+ * This class buffers that data in order to ensure consistancy.
  */
 
 class GPSSensor
@@ -94,6 +95,101 @@ public:
              jboolean hasAcc,
              jdouble acc);
 
+  /**
+   * Clock the buffering. Call this when we can tolerate new data.
+   */
+  void Clock();
+
+  /**
+   * Check whether new GPS data is avaliable.
+   * @return If avaliable then true.
+   */
+  bool Dirty();
+
+  /**
+   * Give the time of the fix.
+   * @return The time of the fix from the GPS unit.
+   */
+  long Time() const;
+
+  /**
+   * Give the number of birds.
+   * @return The number of birds used to develope the fix.
+   */
+  int Birds() const;
+
+  /**
+   * Give the latitude of the fix.
+   * @return The latitude in radians.
+   */
+  double Phi() const;
+
+  /**
+   * Give the longitude of the fix.
+   * @return The longitude in radians.
+   */
+  double Lambda() const;
+
+  /**
+   * Give the status of the altitude.
+   * @return If the value of Z() is good then true.
+   */
+  bool ZStatus() const;
+
+  /**
+   * Give the altitude above the Geod.
+   * @return The altitude in meters.
+   */
+  double Z() const;
+
+  /**
+   * Give the status of the argument of the track.
+   * @return If the value of Omega() is good then true.
+   */
+  bool OmegaStatus() const;
+
+  /**
+   * Give the argument of the track.
+   * @return The argument in radians.
+   */
+  double Omega() const;
+
+  /**
+   * Give the status of the magnitude of the track.
+   * @return If the value of S() is good then true.
+   */
+  bool SStatus() const;
+
+  /**
+   * Give the magnitude of the track.
+   * @return The magnitude in meters per second.
+   */
+  double S() const;
+
+  /**
+   * Give the status of the error.
+   * @return If the value of Epsilon() is good then true.
+   */
+  bool EpsilonStatus() const;
+
+  /**
+   * Give the value of the fix error.
+   * @return The representative error of the fix in meters.
+   */
+  double Epsilon() const;
+
+  /**
+   * Give the status of the acceleration value.
+   * @return If the value A() is good then true.
+   */
+  bool AStatus() const;
+
+  /**
+   * Give the value of the acceleration.
+   * @return The acceleration in meters per second per second.
+   */
+  double A() const;
+
 private:
   /**
    * Ctor. Called from GPSSensor::Instance() only.
@@ -105,6 +201,32 @@ private:
    */
   GPSSensor(const GPSSensor&);
   GPSSensor& operator=(const GPSSensor&);
+
+  /**
+   * State.
+   */
+  int    n[2];             // Number of birds.
+  long   t[2];             // Time of observation.
+  double phi[2];           // Lat.
+  double lambda[2];        // Lon.
+  double z[2];             // Alt.
+  bool   z_good[2];        // Z value are valid.
+  double omega[2];         // Argument to track vector.
+  bool   omega_good[2];    // Omega value is valid.
+  double s[2];             // Magnitude of the track vector.
+  bool   s_good[2];        // S value is valid.
+  double epsilon[2];       // Error estimate.
+  bool   epsilon_good[2];  // Epsilon value is valid.
+  double a[2];             // Magnitude of acceleration.
+  bool   a_good[2];        // A value is valid.
+
+  /**
+   * Locking and thread safety.
+   */
+  PosixMutex locker;
+  int  b;                // Input index;
+  int  b_bar;            // Output index;
+  bool dirty;            // If true then new data is avaliable;
   };
 
 
