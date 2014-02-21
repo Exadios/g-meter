@@ -23,15 +23,6 @@ Copyright_License {
 
 #include "Timer.hpp"
 
-
-//-----------------------------------------------------------------------------
-Timer&
-Timer::Instance()
-  {
-  static Timer instance;
-  return instance;
-  }
-
 //-----------------------------------------------------------------------------
 void
 Timer::Tick(JNIEnv env, jobject obj, jlong t)
