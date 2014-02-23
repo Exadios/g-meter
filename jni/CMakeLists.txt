@@ -12,6 +12,7 @@ add_library(GMeter SHARED Engine/INU/Inu.cpp
                           Java/com_exadios_g_meter_NativeRunnable.cpp 
                           Java/com_exadios_g_meter_NonGPSSensors.cpp 
                           Java/com_exadios_g_meter_Timer.cpp
-                          Utility/Mutex.cpp)
+                          Utility/Mutex.cpp
+                          Utility/Observer.cpp Utility/Observed.cpp)
 
 
