@@ -25,6 +25,7 @@ Copyright_License {
 #define TIMER_HPP
 
 #include <jni.h>
+#include "Utility/Observed.hpp"
 
 /**
  * This class is a singleton. Its purpose is to handle timer communication to
@@ -57,6 +58,11 @@ public:
    * @param t The up time in milliseconds.
    */
   void Tick(JNIEnv *env, jobject obj, jlong tick);
+
+  /**
+   * Object to which Observers should bind to.
+   */
+  Observed timerServer;
 
 private:
   /**

@@ -8,6 +8,7 @@ add_library(GMeter SHARED Engine/INU/Inu.cpp
                           Engine/Kalman/kstatics.cpp 
                           Executive/Android/GPSSensor.cpp
                           Executive/Android/NonGPSSensors.cpp
+                          Executive/Android/Timer.cpp
                           Java/com_exadios_g_meter_InternalGPS.cpp 
                           Java/com_exadios_g_meter_NativeRunnable.cpp 
                           Java/com_exadios_g_meter_NonGPSSensors.cpp 
