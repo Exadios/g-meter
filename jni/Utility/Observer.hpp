@@ -52,8 +52,9 @@ public:
 
   /**
    * Perform an action. In this base class this is a nop. Overload for action.
+   * @param t The time in an arbitary epoch.
    */
-  virtual void Action();
+  virtual void Action(long t);
   };
 
 #endif  // OBSERVER_HPP

@@ -55,8 +55,9 @@ public:
 
   /**
    * Perform the action. Meant to be overloaded.
+   * @param t The time in an arbitary epoch.
    */
-  virtual void Act();
+  virtual void Act(long t);
 
   /**
    * Bind the Observer.

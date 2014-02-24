@@ -36,12 +36,12 @@ Observed::~Observed()
 
 //-----------------------------------------------------------------------------
 void
-Observed::Act()
+Observed::Act(long t)
   {
   for (std::vector<Observer *>::iterator i = this->observers.begin();
        i != this->observers.end();
        i++)
-    (*i)->Action();
+    (*i)->Action(t);
   }
 
 //-----------------------------------------------------------------------------

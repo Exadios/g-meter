@@ -35,6 +35,6 @@ Observer::~Observer()
 
 //-----------------------------------------------------------------------------
 void
-Observer::Action()
+Observer::Action(long)
   {
   }
