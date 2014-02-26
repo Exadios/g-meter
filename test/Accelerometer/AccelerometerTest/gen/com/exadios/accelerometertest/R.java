@@ -25,34 +25,29 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int ActiveDisplay=0x7f070001;
-        public static final int IndicatorContainer=0x7f070008;
-        public static final int IndicatorLabel=0x7f070009;
-        public static final int LinearLayout1=0x7f070004;
-        public static final int SampleRateIndicator=0x7f07000a;
-        public static final int SampleRateLabel=0x7f070003;
-        public static final int SelectorContainer=0x7f070002;
-        public static final int fullscreen_content_controls=0x7f070000;
-        public static final int radioHigh=0x7f070005;
-        public static final int radioLow=0x7f070007;
-        public static final int radioMedium=0x7f070006;
+        public static final int ActiveDisplay=0x7f070000;
+        public static final int MeasuredLabel=0x7f070006;
+        public static final int SelectorLabel=0x7f070001;
+        public static final int progressBarSampleRate=0x7f070007;
+        public static final int radioGroupSampleRate=0x7f070002;
+        public static final int radioSelectorHigh=0x7f070003;
+        public static final int radioSelectorLow=0x7f070005;
+        public static final int radioSelectorMedium=0x7f070004;
     }
     public static final class layout {
         public static final int activity_fullscreen_acc=0x7f030000;
     }
     public static final class string {
-        public static final int Exit=0x7f050005;
-        public static final int High=0x7f050007;
-        public static final int Low=0x7f050009;
-        public static final int MeasuredSampleRate=0x7f05000b;
-        public static final int Medium=0x7f050008;
-        public static final int SampleRate=0x7f050006;
-        public static final int SampleRateLabel=0x7f05000a;
-        public static final int X=0x7f050003;
-        public static final int Y=0x7f050004;
+        public static final int Exit=0x7f050003;
+        public static final int High=0x7f050005;
+        public static final int Low=0x7f050007;
+        public static final int MeasuredSampleRate=0x7f050009;
+        public static final int Medium=0x7f050006;
+        public static final int SampleRate=0x7f050004;
+        public static final int SampleRateLabel=0x7f050008;
+        public static final int X=0x7f050001;
+        public static final int Y=0x7f050002;
         public static final int app_name=0x7f050000;
-        public static final int dummy_button=0x7f050001;
-        public static final int dummy_content=0x7f050002;
     }
     public static final class style {
         /** 

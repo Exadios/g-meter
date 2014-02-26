@@ -2,8 +2,6 @@
 <resources>
 
     <string name="app_name">Accelerometer Test</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="X">X</string>
     <string name="Y">Y</string>
     <string name="Exit">Exit</string>

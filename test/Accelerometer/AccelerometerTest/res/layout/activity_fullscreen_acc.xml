@@ -17,89 +17,56 @@
          android:fitsSystemWindows.
     -->
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black_overlay"
-        android:fitsSystemWindows="true" >
-
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?buttonBarStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent" >
-        </LinearLayout>
-    </FrameLayout>
-
     <LinearLayout
         android:id="@+id/ActiveDisplay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
-        <GridLayout
-            android:id="@+id/SelectorContainer"
+        <TextView
+            android:id="@+id/SelectorLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/SampleRate"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <RadioGroup
+            android:id="@+id/radioGroupSampleRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/SampleRateLabel"
+            <RadioButton
+                android:id="@+id/radioSelectorHigh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/SampleRateLabel"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:checked="true"
+                android:text="@string/High" />
 
-            <LinearLayout
-                android:id="@+id/LinearLayout1"
-                style="@style/ButtonBarButton"
+            <RadioButton
+                android:id="@+id/radioSelectorMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:text="@string/Medium" />
 
-                <RadioButton
-                    android:id="@+id/radioHigh"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/High" />
+            <RadioButton
+                android:id="@+id/radioSelectorLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Low" />
+        </RadioGroup>
 
-                <RadioButton
-                    android:id="@+id/radioMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Medium" />
-
-                <RadioButton
-                    android:id="@+id/radioLow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Low" />
-            </LinearLayout>
-        </GridLayout>
-
-        <LinearLayout
-            android:id="@+id/IndicatorContainer"
+        <TextView
+            android:id="@+id/MeasuredLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:text="@string/MeasuredSampleRate"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <TextView
-                android:id="@+id/IndicatorLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/MeasuredSampleRate"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+        <ProgressBar
+            android:id="@+id/progressBarSampleRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
-            <ProgressBar
-                android:id="@+id/SampleRateIndicator"
-                style="?android:attr/progressBarStyleLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
     </LinearLayout>
 
 </FrameLayout>
