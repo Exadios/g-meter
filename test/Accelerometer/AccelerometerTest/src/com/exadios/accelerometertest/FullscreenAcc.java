@@ -4,6 +4,9 @@ import com.exadios.accelerometertest.util.SystemUiHider;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -124,6 +127,34 @@ public class FullscreenAcc extends Activity {
         delayedHide(100);
     }
 
+    class AccListener implements SensorEventListener {
+    	private float x;
+    	private float y;
+    	private float z;
+    	private long accTimeStamp;
+    	private long lastsysTime;
+    	private long sysTime;
+    	private long deltaTime;
+    	
+    	@Override
+    	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    		
+    	}
+
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
+                return;
+			this.x = event.values[0];
+			this.y = event.values[1];
+			this.z = event.values[2];
+			this.accTimeStamp = event.timestamp;
+			this.lastsysTime = this.sysTime;
+			this.sysTime = System.nanoTime();
+			this.deltaTime = this.sysTime - this.lastsysTime;
+		}
+    
+    }
 
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
