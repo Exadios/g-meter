@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,73 +49,17 @@ public class FullscreenAcc extends Activity {
      */
     private SystemUiHider mSystemUiHider;
 
+    /**
+     * The acceleromenter routine.
+     */
+    private AccListener listener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+      super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_fullscreen_acc);
-
-        final View controlsView = findViewById(R.id.ActiveDisplay);
-        final View contentView = findViewById(R.id.ActiveDisplay);
-
-        // Set up an instance of SystemUiHider to control the system UI for
-        // this activity.
-        mSystemUiHider = SystemUiHider.getInstance(this, contentView, HIDER_FLAGS);
-        mSystemUiHider.setup();
-        mSystemUiHider
-                .setOnVisibilityChangeListener(new SystemUiHider.OnVisibilityChangeListener() {
-                    // Cached values.
-                    int mControlsHeight;
-                    int mShortAnimTime;
-
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-                    public void onVisibilityChange(boolean visible) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-                            // If the ViewPropertyAnimator API is available
-                            // (Honeycomb MR2 and later), use it to animate the
-                            // in-layout UI controls at the bottom of the
-                            // screen.
-                            if (mControlsHeight == 0) {
-                                mControlsHeight = controlsView.getHeight();
-                            }
-                            if (mShortAnimTime == 0) {
-                                mShortAnimTime = getResources().getInteger(
-                                        android.R.integer.config_shortAnimTime);
-                            }
-                            controlsView.animate()
-                                    .translationY(visible ? 0 : mControlsHeight)
-                                    .setDuration(mShortAnimTime);
-                        } else {
-                            // If the ViewPropertyAnimator APIs aren't
-                            // available, simply show or hide the in-layout UI
-                            // controls.
-                            controlsView.setVisibility(visible ? View.VISIBLE : View.GONE);
-                        }
-
-                        if (visible && AUTO_HIDE) {
-                            // Schedule a hide().
-                            delayedHide(AUTO_HIDE_DELAY_MILLIS);
-                        }
-                    }
-                });
-
-        // Set up the user interaction to manually show or hide the system UI.
-        contentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (TOGGLE_ON_CLICK) {
-                    mSystemUiHider.toggle();
-                } else {
-                    mSystemUiHider.show();
-                }
-            }
-        });
-
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
- 
+      this.listener = new AccListener();
+      this.listener.onCreate();
     }
 
     @Override
@@ -127,7 +72,31 @@ public class FullscreenAcc extends Activity {
         delayedHide(100);
     }
 
+    protected void onResume() {
+        super.onResume();
+        this.listener.onResume();
+    }
+
+    protected void onPause() {
+        super.onPause();
+        this.listener.onPause();
+    }
+
     class AccListener implements SensorEventListener {
+
+      /**
+       * The sensor manager.
+       */
+      private SensorManager sensors;
+ 
+      /**
+       * The accelerometers.
+       */
+      private Sensor acc;
+
+      /**
+       * State variables.
+       */
     	private float x;
     	private float y;
     	private float z;
@@ -136,24 +105,51 @@ public class FullscreenAcc extends Activity {
     	private long sysTime;
     	private long deltaTime;
     	
+      private void onCreate() {
+        this.sensors = (SensorManager )getSystemService(SENSOR_SERVICE);
+        setContentView(R.layout.activity_fullscreen_acc);
+        this.acc = this.sensors.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+      }
+
+      private void onResume() {
+        this.sensors.registerListener(this,
+                                      this.acc,
+                                      SensorManager.SENSOR_DELAY_UI);
+
+      }
+
+      private void onPause() {
+        this.sensors.unregisterListener(this);
+      }
+
     	@Override
     	public void onAccuracyChanged(Sensor sensor, int accuracy) {
     		
     	}
 
-		@Override
-		public void onSensorChanged(SensorEvent event) {
-			if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
+		  @Override
+		  public void onSensorChanged(SensorEvent event) {
+			  if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
                 return;
-			this.x = event.values[0];
-			this.y = event.values[1];
-			this.z = event.values[2];
-			this.accTimeStamp = event.timestamp;
-			this.lastsysTime = this.sysTime;
-			this.sysTime = System.nanoTime();
-			this.deltaTime = this.sysTime - this.lastsysTime;
-		}
+			  this.x = event.values[0];
+			  this.y = event.values[1];
+			  this.z = event.values[2];
+			  this.accTimeStamp = event.timestamp;
+			  this.lastsysTime = this.sysTime;
+			  this.sysTime = System.nanoTime();
+			  this.deltaTime = this.sysTime - this.lastsysTime;
+		  }
+
+      protected void onResume(SensorManager sensors, Sensor acc) {
+          sensors.registerListener(this,
+                                   acc,
+                                   SensorManager.SENSOR_DELAY_UI);
     
+      }
+
+      protected void onPause(SensorManager sensors) {
+          sensors.unregisterListener(this);
+      }
     }
 
     /**

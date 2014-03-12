@@ -9,7 +9,7 @@
     <string name="High">High</string>
     <string name="Medium">Medium</string>
     <string name="Low">Low</string>
-    <string name="SampleRateLabel">Sample Rate</string>
+    <string name="SampleRateLabel">Select Sample Rate</string>
     <string name="MeasuredSampleRate">Measured Sample Rate</string>
 
 </resources>

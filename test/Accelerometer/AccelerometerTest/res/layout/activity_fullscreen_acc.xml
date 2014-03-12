@@ -1,72 +1,58 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#0099cc"
-    tools:context=".FullscreenAcc" >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
-    <!--
-         The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc.
-    -->
+<!--
+    <TextView
+        android:id="@+id/SelectorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/SampleRate"
+        android:textAppearance="?android:attr/textAppearanceMedium" /> -->
 
+    <TextView
+        android:id="@+id/SelectorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium" /> 
 
-    <!--
-         This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows.
-    -->
+    <RadioGroup
+        android:id="@+id/radioGroupSampleRate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/SampleRate" >
 
-    <LinearLayout
-        android:id="@+id/ActiveDisplay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/SelectorLabel"
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:id="@+id/radioSelectorHigh"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/SampleRate"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:checked="true"
+            android:text="@string/High" />
 
-        <RadioGroup
-            android:id="@+id/radioGroupSampleRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <RadioButton
-                android:id="@+id/radioSelectorHigh"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/High" />
-
-            <RadioButton
-                android:id="@+id/radioSelectorMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Medium" />
-
-            <RadioButton
-                android:id="@+id/radioSelectorLow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/Low" />
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/MeasuredLabel"
-            android:layout_width="wrap_content"
+        <RadioButton
+            android:id="@+id/radioSelectorMedium"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/MeasuredSampleRate"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:text="@string/Medium" />
 
-        <ProgressBar
-            android:id="@+id/progressBarSampleRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        <RadioButton
+            android:id="@+id/radioSelectorLow"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Low" />
+    </RadioGroup>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/MeasuredLabel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/MeasuredSampleRate"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-</FrameLayout>
+    <ProgressBar
+        android:id="@+id/progressBarSampleRate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
