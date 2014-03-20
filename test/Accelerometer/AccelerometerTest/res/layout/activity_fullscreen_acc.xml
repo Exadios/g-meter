@@ -1,58 +1,54 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
-<!--
     <TextView
-        android:id="@+id/SelectorLabel"
+        android:id="@+id/MaxRateReport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/SampleRate"
-        android:textAppearance="?android:attr/textAppearanceMedium" /> -->
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
         android:id="@+id/SelectorLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium" /> 
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/SampleRate" /> 
 
     <RadioGroup
         android:id="@+id/radioGroupSampleRate"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/SampleRate" >
 
         <RadioButton
+            android:id="@+id/radioSelectorHighest"
+            android:checked="false"
+            android:text="@string/Highest"
+            android:onClick="rateHighest" />
+
+        <RadioButton
             android:id="@+id/radioSelectorHigh"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/High" />
+            android:checked="false"
+            android:text="@string/High"
+            android:onClick="rateHigh" />
 
         <RadioButton
             android:id="@+id/radioSelectorMedium"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/Medium" />
+            android:checked="false"
+            android:text="@string/Medium"
+            android:onClick="rateMedium" />
 
         <RadioButton
             android:id="@+id/radioSelectorLow"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/Low" />
+            android:checked="true"
+            android:text="@string/Low"
+            android:onClick="rateLow" />
+
+        <TextView
+            android:id="@+id/MeasuredSampleRate" />
+
     </RadioGroup>
-
-    <TextView
-        android:id="@+id/MeasuredLabel"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/MeasuredSampleRate"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <ProgressBar
-        android:id="@+id/progressBarSampleRate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.*;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -54,6 +55,10 @@ public class FullscreenAcc extends Activity {
      */
     private AccListener listener;
 
+    /**
+     * UI components.
+     */
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
       super.onCreate(savedInstanceState);
@@ -65,11 +70,6 @@ public class FullscreenAcc extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-        // Trigger the initial hide() shortly after the activity has been
-        // created, to briefly hint to the user that UI controls
-        // are available.
-        delayedHide(100);
     }
 
     protected void onResume() {
@@ -95,20 +95,33 @@ public class FullscreenAcc extends Activity {
       private Sensor acc;
 
       /**
+       * The result.
+       */
+      TextView resultText;
+
+      /**
        * State variables.
        */
     	private float x;
     	private float y;
     	private float z;
-    	private long accTimeStamp;
-    	private long lastsysTime;
-    	private long sysTime;
-    	private long deltaTime;
+    	private long  accTimeStamp;
+    	private long  lastsysTime;
+    	private long  sysTime;
+    	private float deltaTime;
     	
-      private void onCreate() {
+      public AccListener() {
         this.sensors = (SensorManager )getSystemService(SENSOR_SERVICE);
-        setContentView(R.layout.activity_fullscreen_acc);
         this.acc = this.sensors.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        setContentView(R.layout.activity_fullscreen_acc);
+        TextView mr = (TextView )findViewById(R.id.MaxRateReport);
+        mr.setText("Maximum accelerometer SR: " + acc.getMinDelay() + "uS");
+
+        this.deltaTime = 0;
+
+        this.resultText = (TextView )findViewById(R.id.MeasuredSampleRate);
+      }
+      private void onCreate() {
       }
 
       private void onResume() {
@@ -138,18 +151,20 @@ public class FullscreenAcc extends Activity {
 			  this.lastsysTime = this.sysTime;
 			  this.sysTime = System.nanoTime();
 			  this.deltaTime = this.sysTime - this.lastsysTime;
+        String tt = "";
+        this.resultText.setText(tt);
+        this.resultText.setText("dT: " + this.deltaTime + "\n");
 		  }
 
-      protected void onResume(SensorManager sensors, Sensor acc) {
-          sensors.registerListener(this,
-                                   acc,
-                                   SensorManager.SENSOR_DELAY_UI);
-    
+      protected void onPause(SensorManager sensors) {
+        sensors.unregisterListener(this);
       }
 
-      protected void onPause(SensorManager sensors) {
-          sensors.unregisterListener(this);
+      private void rate(View view, int delay) {
+        this.sensors.unregisterListener(this);
+        this.sensors.registerListener(this, this.acc, delay);
       }
+
     }
 
     /**
@@ -160,27 +175,25 @@ public class FullscreenAcc extends Activity {
     View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            if (AUTO_HIDE) {
-                delayedHide(AUTO_HIDE_DELAY_MILLIS);
-            }
             return false;
         }
     };
 
     Handler mHideHandler = new Handler();
-    Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            mSystemUiHider.hide();
-        }
-    };
+    
+    public void rateHighest(View view) {
+      this.listener.rate(view, SensorManager.SENSOR_DELAY_FASTEST);
+    }
 
-    /**
-     * Schedules a call to hide() in [delay] milliseconds, canceling any
-     * previously scheduled calls.
-     */
-    private void delayedHide(int delayMillis) {
-        mHideHandler.removeCallbacks(mHideRunnable);
-        mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    public void rateHigh(View view) {
+      this.listener.rate(view, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    public void rateMedium(View view) {
+      this.listener.rate(view, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void rateLow(View view) {
+      this.listener.rate(view, SensorManager.SENSOR_DELAY_UI);
     }
 }
