@@ -107,8 +107,7 @@ public class FullscreenAcc extends Activity {
     	private float z;
     	private long  accTimeStamp;
     	private long  lastsysTime;
-    	private long  sysTime;
-    	private float deltaTime;
+      private int   i;
     	
       public AccListener() {
         this.sensors = (SensorManager )getSystemService(SENSOR_SERVICE);
@@ -117,17 +116,19 @@ public class FullscreenAcc extends Activity {
         TextView mr = (TextView )findViewById(R.id.MaxRateReport);
         mr.setText("Maximum accelerometer SR: " + acc.getMinDelay() + "uS");
 
-        this.deltaTime = 0;
-
         this.resultText = (TextView )findViewById(R.id.MeasuredSampleRate);
+        this.rate(SensorManager.SENSOR_DELAY_UI);
       }
+
       private void onCreate() {
+        this.rate(SensorManager.SENSOR_DELAY_UI);
       }
 
       private void onResume() {
         this.sensors.registerListener(this,
                                       this.acc,
                                       SensorManager.SENSOR_DELAY_UI);
+        this.rate(SensorManager.SENSOR_DELAY_UI);
 
       }
 
@@ -142,27 +143,34 @@ public class FullscreenAcc extends Activity {
 
 		  @Override
 		  public void onSensorChanged(SensorEvent event) {
-			  if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
+			  if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER) {
                 return;
-			  this.x = event.values[0];
-			  this.y = event.values[1];
-			  this.z = event.values[2];
-			  this.accTimeStamp = event.timestamp;
-			  this.lastsysTime = this.sysTime;
-			  this.sysTime = System.nanoTime();
-			  this.deltaTime = this.sysTime - this.lastsysTime;
-        String tt = "";
-        this.resultText.setText(tt);
-        this.resultText.setText("dT: " + this.deltaTime + "\n");
+        }
+        if (this.i < 0) {
+          this.lastsysTime = System.currentTimeMillis();
+          this.i++;
+        }
+        else if (this.i < 100) {
+			    this.accTimeStamp = event.timestamp;
+          this.i++;
+        } 
+        else if (i == 100) {
+          this.resultText.setText("dT: " + (float )(System.currentTimeMillis() - this.lastsysTime) / (float )102);
+          this.i++;
+        }
+        else {
+        }
 		  }
 
       protected void onPause(SensorManager sensors) {
         sensors.unregisterListener(this);
       }
 
-      private void rate(View view, int delay) {
+      private void rate(int delay) {
         this.sensors.unregisterListener(this);
         this.sensors.registerListener(this, this.acc, delay);
+        this.i = -1;
+        this.resultText.setText("");
       }
 
     }
@@ -182,18 +190,18 @@ public class FullscreenAcc extends Activity {
     Handler mHideHandler = new Handler();
     
     public void rateHighest(View view) {
-      this.listener.rate(view, SensorManager.SENSOR_DELAY_FASTEST);
+      this.listener.rate(SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     public void rateHigh(View view) {
-      this.listener.rate(view, SensorManager.SENSOR_DELAY_GAME);
+      this.listener.rate(SensorManager.SENSOR_DELAY_GAME);
     }
 
     public void rateMedium(View view) {
-      this.listener.rate(view, SensorManager.SENSOR_DELAY_NORMAL);
+      this.listener.rate(SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void rateLow(View view) {
-      this.listener.rate(view, SensorManager.SENSOR_DELAY_UI);
+      this.listener.rate(SensorManager.SENSOR_DELAY_UI);
     }
 }
