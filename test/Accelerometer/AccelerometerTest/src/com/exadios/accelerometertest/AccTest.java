@@ -21,7 +21,7 @@ import android.widget.*;
  *
  * @see SystemUiHider
  */
-public class FullscreenAcc extends Activity {
+public class AccTest extends Activity {
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
