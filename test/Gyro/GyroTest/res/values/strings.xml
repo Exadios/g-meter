@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gyro Test</string>
+    <string name="X">X</string>
+    <string name="Y">Y</string>
+    <string name="Exit">Exit</string>
+    <string name="SampleRate">Sample Rate</string>
+    <string name="High">High</string>
+    <string name="Highest">Highest</string>
+    <string name="Medium">Medium</string>
+    <string name="Low">Low</string>
+    <string name="SampleRateLabel">Select Sample Rate</string>
+    <string name="MeasuredSampleRate">Measured Sample Rate</string>
+    <string name="MaxRate">Maximum Rate</string>
+    
+</resources>
