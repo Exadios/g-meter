@@ -27,44 +27,44 @@ Copyright_License {
 /*
  * Class:     com_exadios_g_meter_NonGPSSensors
  * Method:    setAcceleration
- * Signature: (FFF)V
+ * Signature: (LFFF)V
  */
 JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setAcceleration
-  (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
+  (JNIEnv *env, jobject obj, jlong t, jfloat x, jfloat y, jfloat z)
   {
-  NonGPSSensors::Instance().Acceleration(env, obj, x, y, z);
+  NonGPSSensors::Instance().Acceleration(env, obj, t, x, y, z);
   }
 
 /*
  * Class:     com_exadios_g_meter_NonGPSSensors
  * Method:    setRotation
- * Signature: (FFF)V
+ * Signature: (LFFF)V
  */
 JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setRotation
-  (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
+  (JNIEnv *env, jobject obj, jlong t, jfloat x, jfloat y, jfloat z)
   {
-  NonGPSSensors::Instance().Rotation(env, obj, x, y, z);
+  NonGPSSensors::Instance().Rotation(env, obj, t, x, y, z);
   }
 
 /*
  * Class:     com_exadios_g_meter_NonGPSSensors
  * Method:    setMagneticField
- * Signature: (FFF)V
+ * Signature: (LFFF)V
  */
 JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setMagneticField
-  (JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
+  (JNIEnv *env, jobject obj, jlong t, jfloat x, jfloat y, jfloat z)
   {
-  NonGPSSensors::Instance().MagneticField(env, obj, x, y, z);
+  NonGPSSensors::Instance().MagneticField(env, obj, t, x, y, z);
   }
 
 /*
  * Class:     com_exadios_g_meter_NonGPSSensors
  * Method:    setBarometricPressure
- * Signature: (FF)V
+ * Signature: (LFF)V
  */
 JNIEXPORT void JNICALL Java_com_exadios_g_1meter_NonGPSSensors_setBarometricPressure
-  (JNIEnv *env, jobject obj, jfloat p, jfloat v)
+  (JNIEnv *env, jobject obj, jlong t, jfloat p, jfloat v)
   {
-  NonGPSSensors::Instance().BarometricPressure(env, obj, p, v);
+  NonGPSSensors::Instance().BarometricPressure(env, obj, t, p, v);
   }
 

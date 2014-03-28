@@ -34,26 +34,28 @@ NonGPSSensors::Instance()
 //-----------------------------------------------------------------------------
 void
 NonGPSSensors::Acceleration(JNIEnv *env, jobject obj,
-                            jfloat x, jfloat y, jfloat z)
+                            jlong t, jfloat x, jfloat y, jfloat z)
 
   {
   }
 
 //-----------------------------------------------------------------------------
 void
-NonGPSSensors::Rotation(JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z)
+NonGPSSensors::Rotation(JNIEnv *env, jobject obj,
+                        jlong t, jfloat x, jfloat y, jfloat z)
   {
   }
 
 //-----------------------------------------------------------------------------
 void
 NonGPSSensors::MagneticField(JNIEnv *env, jobject obj,
-                             jfloat x, jfloat y, jfloat z)
+                             jlong t, jfloat x, jfloat y, jfloat z)
   {
   }
 
 //-----------------------------------------------------------------------------
 void
-NonGPSSensors::BarometricPressure(JNIEnv *env, jobject obj, jfloat p, jfloat v)
+NonGPSSensors::BarometricPressure(JNIEnv *env, jobject obj, 
+                                  jlong t, jfloat p, jfloat v)
   {
   }

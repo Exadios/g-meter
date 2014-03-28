@@ -50,40 +50,52 @@ public:
     * Set acceleration.
     * @param env The JNI enviroment.
     * @param obj The JNI object.
+    * @param timestamp The timestamp of the observation in nano seconds,
+    *                  arbitary timestamp.
     * @param x Acceleration in the body's x axis.
     * @param y Acceleration in the body's y axis.
     * @param z Acceleration in the body's z axis.
     */
-   void Acceleration(JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z);
+   void Acceleration(JNIEnv *env, jobject obj,
+                     jlong timestamp, jfloat x, jfloat y, jfloat z);
 
    /**
     * Set rotational velocity.
     * @param env The JNI enviroment.
     * @param obj The JNI object.
+    * @param timestamp The timestamp of the observation in nano seconds,
+    *                  arbitary timestamp.
     * @param x Rotation velocty about the body's x axis.
     * @param y Rotation velocty about the body's y axis.
     * @param z Rotation velocty about the body's z axis.
     */
-   void Rotation(JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z);
+   void Rotation(JNIEnv *env, jobject obj,
+                 jlong timestamp, jfloat x, jfloat y, jfloat z);
 
    /**
     * Set magnetic field.
     * @param env The JNI enviroment.
     * @param obj The JNI object.
+    * @param timestamp The timestamp of the observation in nano seconds,
+    *                  arbitary timestamp.
     * @param x Magnetic field in the body's x axis.
     * @param y Magnetic field in the body's y axis.
     * @param z Magnetic field in the body's z axis.
     */
-   void MagneticField(JNIEnv *env, jobject obj, jfloat x, jfloat y, jfloat z);
+   void MagneticField(JNIEnv *env, jobject obj,
+                      jlong timestamp, jfloat x, jfloat y, jfloat z);
 
    /**
     * Set barometric pressure.
     * @param env The JNI enviroment.
     * @param obj The JNI object.
+    * @param timestamp The timestamp of the observation in nano seconds,
+    *                  arbitary timestamp.
     * @param p The pressure.
     * @param v The variance of the observations.
     */
-   void BarometricPressure(JNIEnv *env, jobject obj, jfloat p, jfloat v);
+   void BarometricPressure(JNIEnv *env, jobject obj,
+                           jlong timestamp, jfloat p, jfloat v);
 
 private:
   /**
