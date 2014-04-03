@@ -28,7 +28,7 @@ jni/Native/*
 CMakeFiles/
 Makefile
 cmake_install.cmake
-build-android7/
-build-unix32/
+build-android7-*/
+build-unix32-*/
 local.properties
 ../../../
