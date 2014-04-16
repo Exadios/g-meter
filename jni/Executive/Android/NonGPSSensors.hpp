@@ -44,7 +44,12 @@ public:
    * @return The reference the object. This reference is always valid at the
    *         time theis function is called.
    */
-   static NonGPSSensors& Instance();
+   static NonGPSSensors& Instance()
+    {
+    static NonGPSSensors instance;
+    return instance;
+    }
+
 
    /**
     * Set acceleration.
@@ -97,6 +102,96 @@ public:
    void BarometricPressure(JNIEnv *env, jobject obj,
                            jlong timestamp, jfloat p, jfloat v);
 
+   /**
+    * Get the accelerometer measurement time.
+    * @return The time in microseconds and arbitary epoch.
+    */
+   long A_t() const;
+
+   /**
+    * Get the accelerometer x variable.
+    * @return The x variable in radians.
+    */
+   float A_x() const;
+
+   /**
+    * Get the accelerometer y variable.
+    * @return The y variable in radians.
+    */
+   float A_y() const;
+
+   /**
+    * Get the accelerometer z variable.
+    * @return The z variable in radians.
+    */
+   float A_z() const;
+
+   /**
+    * Get the gyro measurement time.
+    * @return The time in microseconds and arbitary epoch.
+    */
+   long R_t() const;
+
+   /**
+    * Get the gyro rotation about the x axis.
+    * @return The x variable in radians per second.
+    */
+   float R_x() const;
+
+   /**
+    * Get the gyro rotation about the y axis.
+    * @return The y variable in radians per second.
+    */
+   float R_y() const;
+
+   /**
+    * Get the gyro rotation about the z axis.
+    * @return The x variable in radians per second.
+    */
+   float R_z() const;
+
+   /**
+    * Get the magnetic field measurement time.
+    * @return The time in microseconds and arbitary epoch.
+    */
+   long M_t() const;
+
+   /**
+    * Get the magnetic field the x axis.
+    * @return The x variable in Gauss.
+    */
+   float M_x() const;
+
+   /**
+    * Get the magnetic field the y axis.
+    * @return The y variable in Gauss.
+    */
+   float M_y() const;
+
+   /**
+    * Get the magnetic field the z axis.
+    * @return The x variable in Gauss.
+    */
+   float M_z() const;
+
+   /**
+    * Get the barometric measurement time.
+    * @return The time in microseconds and arbitary epoch.
+    */
+   long B_t() const;
+
+   /**
+    * Get the barometric pressure.
+    * @return The pressure in hPa.
+    */
+   float B_p() const;
+
+   /**
+    * Get the barometric sea level pressure.
+    * @return The pressure in hPa.
+    */
+   float B_v() const;
+
 private:
   /**
    * Ctor. Called from NonGPSSensors::Instance() only.
@@ -108,6 +203,19 @@ private:
    */
   NonGPSSensors(const NonGPSSensors&);
   NonGPSSensors& operator=(const NonGPSSensors&);
+
+  /**
+   * State variables.
+   */
+  long  a_t;
+  float a_x, a_y, a_z;
+  long  r_t;
+  float r_x, r_y, r_z;
+  long  m_t;
+  float m_x, m_y, m_z;
+  long  b_t;
+  float b_p, b_v;
+
   };
 
 #endif  /* NONGPSSENSORS_HPP */
