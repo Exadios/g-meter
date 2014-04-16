@@ -9,6 +9,7 @@ add_library(GMeter SHARED Engine/INU/Inu.cpp
                           Executive/Android/GPSSensor.cpp
                           Executive/Android/NonGPSSensors.cpp
                           Executive/Android/Timer.cpp
+                          Executive/MajorState.cpp
                           Java/com_exadios_g_meter_InternalGPS.cpp 
                           Java/com_exadios_g_meter_NativeRunnable.cpp 
                           Java/com_exadios_g_meter_NonGPSSensors.cpp 
