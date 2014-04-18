@@ -34,7 +34,7 @@ Copyright_License {
  * Note: This class is not thread safe.
  */
 
-class Timer
+class Timer : public Observed
   {
 public:
   /**
@@ -58,11 +58,6 @@ public:
    * @param t The up time in milliseconds.
    */
   void Tick(JNIEnv *env, jobject obj, jlong tick);
-
-  /**
-   * Object to which Observers should bind to.
-   */
-  Observed timerServer;
 
 private:
   /**

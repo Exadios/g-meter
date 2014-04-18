@@ -27,6 +27,6 @@ Copyright_License {
 void
 Timer::Tick(JNIEnv *env, jobject obj, jlong t)
   {
-  this->timerServer.Act(t);
+  this->Act(t);
   }
 
