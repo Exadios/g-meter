@@ -30,6 +30,7 @@ NonGPSSensors::Acceleration(JNIEnv *env, jobject obj,
 
   {
   this->locker.TryLock();
+  this->dirty = true;
   this->a_t[b] = t;
   this->a_x[b] = x;
   this->a_y[b] = y;
@@ -43,6 +44,7 @@ NonGPSSensors::Rotation(JNIEnv *env, jobject obj,
                         jlong t, jfloat x, jfloat y, jfloat z)
   {
   this->locker.TryLock();
+  this->dirty = true;
   this->r_t[b] = t;
   this->r_x[b] = x;
   this->r_y[b] = y;
@@ -56,6 +58,7 @@ NonGPSSensors::MagneticField(JNIEnv *env, jobject obj,
                              jlong t, jfloat x, jfloat y, jfloat z)
   {
   this->locker.TryLock();
+  this->dirty = true;
   this->m_t[b] = t;
   this->m_x[b] = x;
   this->m_y[b] = y;
@@ -69,6 +72,7 @@ NonGPSSensors::BarometricPressure(JNIEnv *env, jobject obj,
                                   jlong t, jfloat p, jfloat v)
   {
   this->locker.TryLock();
+  this->dirty = true;
   this->b_t[b] = t;
   this->b_p[b] = p;
   this->b_v[b] = v;
