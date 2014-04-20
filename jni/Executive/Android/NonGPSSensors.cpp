@@ -29,10 +29,12 @@ NonGPSSensors::Acceleration(JNIEnv *env, jobject obj,
                             jlong t, jfloat x, jfloat y, jfloat z)
 
   {
-  this->a_t = t;
-  this->a_x = x;
-  this->a_y = y;
-  this->a_z = z;
+  this->locker.TryLock();
+  this->a_t[b] = t;
+  this->a_x[b] = x;
+  this->a_y[b] = y;
+  this->a_z[b] = z;
+  this->locker.Unlock();
   }
 
 //-----------------------------------------------------------------------------
@@ -40,10 +42,12 @@ void
 NonGPSSensors::Rotation(JNIEnv *env, jobject obj,
                         jlong t, jfloat x, jfloat y, jfloat z)
   {
-  this->r_t = t;
-  this->r_x = x;
-  this->r_y = y;
-  this->r_z = z;
+  this->locker.TryLock();
+  this->r_t[b] = t;
+  this->r_x[b] = x;
+  this->r_y[b] = y;
+  this->r_z[b] = z;
+  this->locker.Unlock();
   }
 
 //-----------------------------------------------------------------------------
@@ -51,10 +55,12 @@ void
 NonGPSSensors::MagneticField(JNIEnv *env, jobject obj,
                              jlong t, jfloat x, jfloat y, jfloat z)
   {
-  this->m_t = t;
-  this->m_x = x;
-  this->m_y = y;
-  this->m_z = z;
+  this->locker.TryLock();
+  this->m_t[b] = t;
+  this->m_x[b] = x;
+  this->m_y[b] = y;
+  this->m_z[b] = z;
+  this->locker.Unlock();
   }
 
 //-----------------------------------------------------------------------------
@@ -62,112 +68,114 @@ void
 NonGPSSensors::BarometricPressure(JNIEnv *env, jobject obj, 
                                   jlong t, jfloat p, jfloat v)
   {
-  this->b_t = t;
-  this->b_p = p;
-  this->b_v = v;
+  this->locker.TryLock();
+  this->b_t[b] = t;
+  this->b_p[b] = p;
+  this->b_v[b] = v;
+  this->locker.Unlock();
   }
 
 //-----------------------------------------------------------------------------
 long
 NonGPSSensors::A_t() const
   {
-  return this->a_t;
+  return this->a_t[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::A_x() const
   {
-  return this->a_x;
+  return this->a_x[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::A_y() const
   {
-  return this->a_y;
+  return this->a_y[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::A_z() const
   {
-  return this->a_z;
+  return this->a_z[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 long
 NonGPSSensors::R_t() const
   {
-  return this->r_t;
+  return this->r_t[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::R_x() const
   {
-  return this->r_x;
+  return this->r_x[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::R_y() const
   {
-  return this->r_y;
+  return this->r_y[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::R_z() const
   {
-  return this->r_z;
+  return this->r_z[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 long
 NonGPSSensors::M_t() const
   {
-  return this->m_t;
+  return this->m_t[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::M_x() const
   {
-  return m_x;
+  return m_x[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::M_y() const
   {
-  return m_y;
+  return m_y[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::M_z() const
   {
-  return this->m_z;
+  return this->m_z[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 long
 NonGPSSensors::B_t() const
   {
-  return this->b_t;
+  return this->b_t[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::B_p() const
   {
-  return this->b_p;
+  return this->b_p[b_bar];
   }
 
 //-----------------------------------------------------------------------------
 float
 NonGPSSensors::B_v() const
   {
-  return this->b_v;
+  return this->b_v[b_bar];
   }

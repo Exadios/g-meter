@@ -25,6 +25,7 @@ Copyright_License {
 #define NONGPSSENSORS_HPP
 
 #include <jni.h>
+#include "Utility/DeviceInputBuffer.hpp"
 
 /**
  * This class is a singleton. Its purpose is to handle communication to and
@@ -33,8 +34,7 @@ Copyright_License {
  * Note: This class is not thread safe.
  *
  */
-
-class NonGPSSensors
+class NonGPSSensors : public DeviceInputBuffer
   {
 public:
   /**
@@ -207,14 +207,14 @@ private:
   /**
    * State variables.
    */
-  long  a_t;
-  float a_x, a_y, a_z;
-  long  r_t;
-  float r_x, r_y, r_z;
-  long  m_t;
-  float m_x, m_y, m_z;
-  long  b_t;
-  float b_p, b_v;
+  long  a_t[2];
+  float a_x[2], a_y[2], a_z[2];
+  long  r_t[2];
+  float r_x[2], r_y[2], r_z[2];
+  long  m_t[2];
+  float m_x[2], m_y[2], m_z[2];
+  long  b_t[2];
+  float b_p[2], b_v[2];
 
   };
 
