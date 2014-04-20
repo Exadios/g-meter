@@ -25,7 +25,7 @@ Copyright_License {
 #define GPSSENSORS_HPP
 
 #include <jni.h>
-#include "Utility/PosixMutex.hpp"
+#include "Utility/DeviceInputBuffer.hpp"
 
 /**
  * This class is a singleton. Its purpose is to handle communication to and
@@ -34,7 +34,7 @@ Copyright_License {
  * This class buffers that data in order to ensure consistancy.
  */
 
-class GPSSensor
+class GPSSensor : public DeviceInputBuffer
   {
 public:
   /**
@@ -94,17 +94,6 @@ public:
              jdouble error,
              jboolean hasAcc,
              jdouble acc);
-
-  /**
-   * Clock the buffering. Call this when we can tolerate new data.
-   */
-  void Clock();
-
-  /**
-   * Check whether new GPS data is avaliable.
-   * @return If avaliable then true.
-   */
-  bool Dirty();
 
   /**
    * Give the time of the fix.
@@ -219,14 +208,6 @@ private:
   bool   epsilon_good[2];  // Epsilon value is valid.
   double a[2];             // Magnitude of acceleration.
   bool   a_good[2];        // A value is valid.
-
-  /**
-   * Locking and thread safety.
-   */
-  PosixMutex locker;
-  int  b;                // Input index;
-  int  b_bar;            // Output index;
-  bool dirty;            // If true then new data is avaliable;
   };
 
 

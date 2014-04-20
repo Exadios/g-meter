@@ -68,32 +68,6 @@ GPSSensor::State(JNIEnv *env,
   }
 
 //-----------------------------------------------------------------------------
-void
-GPSSensor::Clock()
-  {
-  this->locker.TryLock();     // Lock or block.
-  if (this->dirty == true)
-    {
-    this->b     = this->b == 0 ? 1 : 0;
-    this->b_bar = this->b == 0 ? 1 : 0;
-    this->dirty = false;
-    }
-  this->locker.Unlock();
-  }
-
-//-----------------------------------------------------------------------------
-bool
-GPSSensor::Dirty()
-  {
-  bool rtn;
-
-  this->locker.TryLock();
-  rtn = this->dirty;
-  this->locker.Unlock();
-  return rtn;
-  }
-
-//-----------------------------------------------------------------------------
 long
 GPSSensor::Time() const
   {
@@ -193,9 +167,6 @@ GPSSensor::A() const
 
 //-----------------------------------------------------------------------------
 GPSSensor::GPSSensor()
-  : b(0),
-    b_bar(1),
-    dirty(false)
   {
   z_good[b]       = z_good[b_bar]       = false;
   omega_good[b]   = omega_good[b_bar]   = false;
