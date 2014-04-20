@@ -39,6 +39,7 @@
  */
 class DeviceInputBuffer
   {
+public:
   /**
    * Ctor.
    */
