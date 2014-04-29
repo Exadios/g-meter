@@ -22,20 +22,52 @@ Copyright_License {
 */
 
 #include "MajorState.hpp"
+#include "Android/Timer.hpp"
+#include <assert.h>
 
 //-----------------------------------------------------------------------------
 void
 MajorState::Reset()
   {
-  // Do whatever os necessary to revert from the current state to the INITIAL
-  // state.
+  if (this->state != INITIAL)
+    {
+    // Do whatever is necessary to revert from the current state to the INITIAL
+    // state.
+    this->state = INITIAL;
+    }
   }
 
 //-----------------------------------------------------------------------------
 void
 MajorState::Action(long)
   {
-  // Operate the clock in the context of the current state.
+  switch (this->state)
+    {
+    case INITIAL:
+      this->state = STARTUP;
+      break;
+    case STARTUP:
+      this->StartAccelerometers();
+      this->StartGyros();
+      this->StartGPS();
+      this->state = AQUIRE_GPS;
+      break;
+    case AQUIRE_GPS:
+      this->state = (StabilizeGPS() == true) ? PRE_ALIGN : AQUIRE_GPS;
+      break;
+    case PRE_ALIGN:
+      this->state = (Pre_Align_Program() == true) ? ALIGN : PRE_ALIGN;
+      break;
+    case ALIGN:
+      this->state = (Align_Program() == true) ? OPERATE : PRE_ALIGN;
+      break;
+    case OPERATE:
+      break;
+    case FINAL:
+      break;
+    default:  // A big problem!
+      assert(false);
+    }
   }
 
 //-----------------------------------------------------------------------------
@@ -49,4 +81,44 @@ MajorState::State() const
 MajorState::MajorState()
   : state(INITIAL)
   {
+  Timer::Instance().Bind(this);
+  }
+
+//-----------------------------------------------------------------------------
+void
+MajorState::StartAccelerometers()
+  {
+  }
+
+//-----------------------------------------------------------------------------
+void
+MajorState::StartGyros()
+  {
+  }
+
+//-----------------------------------------------------------------------------
+void
+MajorState::StartGPS()
+  {
+  }
+
+//-----------------------------------------------------------------------------
+bool
+MajorState::StabilizeGPS()
+  {
+  return false;
+  }
+
+//-----------------------------------------------------------------------------
+bool
+MajorState::Pre_Align_Program()
+  {
+  return false;
+  }
+
+//-----------------------------------------------------------------------------
+bool
+MajorState::Align_Program()
+  {
+  return false;
   }

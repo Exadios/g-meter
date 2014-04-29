@@ -101,6 +101,39 @@ private:
   MajorState& operator=(const MajorState&);
 
   StateVector state;
+
+  /**
+   * Start the Accelerometers at 10mS sample rate.
+   */
+  void StartAccelerometers();
+
+  /**
+   * Start the Gyros at 10mS sample rate.
+   */
+  void StartGyros();
+
+  /**
+   * Start the GPS at 1S sample rate.
+   */
+  void StartGPS();
+
+  /**
+   * Assure that GPS is aquired ad of sufficient quality to proceed.
+   * @return If the GPS is suitable for platofrm alignment then true.
+   */
+  bool StabilizeGPS();
+
+  /**
+   * Run the platform pre alignment (coarse alignment) program.
+   * @return If the program was sucessful then true.
+   */
+  bool Pre_Align_Program();
+
+  /**
+   * Run the platform aligment (fine alignment) program.
+   * @return If the platform is aligned sufficiently to operate then true.
+   */
+  bool Align_Program();
   };
 
 #endif // MAJORSTATE_HPP
