@@ -7,7 +7,11 @@
 #
 
 # need to know where the NDK resides
-set(ANDROID_TOOLCHAIN_ROOT "$ENV{NDK_TOOLCHAIN_ROOT}" CACHE PATH "Android Standalone Toolchain location")
+#set(ANDROID_TOOLCHAIN_ROOT "$ENV{NDK_TOOLCHAIN_ROOT}" CACHE PATH "Android Standalone Toolchain location")
+set(ANDROID_TOOLCHAIN_ROOT "$ENV{NDK_TOOLCHAIN_ROOT}")
+#set(ANDROID_TOOLCHAIN_ROOT "~/opt/android-ndk-r9/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86")
+MESSAGE(STATUS "ANDROID_TOOLCHAIN_ROOT: ${ANDROID_NDK_TOOLCHAIN_DEBUG}")
+
 
 #set(ANDROID_NDK_TOOLCHAIN_DEBUG ON)
 
