@@ -27,6 +27,7 @@ Copyright_License {
 void
 GPSSensor::Connected(JNIEnv *env, jobject obj, jint connected)
   {
+  this->status = (GPSStatus )connected;
   }
 
 //-----------------------------------------------------------------------------
@@ -65,6 +66,13 @@ GPSSensor::State(JNIEnv *env,
   this->a_good[b]       = hasAcc;
   this->a[b]            = acc;
   this->locker.Unlock();
+  }
+
+//-----------------------------------------------------------------------------
+GPSSensor::GPSStatus
+GPSSensor::Connected() const
+  {
+  return this->status;
   }
 
 //-----------------------------------------------------------------------------

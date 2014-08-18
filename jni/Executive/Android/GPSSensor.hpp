@@ -50,6 +50,15 @@ public:
       return instance;
       }
 
+  /**
+   * GPS status. These definitions originate in the Android LocationProvider
+   * API documentation.
+   */
+  enum GPSStatus {
+                  OUT_OF_SERVICE          = 0,  // GPS disabled
+                  TEMPORARILY_UNAVAILABLE = 1,  // Waiting for fix
+                  AVAILABLE               = 2   // Position available
+                 };
   
   /**
    * Set the GPS status.
@@ -58,6 +67,15 @@ public:
    * @param connected The connected status: true or false.
    */
   void Connected(JNIEnv *env, jobject obj, jint connected);
+
+  /**
+   * Give the GPS connection state.
+   * @return The state: OUT_OF_SERVICE - not connected,
+                        TEMPORARILY_UNAVAILABLE - waiting for fix,
+                        AVAILABLE - fix available.
+   */
+  GPSStatus Connected() const;
+
 
   /**
    * Set the GPS state.
@@ -194,6 +212,7 @@ private:
   /**
    * State.
    */
+  GPSStatus status;        // GPS status from Java.
   int    n[2];             // Number of birds.
   long   t[2];             // Time of observation.
   double phi[2];           // Lat.
