@@ -743,9 +743,78 @@ where the Kalman gain of the three gyro drift and three accelerometer biases is
 \end{equation}
 and $g_g$ and $g_a$ are design constants and are typically less than one.
 
+\section[Alignment]{Alignment}
+
+Because the nature of the INU problem which involves evaluating definite integrals over time of $\mat{f}^b$ and $\mat{\omega}^b_{ib}$ it is necessary to accurately evaluate these quantities at time, $t_0$. That is, it is necessary to evaluate the constants of integration. This evaluation is known as 'alignment'. Alignment is further divided up into two precesses: Coarse Alignment and Fine Alignment with the latter immediately following the former and the former providing the initial condition for the latter.
+
+Historically an INU consisted of a IMU implemented as a mechanically gimbaled system in three dimensions on which the gyros and accelerometers were mounted (basically an analog computer) coupled to a digital computer which read the gimbal angles to evaluate the relationship of the body domain and the navigation domain. In this context alignment consisted of 'leveling' one gimbal with respect to the Geod and 'slewing' another to be aligned with the earth's rotational pole. Because of this history alignment is often talked of (and visualized) in terms of leveling and slewing which, in the case of a strapdown system, are implemented by evaluating the rotational matrices used to move to and from the body and navigational domains.
+
+\subsection[Coarse Alignment]{Coarse Alignment}
+
+Coarse Alignment is achieved using sensor measurements while the platform is in a stable configuration. That is the velocity is zero and the platform is fixed with respect to the earth.
+
+In this state the accelerometers will be $\begin{bmatrix}0 & 0 & g\end{bmatrix}^{\mathrm{T}}$ in the navigation frame when the platform is leveled. In the strapdown system leveling is performed by finding the appropriate rotation matrix from the body frame to the navigation frame, $\mat{R}^n_b$ in order to produce the accelerometer result. That is,
+
+\begin{equation}
+\mat{f}^n = \mat{R}^n_b \mat{f}^b =
+\begin{bmatrix}
+0 \\
+0 \\
+g
+\end{bmatrix}
+\end{equation}
+
+And, because the platform is stationary, the gyro data reflects the intrinsic earth rotation rate. That is,
+
+\begin{equation}
+\mat{\omega}_{ie}^n = \mat{R}^n_b \mat{\omega}^b_{ie} = 
+\begin{bmatrix}
+0 \\
+\omega_{ie} \cos \left( \phi \right) \\
+\omega_{ie} \sin \left( \phi \right)
+\end{bmatrix}
+\end{equation}
+
+From the observed $\mat{f}^b$ and $\mat{\omega}^b_{ie}$ the solution is,
+
+\begin{equation}
+R_{31} = \frac{g^b_x}{g}
+\end{equation}
+\begin{equation}
+R_{32} = \frac{g^b_y}{g}
+\end{equation}
+\begin{equation}
+R_{33} = \frac{g^b_z}{g}
+\end{equation}
+\begin{equation}
+R_{21} = \frac{\omega^b_x}{\omega_{ie}} \cos{\phi} - \frac{g^b_x}{g} \tan{\phi}
+\end{equation}
+\begin{equation}
+R_{22} = \frac{\omega^b_y}{\omega_{ie}} \cos{\phi} - \frac{g^b_y}{g} \tan{\phi}
+\end{equation}
+\begin{equation}
+R_{23} = \frac{\omega^b_z}{\omega_{ie}} \cos{\phi} - \frac{g^b_z}{g} \tan{\phi}
+\end{equation}
+
+where $R_{ij}$ are elements of the rotation matrix $\mat{R}^b_n$. Because of the orthogonality of the matrix $\left(\mat{R}^b_n\right)^{-1} = \left(\mat{R}^b_n\right)^\intercal$. Because of this the elements of column one are,
+
+\begin{equation}
+R_{11} = -R_{22}R_{33} + R_{23}R_{32}
+\end{equation}
+\begin{equation}
+R_{12} = R_{21}R_{33} - R_{31}R_{23}
+\end{equation}
+\begin{equation}
+R_{13} = -R_{21}R_{32} + R_{31}R_{22}
+\end{equation}
+
+\subsection[Fine Alignment]{Fine Alignment}
+
+
+
 \section[Simulation and Testing]{Simulation and Testing}
 
-For the puposes of testing the system it is usefull to have a testing simulator. This simulator takes the eviromental and user data in order to generate simulated accelerometer and gyro output which then may be used as input to the solution.
+For the purposes of testing the system it is useful to have a testing simulator. This simulator takes the environmental and user data in order to generate simulated accelerometer and gyro output which then may be used as input to the solution.
 
 \subsection[Accelerometer Signal]{Accelerometer Signal}
 
