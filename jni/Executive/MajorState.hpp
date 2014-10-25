@@ -114,8 +114,9 @@ private:
 
   /**
    * Start the GPS at 1S sample rate.
+   * @return If the GPS is operational and tracking then true.
    */
-  void StartGPS();
+  bool StartGPS();
 
   /**
    * Assure that GPS is aquired ad of sufficient quality to proceed.

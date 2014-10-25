@@ -23,6 +23,7 @@ Copyright_License {
 
 #include "MajorState.hpp"
 #include "Android/Timer.hpp"
+#include "Android/GPSSensor.hpp"
 #include <assert.h>
 
 //-----------------------------------------------------------------------------
@@ -49,8 +50,7 @@ MajorState::Action(long)
     case STARTUP:
       this->StartAccelerometers();
       this->StartGyros();
-      this->StartGPS();
-      this->state = AQUIRE_GPS;
+      this->state = (this->StartGPS() == true) ? STARTUP : AQUIRE_GPS;
       break;
     case AQUIRE_GPS:
       this->state = (StabilizeGPS() == true) ? PRE_ALIGN : AQUIRE_GPS;
@@ -97,16 +97,22 @@ MajorState::StartGyros()
   }
 
 //-----------------------------------------------------------------------------
-void
+bool
 MajorState::StartGPS()
   {
+  // The GPS is already started in Java. Just wait for the fixes.
+  if (GPSSensor::Instance().Connected() == GPSSensor::AVAILABLE)
+    return true;
+  else
+    return false;
   }
 
 //-----------------------------------------------------------------------------
 bool
 MajorState::StabilizeGPS()
   {
-  return false;
+  // Make this trivial for now.
+  return true;
   }
 
 //-----------------------------------------------------------------------------
