@@ -14,24 +14,12 @@
 # EXTERNAL cache entries
 ########################
 
-//Android SDK API (android-8;android-9;android-14)
-ANDROID_API:STRING=android-8
-
-//Android NDK CPU architecture (arm;armv7;x86)
-ANDROID_NDK_ARCH:STRING=armv7
-
-//NDK sysroot
-ANDROID_NDK_SYSROOT:PATH=/home/pfb/android-toolchain/sysroot/usr
-
-//Android Standalone Toolchain location
-ANDROID_TOOLCHAIN_ROOT:PATH=/home/pfb/android-toolchain
-
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
 
 //Choose the type of build, options are: None(CMAKE_CXX_FLAGS or
 // CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.
-CMAKE_BUILD_TYPE:STRING=Release
+CMAKE_BUILD_TYPE:STRING=
 
 //Enable/Disable color output during build.
 CMAKE_COLOR_MAKEFILE:BOOL=ON
@@ -39,8 +27,8 @@ CMAKE_COLOR_MAKEFILE:BOOL=ON
 //CXX compiler.
 CMAKE_CXX_COMPILER:FILEPATH=/home/pfb/android-toolchain/bin/arm-linux-androideabi-g++
 
-//C++ flags
-CMAKE_CXX_FLAGS:STRING= -DANDROID -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -ffunction-sections -funwind-tables --sysroot=/home/pfb/android-toolchain/sysroot/usr -I/home/pfb/android-toolchain//sysroot/usr/include -DANDROID -march=armv7-a -mfloat-abi=softfp -Wl,--fix-cortex-a8 -Wl,--no-undefined -Wl,-z,noexecstack -Wl,--fix-cortex-a8  -fno-exceptions -fno-rtti
+//Flags used by the compiler during all build types.
+CMAKE_CXX_FLAGS:STRING=
 
 //Flags used by the compiler during debug builds.
 CMAKE_CXX_FLAGS_DEBUG:STRING=-g
@@ -59,8 +47,8 @@ CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=-O2 -g
 //C compiler.
 CMAKE_C_COMPILER:FILEPATH=/home/pfb/android-toolchain/bin/arm-linux-androideabi-gcc
 
-//C flags
-CMAKE_C_FLAGS:STRING=' -DANDROID -fomit-frame-pointer -fno-strict-aliasing -finline-limit=64 -ffunction-sections -funwind-tables --sysroot=/home/pfb/android-toolchain/sysroot/usr -I/home/pfb/android-toolchain//sysroot/usr/include -DANDROID -march=armv7-a -mfloat-abi=softfp -Wl,--fix-cortex-a8 -Wl,--no-undefined -Wl,-z,noexecstack -Wl,--fix-cortex-a8 '
+//Flags used by the compiler during all build types.
+CMAKE_C_FLAGS:STRING=
 
 //Flags used by the compiler during debug builds.
 CMAKE_C_FLAGS_DEBUG:STRING=
@@ -77,7 +65,7 @@ CMAKE_C_FLAGS_RELEASE:STRING=
 CMAKE_C_FLAGS_RELWITHDEBINFO:STRING=
 
 //Flags used by the linker.
-CMAKE_EXE_LINKER_FLAGS:STRING=
+CMAKE_EXE_LINKER_FLAGS:STRING=' '
 
 //Flags used by the linker during debug builds.
 CMAKE_EXE_LINKER_FLAGS_DEBUG:STRING=
@@ -95,7 +83,7 @@ CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO:STRING=
 CMAKE_EXPORT_COMPILE_COMMANDS:BOOL=OFF
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=.
+CMAKE_INSTALL_PREFIX:PATH=/usr/local
 
 //Path to a program.
 CMAKE_LINKER:FILEPATH=/usr/bin/ld
@@ -103,8 +91,8 @@ CMAKE_LINKER:FILEPATH=/usr/bin/ld
 //Path to a program.
 CMAKE_MAKE_PROGRAM:FILEPATH=/usr/bin/make
 
-//Linker flags
-CMAKE_MODULE_LINKER_FLAGS:STRING=-lc -lm -ldl -lgcc
+//Flags used by the linker during the creation of modules.
+CMAKE_MODULE_LINKER_FLAGS:STRING=' '
 
 //Flags used by the linker during debug builds.
 CMAKE_MODULE_LINKER_FLAGS_DEBUG:STRING=
@@ -133,8 +121,8 @@ CMAKE_PROJECT_NAME:STATIC=G-Meter
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
 
-//Linker flags
-CMAKE_SHARED_LINKER_FLAGS:STRING=-lc -lm -ldl -lgcc
+//Flags used by the linker during the creation of dll's.
+CMAKE_SHARED_LINKER_FLAGS:STRING=' '
 
 //Flags used by the linker during debug builds.
 CMAKE_SHARED_LINKER_FLAGS_DEBUG:STRING=
@@ -158,9 +146,6 @@ CMAKE_SKIP_RPATH:BOOL=NO
 //Path to a program.
 CMAKE_STRIP:FILEPATH=/usr/bin/strip
 
-//No help, variable specified on the command line.
-CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=../Toolchain-Android-r8e-standalone.cmake
-
 //If true, cmake will use relative paths in makefiles and projects.
 CMAKE_USE_RELATIVE_PATHS:BOOL=OFF
 
@@ -179,26 +164,17 @@ G-Meter_SOURCE_DIR:STATIC=/home/pfb/src/G-Meter/jni
 //Dependencies for target
 GMeter_LIB_DEPENDS:STATIC=
 
-//The directory containing a CMake configuration file for JNI,.
-JNI,_DIR:PATH=JNI,_DIR-NOTFOUND
-
 
 ########################
 # INTERNAL cache entries
 ########################
 
-//MODIFIED property for variable: ANDROID_API
-ANDROID_API-MODIFIED:INTERNAL=ON
-//STRINGS property for variable: ANDROID_API
-ANDROID_API-STRINGS:INTERNAL=android-8;android-9;android-14
-//STRINGS property for variable: ANDROID_NDK_ARCH
-ANDROID_NDK_ARCH-STRINGS:INTERNAL=arm;armv7;x86
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CMAKE_BUILD_TOOL
+CMAKE_BUILD_TOOL-ADVANCED:INTERNAL=1
 //What is the target build tool cmake is generating for.
 CMAKE_BUILD_TOOL:INTERNAL=/usr/bin/make
-//MODIFIED property for variable: CMAKE_BUILD_TYPE
-CMAKE_BUILD_TYPE-MODIFIED:INTERNAL=ON
 //This is the directory where this CMakeCache.txt was created
 CMAKE_CACHEFILE_DIR:INTERNAL=/home/pfb/src/G-Meter/jni/build-android7-release
 //Major version of cmake used to create the current loaded cache
