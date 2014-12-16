@@ -26,9 +26,12 @@ jni/build/*
 jni/Native/*
 *.dblite
 CMakeFiles/
+CopyOfCMakeCache.txt
 Makefile
 cmake_install.cmake
 build-android7-*/*
 build-unix32-*/*
+build-cmake
 local.properties
 ../../../
+Grewal-Lawrence-Weill-Andrews/
