@@ -1,6 +1,6 @@
 /*
  * G-Meter INU.
- * Copyright (C) 2009-2014 Max Kellermann <max@duempel.org> and 
+ * Copyright (C) 2009-2015 Max Kellermann <max@duempel.org> and 
  * Peter F Bradshaw
  *
  * Redistribution and use in source and binary forms, with or without
