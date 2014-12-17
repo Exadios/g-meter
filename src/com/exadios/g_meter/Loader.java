@@ -2,7 +2,7 @@
 Copyright_License {
 
   G-Meter INU
-  Copyright (C) 2000-2014 The XCSoar Project and Peter F Bradshaw
+  Copyright (C) 2000-2015 The XCSoar Project and Peter F Bradshaw
   A detailed list of copyright holders can be found in the file "AUTHORS".
 
   This program is free software; you can redistribute it and/or
