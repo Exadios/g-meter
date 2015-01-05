@@ -156,10 +156,10 @@ CMAKE_USE_RELATIVE_PATHS:BOOL=OFF
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-G-Meter_BINARY_DIR:STATIC=/home/pfb/src/G-Meter/jni
+G-Meter_BINARY_DIR:STATIC=/home/pfb/src/G-Meter/jni/Native
 
 //Value Computed by CMake
-G-Meter_SOURCE_DIR:STATIC=/home/pfb/src/G-Meter/jni
+G-Meter_SOURCE_DIR:STATIC=/home/pfb/src/G-Meter/jni/Native
 
 //Dependencies for target
 GMeter-android-release_LIB_DEPENDS:STATIC=
@@ -270,7 +270,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=6
+CMAKE_NUMBER_OF_LOCAL_GENERATORS:INTERNAL=7
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP

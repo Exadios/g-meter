@@ -23,5 +23,7 @@ add_custom_command(OUTPUT bin/AndroidManifest.xml
 # TODO This does not work. Find a way.
 add_custom_target(javaclean
                   COMMAND ant clean)
+add_custom_target(clean
+                  COMMAND true)
 add_dependencies(clean javaclean)
 
