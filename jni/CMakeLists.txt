@@ -11,6 +11,7 @@ include_directories("./"
                     /usr/lib/jvm/java-6-sun/include/
                     /usr/lib/jvm/java-6-sun/include/linux)
 
+add_subdirectory(Native)
 add_subdirectory(build-unix32-release)
 add_subdirectory(build-unix32-debug)
 add_subdirectory(build-android7-release)
