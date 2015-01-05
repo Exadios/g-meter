@@ -23,7 +23,7 @@ doc/Design/*.png
 *.class
 jni/.Makefile.depends
 jni/build/*
-jni/Native/*
+jni/Native/*.h
 *.dblite
 CMakeFiles/
 CopyOfCMakeCache.txt
