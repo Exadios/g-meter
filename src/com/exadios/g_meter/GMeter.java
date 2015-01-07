@@ -38,6 +38,13 @@ import android.content.BroadcastReceiver;
 import android.util.Log;
 import android.provider.Settings;
 
+/**
+ * \mainpage G-Meter: An INU for use with XCSoar
+ *
+ * \par
+ * This app exists to provide an INU service for XCSoar on Android.
+*/
+
 public class GMeter extends Activity {
   private static final String TAG = "GMeter";
 

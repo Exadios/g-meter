@@ -1257,7 +1257,7 @@ namespace Kalman {
  * http://www.cs.unc.edu/~welch/kalman/kalmanIntro.html
  *
 
- * \mainpage The KFilter Project: A Variable Dimension Extended Kalman Filter
+ * \\mainpage The KFilter Project: A Variable Dimension Extended Kalman Filter
  * Library
  * "The %Kalman filter is a set of mathematical equations that provides an
  * efficient computational (recursive) solution of the least-squares method.
