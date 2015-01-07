@@ -29,7 +29,6 @@
 #ifndef KVECTOR_IMPL_HPP
 #define KVECTOR_IMPL_HPP
 
-//! \file
 //! \brief Contains the implementation of the \c KVector template class.
 
 #include KSSTREAM_HEADER

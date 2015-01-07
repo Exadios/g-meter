@@ -34,7 +34,6 @@
  * @{
  */
 
-//! \file
 //! \brief Contains the interface of the \c KMatrix template class.
 
 #include <vector>

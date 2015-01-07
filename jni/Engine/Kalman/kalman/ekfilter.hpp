@@ -35,7 +35,6 @@
  */
 
 /**
- * \file
  * \brief Contains the interface of the \c EKFilter base template class.
 */
 

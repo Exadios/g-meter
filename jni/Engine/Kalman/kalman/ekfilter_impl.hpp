@@ -29,7 +29,6 @@
 #ifndef EKFILTER_IMPL_HPP
 #define EKFILTER_IMPL_HPP
 
-//! \file
 //! \brief Contains the implementation of the \c EKFilter base template class.
 
 //! \internal

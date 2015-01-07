@@ -29,7 +29,6 @@
 #ifndef KMATRIX_IMPL_HPP
 #define KMATRIX_IMPL_HPP
 
-//! \file
 //! \brief Contains the implementation of the \c KMatrix template class.
 
 #include KSSTREAM_HEADER

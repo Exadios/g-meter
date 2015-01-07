@@ -29,7 +29,6 @@
 #ifndef KFILTER_IMPL_HPP
 #define KFILTER_IMPL_HPP
 
-//! \file
 //! \brief Contains the implementation of the \c KFilter base template class.
 
 namespace Kalman {

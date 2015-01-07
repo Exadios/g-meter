@@ -33,7 +33,6 @@
 #include "Engine/Kalman/kalman/kfilter.hpp"
 
 /**
- * @file
  * A class designed to take INU and GPS data and merge those two data in an
  * optimal manner.
  */

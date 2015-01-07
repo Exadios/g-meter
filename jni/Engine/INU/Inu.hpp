@@ -35,7 +35,6 @@ typedef Kalman::KVector<float, false> IMUvector;
 typedef Kalman::KMatrix<float, false> IMUmatrix;
 
 /**
- * @file
  * A class to implement a Inertial Navigation Unit (INU) using gyros and
  * accelerometers (typically MEMS devices) found on many Android platforms.
  */

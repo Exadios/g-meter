@@ -34,7 +34,6 @@
  * @{
  */
 
-//! \file
 //! \brief Contains the interface of the \c KVector template class.
 
 #include <vector>

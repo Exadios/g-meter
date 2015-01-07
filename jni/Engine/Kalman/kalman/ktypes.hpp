@@ -34,7 +34,6 @@
  * @{
  */
 
-//! \file
 //! \brief Contains type definitions specific to each platform.
 //!
 //! This file can be modified to support different architectures. It also

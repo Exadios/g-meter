@@ -34,7 +34,6 @@
  * @{
  */
 
-//! \file
 //! \brief Contains the interface of the \c KFilter base template class.
 
 #include "ekfilter.hpp"
