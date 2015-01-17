@@ -45,6 +45,9 @@ import android.provider.Settings;
  * This app exists to provide an INU service for XCSoar on Android.
 */
 
+/**
+ * The Android entry point.
+ */
 public class GMeter extends Activity {
   private static final String TAG = "GMeter";
 
@@ -59,6 +62,9 @@ public class GMeter extends Activity {
     }
   };
 
+  /**
+   * The OS creates this service.
+   */
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
@@ -121,6 +127,9 @@ public class GMeter extends Activity {
   };
 
 
+  /**
+   * The OS removes this service from the run list.
+   */
   @Override protected void onPause() {
     if (NativeRunnable.getInstance() != null)
       NativeRunnable.getInstance().onPause();
@@ -141,6 +150,9 @@ public class GMeter extends Activity {
       NativeRunnable.getInstance().setHapticFeedback(hapticFeedbackEnabled);
   }
 
+  /**
+   * The OS places this service in the run table.
+   */
   @Override protected void onResume() {
     super.onResume();
 
@@ -148,6 +160,9 @@ public class GMeter extends Activity {
     getHapticFeedbackSettings();
   }
 
+  /**
+   * The OS shuts this service down.
+   */
   @Override protected void onDestroy() {
     Log.d(TAG, "in onDestroy()");
 

@@ -27,6 +27,9 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+/**
+ * Provide the G Meter service. This is an Android Service.
+ */
 public class GMeterService extends Service {
 	private static final String TAG = "GMeterService";
 	

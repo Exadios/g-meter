@@ -25,6 +25,9 @@ package com.exadios.g_meter;
 
 import android.util.Log;
 
+/**
+ * Load the required library.
+ */
 public class Loader {
   private static final String TAG = "GMeter";
 
