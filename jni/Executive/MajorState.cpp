@@ -34,6 +34,26 @@ MajorState::Reset()
     {
     // Do whatever is necessary to revert from the current state to the INITIAL
     // state.
+    switch (this->state)
+      {
+      case FINAL:
+        // Nothing to be done.
+        break;
+      case OPERATE:
+        // Do actions to switch to INITIAL.
+        break;
+      case ALIGN:
+      case PRE_ALIGN:
+        // Shut down IMU.
+        this->state = AQUIRE_GPS;
+      case AQUIRE_GPS:
+        // Shut down GPS.
+        this->state = STARTUP;
+      case STARTUP:
+        break;
+      case INITIAL:
+        break;
+      }
     this->state = INITIAL;
     }
   }
