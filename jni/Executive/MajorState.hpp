@@ -108,15 +108,30 @@ private:
   void StartAccelerometers();
 
   /**
+   * Stop the Accelerometers.
+   */
+  void StopAccelerometers();
+
+  /**
    * Start the Gyros at 10mS sample rate.
    */
   void StartGyros();
+
+  /**
+   * Stop the Gyros.
+   */
+  void StopGyros();
 
   /**
    * Start the GPS at 1S sample rate.
    * @return If the GPS is operational and tracking then true.
    */
   bool StartGPS();
+
+  /**
+   * Stop theGPS.
+   */
+  void StopGPS();
 
   /**
    * Assure that GPS is aquired ad of sufficient quality to proceed.

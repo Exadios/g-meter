@@ -50,6 +50,9 @@ MajorState::Reset()
         // Shut down GPS.
         this->state = STARTUP;
       case STARTUP:
+        this->StopAccelerometers();
+        this->StopGyros();
+        this->StopGPS();
         break;
       case INITIAL:
         break;
@@ -108,12 +111,28 @@ MajorState::MajorState()
 void
 MajorState::StartAccelerometers()
   {
+  return;
+  }
+
+//-----------------------------------------------------------------------------
+void
+MajorState::StopAccelerometers()
+  {
+  return;
   }
 
 //-----------------------------------------------------------------------------
 void
 MajorState::StartGyros()
   {
+  return;
+  }
+
+//-----------------------------------------------------------------------------
+void
+MajorState::StopGyros()
+  {
+  return;
   }
 
 //-----------------------------------------------------------------------------
@@ -125,6 +144,13 @@ MajorState::StartGPS()
     return true;
   else
     return false;
+  }
+
+//-----------------------------------------------------------------------------
+void
+MajorState::StopGPS()
+  {
+  return;
   }
 
 //-----------------------------------------------------------------------------
