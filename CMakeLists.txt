@@ -8,7 +8,8 @@ add_custom_target(javabuild ALL
                   DEPENDS bin/AndroidManifest.xml
                           bin/G-Meter-release-unsigned.apk)
 set(JAVASRC src/com/exadios/g_meter)
-add_custom_command(OUTPUT bin/AndroidManifest.xml
+add_custom_command(OUTPUT bin/G-Meter-release-unsigned.apk
+                          bin/AndroidManifest.xml
                    COMMAND /usr/bin/ant release
                    DEPENDS ${JAVASRC}/GMeter.java
                            ${JAVASRC}/GMeterService.java
