@@ -53,30 +53,30 @@ public:
   /**
    * Ctor.
    * @param dt The IMU sample rate in seconds.
-   * @x Roatation about the $x$ axis, Radians.
-   * @y Roatation about the $y$ axis, Radians.
-   * @z Roatation about the $z$ axis, Radians.
+   * @param x Rotation about the \f$x\f$ axis, Radians.
+   * @param y Rotation about the \f$y\f$ axis, Radians.
+   * @param z Rotation about the \f$z\f$ axis, Radians.
    */
   Inu(float dt, float x, float y, float z);
 
   /**
    * Ctor.
    * @param dt The IMU sample rate in seconds.
-   * @R The initial rotation matrix from the body basis to the ECEF basis.
+   * @param R The initial rotation matrix from the body basis to the ECEF basis.
    */
   Inu(float dt, IMUmatrix R);
 
   /**
    * Set the initial rotation matrix from the body basis to the ECEF basis.
-   * @x Roatation about the $x$ axis, Radians.
-   * @y Roatation about the $y$ axis, Radians.
-   * @z Roatation about the $z$ axis, Radians.
+   * @param x Roatation about the \f$x\f$ axis, Radians.
+   * @param y Roatation about the \f$y\f$ axis, Radians.
+   * @param z Roatation about the \f$z\f$ axis, Radians.
    */
   void R0(float x, float y, float z);
 
   /**
    * Set the initial rotation matrix from the body basis to the ECEF basis.
-   * @R The initial rotation matrix from the body basis to the ECEF basis.
+   * @param R The initial rotation matrix from the body basis to the ECEF basis.
    */
   void R0(IMUmatrix R);
 
@@ -98,8 +98,8 @@ public:
   bool Update(IMUvector& w, IMUvector& f, IMUvector& v, float gx);
 
   /**
-   * Give the body angular velocities, $\Omega_{eb}^b$, in the body basis.
-   * @return The $b$ basis velocity matrix.
+   * Give the body angular velocities, \f$\Omega_{eb}^b\f$, in the body basis.
+   * @return The \f$b\f$ basis velocity matrix.
    */
   IMUmatrix Omega_sub_eb_super_b() const;
 
