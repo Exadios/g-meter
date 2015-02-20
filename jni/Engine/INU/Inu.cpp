@@ -116,7 +116,7 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, float gx)
   this->Omega(1, 2) = -(this->Omega(2, 1) = w(0) - this->R(0, 1) * omega_ie);
   this->Omega(2, 0) = -(this->Omega(0, 2) = w(1) - this->R(1, 1) * omega_ie);
   this->Omega(0, 1) = -(this->Omega(1, 0) = w(2) - this->R(2, 1) * omega_ie);
-  // Done with eqn 2.11
+  // Done with eqn 3.11
 
   // Compute eqn 3.13 - \dot(v)(t_k)
   this->a(0) = this->R(0, 0) * f(0) +
@@ -145,7 +145,7 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, float gx)
                gx;
   // Done with eqn 3.13
 
-  // Compute eqn 3.12 - R(t_k + 1)
+  // Compute eqn 3.12 - R^e_b(t_k + 1)
   IMUmatrix Num(3, 3), Inv(3, 3);
   Num(0, 0) = float(2) + this->Omega(0, 0) * this->dt;
   Num(0, 1) = float(0) + this->Omega(0, 1) * this->dt;
@@ -193,7 +193,7 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, float gx)
                 Num(i, 1) * CT(1, j) +
                 Num(i, 2) * CT(2, j);
 
-  // Compute the update of R(t_k + 1).
+  // Compute  R^e_b(t_k + 1).
   IMUmatrix R(3, 3);
   for (int i = 0; i < 3; i++)
     for (int j = 0; j < 3; j++)
