@@ -28,3 +28,15 @@ add_custom_target(clean
                   COMMAND true)
 add_dependencies(clean javaclean)
 
+add_custom_target(doco
+                  DEPENDS ./doc/html/index.html)
+add_custom_command(OUTPUT ./doc/html/index.html
+                   COMMAND mkdir -p doc/html\; doxygen Doxyfile)
+
+add_custom_target(design
+                  DEPENDS ./doc/Design/G-Meter.pdf)
+add_custom_command(OUTPUT ./doc/Design/G-Meter.pdf
+                   COMMAND pdflatex G-Meter.tex
+                   DEPENDS ./doc/Design/G-Meter.tex ./doc/Design/G-Meter-fig-001.png
+                   WORKING_DIRECTORY doc/Design/)
+
