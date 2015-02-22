@@ -18,7 +18,8 @@ doc/Design/*.png
 *.swp
 *.log
 *.os
-*.so
+lib*.so
+lib*.a
 *.o
 *.class
 jni/.Makefile.depends
