@@ -1,0 +1,7 @@
+[submodule "boost"]
+  path=lib/boost
+  url=git@github.com:Exadios/boost.git
+
+[submodule "bayes"]
+  path=lib/bayesclasses-bayes
+  url=git@github.com:Exadios/Bayes-.git
