@@ -1,0 +1,6 @@
+[submodule "lib/bayesclasses-bayes"]
+	path = lib/bayesclasses-bayes
+	url = /home/pfb/src/G-Meter/lib/bayesclasses-bayes.git
+[submodule "lib/boost"]
+	path = lib/boost
+	url = /home/pfb/src/G-Meter/lib/boost.git
