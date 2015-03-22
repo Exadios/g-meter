@@ -28,8 +28,8 @@
  */
 
 #include "Utility/Mutex.hpp"
-#include "Engine/Kalman/kalman/kvector.hpp"
-#include "Engine/Kalman/kalman/kmatrix.hpp"
+//#include "Engine/Kalman/kalman/kvector.hpp"
+//#include "Engine/Kalman/kalman/kmatrix.hpp"
 #include "Engine/Kalman/kalman/kfilter.hpp"
 
 /**
@@ -37,10 +37,14 @@
  * optimal manner.
  */
 
-typedef Kalman::KVector<float, false> INUKalmanState;
-typedef Kalman::KVector<float, false> INUUpdate;
-typedef Kalman::KVector<float, false> INUObservation;
-typedef Kalman::KMatrix<float, false> INUSystemMatrix;
+typedef boost::numeric::ublas::vector<float> INUKalmanState;
+typedef boost::numeric::ublas::vector<float> INUUpdate;
+typedef boost::numeric::ublas::vector<float> INUObservation;
+typedef boost::numeric::ublas::matrix<float> INUSystemMatrix;
+//typedef Kalman::KVector<float, false> INUKalmanState;
+//typedef Kalman::KVector<float, false> INUUpdate;
+//typedef Kalman::KVector<float, false> INUObservation;
+//typedef Kalman::KMatrix<float, false> INUSystemMatrix;
 
 class INUKalman : public Kalman::KFilter<float, false, false, false>
   {

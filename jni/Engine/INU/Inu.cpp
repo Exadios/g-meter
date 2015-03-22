@@ -113,9 +113,10 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, float gx)
   // its work.
 
   // Compute eqn 3.11- Omega_{eb}^b
-  this->Omega(1, 2) = -(this->Omega(2, 1) = w(0) - this->R(0, 1) * omega_ie);
-  this->Omega(2, 0) = -(this->Omega(0, 2) = w(1) - this->R(1, 1) * omega_ie);
-  this->Omega(0, 1) = -(this->Omega(1, 0) = w(2) - this->R(2, 1) * omega_ie);
+  this->Omega(1, 2) = -(this->Omega(2, 1) = w(0) - this->R(0, 1) * this->omega_ie);
+  this->Omega(2, 0) = -(this->Omega(0, 2) = w(1) - this->R(1, 1) * this->omega_ie);
+  this->Omega(0, 1) = -(this->Omega(1, 0) = w(2) - this->R(2, 1) * this->omega_ie);
+//  this->Omega = w - (trans(this->R) * this->omega_ie); 
   // Done with eqn 3.11
 
   // Compute eqn 3.13 - \dot(v)(t_k)
@@ -143,6 +144,7 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, float gx)
                 this->Omega(2, 1) * v(1) +
                 this->Omega(2, 2) * v(2)) +
                gx;
+//  this->a = this->R * f - 2 * this->Omega * v + gx;
   // Done with eqn 3.13
 
   // Compute eqn 3.12 - R^e_b(t_k + 1)
@@ -166,7 +168,7 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, float gx)
   Inv(2, 1) = float(0) - this->Omega(2, 1) * this->dt;
   Inv(2, 2) = float(2) - this->Omega(2, 2) * this->dt;
 
-  // Check for non sigularity.
+  // Check for non singularity.
   float D = Inv(0, 0) * (Inv(1, 1) * Inv(2, 2) - Inv(2, 1) * Inv(1, 2)) -
             Inv(0, 1) * (Inv(1, 0) * Inv(2, 2) - Inv(2, 0) * Inv(1, 2)) +
             Inv(0, 2) * (Inv(1, 0) * Inv(2, 1) - Inv(2, 0) * Inv(1, 2));

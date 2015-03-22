@@ -127,8 +127,9 @@ INUKalman::makeR()
 void
 INUKalman::makeProcess()
   {
-  Vector x(this->x.size());
+  INUKalmanState x(this->x.size());
 
+  // Eqn 3.32
   x(0) = this->x(0) + this->x(4) * this->dT;
   x(1) = this->x(1) + this->x(5) * this->dT;
   x(2) = this->x(2) + this->x(6) * this->dT;
@@ -136,6 +137,8 @@ INUKalman::makeProcess()
   x(4) = this->x(4) + this->u(0) * this->dT;
   x(5) = this->x(5) + this->u(1) * this->dT;
   x(6) = this->x(6) + this->u(2) * this->dT;
+  // Done with eqn 3.32
+
   if (this->s == this->m)
     {    // A GPS update.
     x(4)  += this->x(8)  * this->DT + this->x(11) * this->DT * this->DT;
@@ -153,7 +156,8 @@ INUKalman::makeProcess()
     {    // An INU only update.
     this->s++;
     }
-  this->x.swap(x);
+//  this->x.swap(x);
+  this->x = x;
   }
 
 //------------------------------------------------------------------------------

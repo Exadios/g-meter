@@ -30,9 +30,13 @@
 #include <valarray>
 #include "Engine/Kalman/kalman/kvector.hpp"
 #include "Engine/Kalman/kalman/kmatrix.hpp"
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
-typedef Kalman::KVector<float, false> IMUvector;
-typedef Kalman::KMatrix<float, false> IMUmatrix;
+typedef boost::numeric::ublas::matrix<float> IMUmatrix;
+typedef boost::numeric::ublas::vector<float> IMUvector;
+//typedef Kalman::KVector<float, false> IMUvector;
+//typedef Kalman::KMatrix<float, false> IMUmatrix;
 
 /**
  * A class to implement a Inertial Navigation Unit (INU) using gyros and
