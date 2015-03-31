@@ -30,3 +30,8 @@ Timer::Tick(JNIEnv *env, jobject obj, jlong t)
   this->Act(t);
   }
 
+//-----------------------------------------------------------------------------
+Timer::Timer()
+  {
+  }
+

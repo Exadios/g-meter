@@ -183,3 +183,8 @@ NonGPSSensors::B_v() const
   {
   return this->b_v[b_bar];
   }
+
+//-----------------------------------------------------------------------------
+NonGPSSensors::NonGPSSensors()
+  {
+  }

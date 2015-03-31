@@ -32,6 +32,11 @@ DeviceInputBuffer::DeviceInputBuffer()
   }
 
 //-----------------------------------------------------------------------------
+DeviceInputBuffer::~DeviceInputBuffer()
+  {
+  }
+
+//-----------------------------------------------------------------------------
 void
 DeviceInputBuffer::Clock()
   {
