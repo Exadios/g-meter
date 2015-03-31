@@ -25,6 +25,24 @@
 //-----------------------------------------------------------------------------
 int main(int argc, const char *argv[])
   {
+    {
+    std::cout << "Test 1" << std::endl;
+    Inu inu(1.0);
+    int i;
+    IMUvector w = IMUvector(3, float(0.0));
+    IMUvector f = IMUvector(3, float(0.0));
+    IMUvector v = IMUvector(3, float(0.0));
+
+    for (i = 0; i < 10; i++)
+      {
+      if (inu.Update(w, f, v, inu.gfh(0.0)) == false)
+        {
+        std::cerr << "Could not compute" << std::endl;
+        exit(1);
+        }
+      }
+    std::cout << inu.v_dot_super_e() << std::endl;
+    }
 
   return 0;
   }
