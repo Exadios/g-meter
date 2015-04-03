@@ -40,3 +40,4 @@ doc/html/*
 jni/doc/html/*
 jni/Engine/INU/Test/CMakeCache.txt
 jni/Engine/INU/Test/Inu
+Inu.*.dir/
