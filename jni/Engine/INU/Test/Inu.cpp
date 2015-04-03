@@ -33,7 +33,7 @@ int main(int argc, const char *argv[])
     IMUvector f = IMUvector(3, float(0.0));
     IMUvector v = IMUvector(3, float(0.0));
 
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < 100000; i++)
       {
       if (inu.Update(w, f, v, inu.gfh(0.0)) == false)
         {
