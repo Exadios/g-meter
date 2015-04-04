@@ -126,16 +126,14 @@ Inu::Update(IMUvector& w, IMUvector &f, IMUvector &v, float gx)
                float(2) *
                (this->Omega(0, 0) * v(0) +
                 this->Omega(0, 1) * v(1) +
-                this->Omega(0, 2) * v(2)) +
-               gx;
+                this->Omega(0, 2) * v(2));
   this->a(1) = this->R(1, 0) * f(1) +
                this->R(1, 1) * f(1) +
                this->R(1, 2) * f(2) -
                float(2) *
                (this->Omega(1, 0) * v(0) +
                 this->Omega(1, 1) * v(1) +
-                this->Omega(1, 2) * v(2)) +
-               gx;
+                this->Omega(1, 2) * v(2));
   this->a(2) = this->R(2, 0) * f(1) +
                this->R(2, 1) * f(1) +
                this->R(2, 2) * f(2) -
