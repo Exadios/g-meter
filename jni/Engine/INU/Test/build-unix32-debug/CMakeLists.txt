@@ -7,6 +7,9 @@ set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS)
 # Common flags
 set(CMAKE_CXX_FLAGS "-std=gnu++11 -I./../../../../ -I../../lib -ffast-math  -fno-exceptions -fno-rtti -fno-threadsafe-statics -fmerge-all-constants -fconserve-space -fno-operator-names -fvisibility=hidden -finput-charset=utf-8 -pthread -Wall -Wextra -Wwrite-strings -Wcast-qual -Wpointer-arith -Wsign-compare -Wundef -Wmissing-declarations -Wmissing-noreturn -Wno-unused-parameter -Wno-missing-field-initializers -Wcast-align -Werror -I /usr/lib/jvm/java-6-sun/include/ -I /usr/lib/jvm/java-6-sun/include/linux")
 
+set(CMAKE_BUILD_TYPE "Debug")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -gdwarf-2")
+
 add_executable(../Inu.debug ../Inu.cpp ../../Inu.cpp)
 set_target_properties(../Inu.debug PROPERTIES
                       LINK_FLAGS "-L ../../../../build-unix32-debug/")
