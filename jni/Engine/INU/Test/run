@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [ $# -ne 2 ]
+then
+  echo Synopsis:
+  echo ${0} "<executable> <debug|release>"
+  exit 1
+fi
+
+LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:../../../build-unix32-${2}; ./${1}.${2}
+exit 0
