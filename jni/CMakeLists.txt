@@ -12,6 +12,26 @@ include_directories("./"
                     /usr/lib/jvm/java-6-sun/include/
                     /usr/lib/jvm/java-6-sun/include/linux)
 
+set(JNISRC "../")
+set(UNIXSRCS
+    ${JNISRC}/Engine/INU/Inu.cpp
+    ${JNISRC}/Engine/INU/INUKalman.cpp
+    ${JNISRC}/Engine/Kalman/kstatics.cpp
+    ${JNISRC}/Executive/Android/GPSSensor.cpp
+    ${JNISRC}/Executive/Android/NonGPSSensors.cpp
+    ${JNISRC}/Executive/Android/Timer.cpp
+    ${JNISRC}/Executive/MajorState.cpp
+    ${JNISRC}/Utility/Mutex.cpp
+    ${JNISRC}/Utility/Observer.cpp
+    ${JNISRC}/Utility/Observed.cpp
+    ${JNISRC}/Utility/DeviceInputBuffer.cpp)
+set(ANDROIDSRCS
+    ${JNISRC}/Java/com_exadios_g_meter_InternalGPS.cpp
+    ${JNISRC}/Java/com_exadios_g_meter_NativeRunnable.cpp
+    ${JNISRC}/Java/com_exadios_g_meter_NonGPSSensors.cpp
+    ${JNISRC}/Java/com_exadios_g_meter_Timer.cpp)
+set(ALLSRCS ${ANDROIDSRCS} ${UNIXSRCS})
+
 add_subdirectory(Native)
 add_subdirectory(build-unix32-release)
 add_subdirectory(build-unix32-debug)
