@@ -34,12 +34,8 @@ Inu::Inu(float dt)
   this->a.resize(3);
   this->Omega.resize(3, 3);
   this->R0(0, 0, 0);
-  for (size_t i = 0; i < 3; i++)
-    {
-    this->a(i) = 0.0;
-    for (size_t j = 0; j < 3; j++)
-      this->Omega(i, j) = 0.0;
-    }
+  this->Omega = IMUmatrix(3, 3, 0.0);
+  this->a = IMUvector(3, 0.0);
   }
 
 //-----------------------------------------------------------------------------
@@ -52,12 +48,8 @@ Inu::Inu(float dt, float x, float y, float z)
   this->a.resize(3);
   this->Omega.resize(3, 3);
   this->R0(x, y, z);
-  for (size_t i = 0; i < 3; i++)
-    {
-    this->a(i) = 0.0;
-    for (size_t j = 0; j < 3; j++)
-      this->Omega(i, j) = 0.0;
-    }
+  this->Omega = IMUmatrix(3, 3, 0.0);
+  this->a = IMUvector(3, 0.0);
   }
 
 //-----------------------------------------------------------------------------
@@ -70,12 +62,8 @@ Inu::Inu(float dt, IMUmatrix R)
   this->a.resize(3);
   this->Omega.resize(3, 3);
   this->R0(R);
-  for (size_t i = 0; i < 3; i++)
-    {
-    this->a(i) = 0.0;
-    for (size_t j = 0; j < 3; j++)
-      this->Omega(i, j) = 0.0;
-    }
+  this->Omega = IMUmatrix(3, 3, 0.0);
+  this->a = IMUvector(3, 0.0);
   }
 
 //-----------------------------------------------------------------------------
