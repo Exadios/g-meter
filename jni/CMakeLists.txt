@@ -25,7 +25,7 @@ set(UNIXSRCS
 set(ANDROIDSRCS
     ${JNISRC}/Executive/Android/GPSSensor.cpp
     ${JNISRC}/Executive/Android/NonGPSSensors.cpp
-    ${JNISRC}/Executive/Android/Timer.cpp`
+    ${JNISRC}/Executive/Android/Timer.cpp
     ${JNISRC}/Java/com_exadios_g_meter_InternalGPS.cpp
     ${JNISRC}/Java/com_exadios_g_meter_NativeRunnable.cpp
     ${JNISRC}/Java/com_exadios_g_meter_NonGPSSensors.cpp
