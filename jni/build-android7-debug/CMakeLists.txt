@@ -1,4 +1,7 @@
 
 set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS)
 
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_BUILD_TYPE "Debug")
+
 add_library(GMeter-android7-debug SHARED ${ALLSRCS})

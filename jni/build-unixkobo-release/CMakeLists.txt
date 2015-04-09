@@ -1,6 +1,7 @@
 
 set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS)
 
-set(JNISRC "../")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_BUILD_TYPE "Release")
 
 add_library(GMeter-unixkobo-release STATIC ${UNIXSRCS})
