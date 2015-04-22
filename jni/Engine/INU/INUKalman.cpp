@@ -25,18 +25,15 @@
 #include "Inu.hpp"
 #include "INUKalman.hpp"
 
+//static INUKalman::Predict::q_G = 1.0;
+//static INUKalman::Predict::q_A = 1.0;
+
 //------------------------------------------------------------------------------
 INUKalman::INUKalman(float dT, int m)
   : dT(dT),
     m(m),
     s(0)
   {
-  this->x.resize(14);
-  this->R.resize(14, 14);
-  this->P.resize(14, 14);
-  this->Q.resize(14, 14);
-  this->K.resize(14, 14);
-  this->DT = this->m * this->dT;
   }
 
 //------------------------------------------------------------------------------
@@ -45,128 +42,63 @@ INUKalman::~INUKalman()
   }
 
 //------------------------------------------------------------------------------
-void
-INUKalman::makeBaseA()
+INUKalman::Observe::Observe()
+  : General_LiUnAd_observe_model(14, 1)
   {
-  size_t i, j;
+  }
+
+//------------------------------------------------------------------------------
+INUKalman::Predict::Predict(float dT, int m, Boost_random& rnd)
+  : Bayesian_filter::Sampled_LiInAd_predict_model(14, 1, rnd),
+    q_G(1.0),
+    q_A(1.0)
+  {
+  int i, j;
+
+  this->Propagate.resize(14, 14);
+  this->Update.resize(14, 14);
 
   for (i = 0; i < 14; i++)
     for (j = 0; j < 14; j++)
-      this->A(i, j) = float(0);
+      this->Propagate(i, j) = Update(i, j) = 0.0;
+
+  // A_{11}
   for (i = 0; i < 8; i++)
-    this->A(i, i) = float(1.0);
-  for (i = 0; i < 4; i++)
-    this->A(i, i + 4) = this->dT;
+    for (j = 0; j < 8; j++)
+      {
+      if (i == j)
+        this->Propagate(i, j) = this->Update(i, j) = 1.0;
+      else if (j == (i + 4))
+        this->Propagate(i, j) = this->Update(i, j) = dT;
+      }
+  // Finish A_{11}
+
+  // A_{12}
+  for (i = 4; i < 7; i++)
+    for (j = 8; j < 14; j++)
+      {
+      if (i == (j - 4))
+        this->Update(i, j) = m * dT;
+      else if (i == (j - 7))
+        this->Update(i, j) = m * m * dT * dT;
+      }
+  // Finish A_{12}
+
+  // A_{22}  
+  for (i = 8; i < 11; i++)
+    for (j = 8; j < 11; j++)
+      {
+      if (i == j)
+        this->Update(i, j) = this->q_G;
+      }
+
+  for (i = 11; i < 14; i++)
+    for(j = 11; j < 14; j++)
+      {
+      if (i == j)
+        this->Update(i, j) = this->q_A;
+      }
+  // Finish A_{22}
+  
+  this->Fx = this->Propagate;
   }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeBaseH()
-  {
-  for (size_t i = 0; i < 14; i++)
-    for (size_t j = 0; j < 14; j++)
-      H(i, j) = float(0.0);
-  for (size_t i = 0; i < 8; i++)
-    H(i, i) = float(1.0);
-  }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeBaseV()
-  {
-  }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeBaseR()
-  {
-  }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeBaseW()
-  {
-  }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeBaseQ()
-  {
-  // Need to make some measurements to evaluate some real values for w.
-  Vector w;
-	w.resize(8);
-  for (size_t i = 0; i < 4; i++)
-    w(i) = float(0.1);
-  for (size_t i = 4; i < 8; i++)
-    w(i) = float(0.5);
-  for (size_t i = 0; i < 8; i++)
-    for (size_t j = 0; j < 8; j++)
-      Q(i, j) = w(i) * w(j);
-  }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeA()
-  {
-  }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeH()
-  {
-  }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeR()
-  {
-	// Get some stats from the GPS system to make an R matrix.
-	}
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeProcess()
-  {
-  INUKalmanState x(this->x.size());
-
-  // Eqn 3.32
-  x(0) = this->x(0) + this->x(4) * this->dT;
-  x(1) = this->x(1) + this->x(5) * this->dT;
-  x(2) = this->x(2) + this->x(6) * this->dT;
-  x(3) = this->x(3) + this->x(7) * this->dT;
-  x(4) = this->x(4) + this->u(0) * this->dT;
-  x(5) = this->x(5) + this->u(1) * this->dT;
-  x(6) = this->x(6) + this->u(2) * this->dT;
-  // Done with eqn 3.32
-
-  if (this->s == this->m)
-    {    // A GPS update.
-    x(4)  += this->x(8)  * this->DT + this->x(11) * this->DT * this->DT;
-    x(5)  += this->x(9)  * this->DT + this->x(12) * this->DT * this->DT;
-    x(6)  += this->x(10) * this->DT + this->x(13) * this->DT * this->DT;
-    x(8)   = this->x(8)  + this->x(8)  * this->DT;  // * QG
-    x(9)   = this->x(9)  + this->x(9)  * this->DT;  // * QG
-    x(10)  = this->x(10) + this->x(10) * this->DT;  // * QG
-    x(11)  = this->x(11) + this->x(11) * this->DT;  // * QA
-    x(12)  = this->x(12) + this->x(12) * this->DT;  // * QA
-    x(13)  = this->x(13) + this->x(13) * this->DT;  // * QA
-    this->s = 1;
-    }
-  else
-    {    // An INU only update.
-    this->s++;
-    }
-//  this->x.swap(x);
-  this->x = x;
-  }
-
-//------------------------------------------------------------------------------
-void
-INUKalman::makeMeasure()
-  {
-  for (size_t i = 0; i < 8; i++)
-    z(i) = x(i);
-  for (size_t i = 8; i < 14; i++)
-    z(i) = float(0.0);
-  }
-

@@ -27,10 +27,11 @@
  * @{
  */
 
-#include "Utility/Mutex.hpp"
-//#include "Engine/Kalman/kalman/kvector.hpp"
-//#include "Engine/Kalman/kalman/kmatrix.hpp"
-#include "Engine/Kalman/kalman/kfilter.hpp"
+#include "bayesclasses-bayes/BayesFilter/SIRFlt.hpp"
+#include "bayesclasses-bayes/BayesFilter/models.hpp"
+#include "bayesclasses-bayes/Test/random.hpp"
+#include <cmath>
+#include <boost/boost/numeric/ublas/io.hpp>
 
 /**
  * A class designed to take INU and GPS data and merge those two data in an
@@ -41,105 +42,95 @@ typedef boost::numeric::ublas::vector<float> INUKalmanState;
 typedef boost::numeric::ublas::vector<float> INUUpdate;
 typedef boost::numeric::ublas::vector<float> INUObservation;
 typedef boost::numeric::ublas::matrix<float> INUSystemMatrix;
-//typedef Kalman::KVector<float, false> INUKalmanState;
-//typedef Kalman::KVector<float, false> INUUpdate;
-//typedef Kalman::KVector<float, false> INUObservation;
-//typedef Kalman::KMatrix<float, false> INUSystemMatrix;
 
-class INUKalman : public Kalman::KFilter<float, false, false, false>
+class INUKalman
   {
+public:
+  /**
+   * Ctor.
+   * @param dT the IMU sample period in seconds.
+   * @param m The ratio between the IMU sample period and the GPS sample rate.
+   */
+  INUKalman(float dT, int m);
+
+  /**
+   * Dtor.
+   */
+  virtual ~INUKalman();
+
+private:
+
+  /**
+   * Random generator for SIR.
+   */
+  class Boost_random : public Bayesian_filter::SIR_random,
+                       public Bayesian_filter_test::Boost_random
+    {
   public:
-    /**
-     * Ctor.
-     * @param dT the IMU sample period in seconds.
-     * @param m The ratio between the IMU sample period and the GPS sample rate.
-     */
-    INUKalman(float dT, int m);
+    using Bayesian_filter_test::Boost_random::normal;
 
     /**
-     * Dtor.
+     * Normal distribution.
      */
-    virtual ~INUKalman();
+	  void normal (Bayesian_filter_matrix::DenseVec& v)
+	    {
+		  Bayesian_filter_test::Boost_random::normal(v);
+	    }
+	  using Bayesian_filter_test::Boost_random::uniform_01;
 
-  protected:
-    void makeBaseA();
-    void makeBaseH();
-    void makeBaseV();
-    void makeBaseR();
-    void makeBaseW();
-    void makeBaseQ();
+    /**
+     * White?
+     */
+	  void uniform_01 (Bayesian_filter_matrix::DenseVec& v)
+	    {
+		  Bayesian_filter_test::Boost_random::uniform_01(v);
+	    }
+    };
 
-    void makeA();
-    void makeH();
-		void makeR();
-    void makeProcess();
-    void makeMeasure();
+  /**
+   * Filter observation algorithm.
+   */
+  class Observe : public Bayesian_filter::General_LiUnAd_observe_model
+    {
+  public:
+    Observe();
+    };
+
+  /**
+   * Filter prediction algorithm.
+   */
+  class Predict : public Bayesian_filter::Sampled_LiInAd_predict_model
+    {
+  public:
+    Predict(float dT, int m, Boost_random& rnd);
 
   private:
-    /**
-     * Not default Ctor.
-     */
-    INUKalman();
+    const float q_G;
+    const float q_A;
+    INUSystemMatrix Propagate;
+    INUSystemMatrix Update;
+    };
 
-    /**
-     * No copy Ctor.
-     */
-    INUKalman(const INUKalman &rhs);
+private:
+  /**
+   * No default Ctor.
+   */
+  INUKalman();
 
-    /**
-     * No copy operator.
-     */
-    INUKalman &operator=(const INUKalman &rhs);
-    INUKalman operator=(const INUKalman &rhs) const;
+  /**
+   * No copy Ctor.
+   */
+  INUKalman(const INUKalman &rhs);
 
-    /**
-     * The system state vector, \f$\hat{x} \left( t_k \right) \f$.
-     */
-    INUKalmanState x;
+  /**
+   * No copy operator.
+   */
+  INUKalman &operator=(const INUKalman &rhs);
+  INUKalman operator=(const INUKalman &rhs) const;
 
-    /**
-     * The error covariance matrix, \$P \left( t_k \right) \f$.
-     */
-    INUSystemMatrix P;
-
-    /**
-     * The plant noise covariance matrix, \f$Q\f$.
-     */
-    INUSystemMatrix Q;
-
-    /**
-     * The Kalman gain, \f$K \left( t_k \right) \f$.
-     */
-    INUSystemMatrix K;
-
-    /**
-     * The IMU sample period, \f$\delta T\f$.
-     */
-    float dT;
-
-    /**
-     * The integer ratio (assuming synchronous sampling) between the IMU sample
-     * period, \f$\delta T\f$, and the GPS sample period, \f$\Delta T\f$.
-     *
-     * \f$m = \Delta T / \delta t \f$
-     */
-    int m;
-
-    /**
-     * The GPS sample period, \f$\Delta T\f$.
-     */
-    float DT;
-
-    /**
-
-     * IMU sample counter.
-     */
-    int s;
-
-    /**
-     * A guard for 's' above
-     */
-    Mutex sl;
+  float dT;
+  int m;
+  int s;
   };
 
 /*
