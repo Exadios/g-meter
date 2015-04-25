@@ -11,6 +11,3 @@ set(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -gdwarf-2")
 
 add_executable(../Inu.debug ../Inu.cpp ../../Inu.cpp)
-set_target_properties(../Inu.debug PROPERTIES
-                      LINK_FLAGS "-L ../../../../build-unix32-debug/")
-target_link_libraries(../Inu.debug GMeter-unix32-debug)

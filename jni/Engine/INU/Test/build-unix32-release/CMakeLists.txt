@@ -10,6 +10,3 @@ set(CMAKE_CXX_FLAGS "-std=gnu++11 -I./../../../../ -I../../lib -ffast-math  -fno
 set(CMAKE_BUILD_TYPE "Release")
 
 add_executable(../Inu.release ../Inu.cpp ../../Inu.cpp)
-set_target_properties(../Inu.release PROPERTIES
-                      LINK_FLAGS "-L ../../../../build-unix32-release/")
-target_link_libraries(../Inu.release GMeter-unix32-release)
