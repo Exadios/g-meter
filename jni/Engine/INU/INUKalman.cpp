@@ -101,7 +101,7 @@ INUKalman::makeBaseQ()
     w(i) = float(0.5);
   for (size_t i = 0; i < 8; i++)
     for (size_t j = 0; j < 8; j++)
-      Q(i, j) = w(i) * w(j);
+      this->Q(i, j) = w(i) * w(j);
   }
 
 //------------------------------------------------------------------------------
@@ -120,7 +120,18 @@ INUKalman::makeH()
 void
 INUKalman::makeR()
   {
-	// Get some stats from the GPS system to make an R matrix.
+	// TODO Get some stats from the GPS system to make an R matrix.
+  int i, j;
+
+  for (i = 0; i < 8; i++)
+    for (j = 0; j < 8; j++)
+      this->R(i, j) = 5.0;
+  for (i = 0; i < 8; i++)
+    this->R(i, i) *= 5.0;
+
+  for (i = 8; i < 14; i++)
+    for (j = 0; j < 14; j++)
+      this->R(i, j) = 0.0;
 	}
 
 //------------------------------------------------------------------------------
