@@ -10,3 +10,4 @@ set(CMAKE_CXX_FLAGS "-std=gnu++11 -I./../../../../ -I../../lib -ffast-math  -fno
 set(CMAKE_BUILD_TYPE "Release")
 
 add_executable(../Inu.release ../Inu.cpp ../../Inu.cpp)
+add_executable(../INUKalman.release ../INUKalman.cpp ../../INUKalman.cpp)

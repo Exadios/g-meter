@@ -11,3 +11,4 @@ set(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_CXX_FLAGS_DEBUG "-g -gdwarf-2")
 
 add_executable(../Inu.debug ../Inu.cpp ../../Inu.cpp)
+add_executable(../INUKalman.debug ../INUKalman.cpp ../../INUKalman.cpp)

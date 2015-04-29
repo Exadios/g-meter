@@ -42,3 +42,6 @@ jni/Engine/INU/Test/CMakeCache.txt
 jni/Engine/INU/Test/Inu.debug
 jni/Engine/INU/Test/Inu.release
 Inu.*.dir/
+jni/Engine/INU/Test/INUKalman.debug
+jni/Engine/INU/Test/INUKalman.release
+INUKalman.*.dir/
