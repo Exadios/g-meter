@@ -28,9 +28,9 @@
  */
 
 #include "Utility/Mutex.hpp"
-//#include "Engine/Kalman/kalman/kvector.hpp"
-//#include "Engine/Kalman/kalman/kmatrix.hpp"
 #include "Engine/Kalman/kalman/kfilter.hpp"
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
 
 /**
  * A class designed to take INU and GPS data and merge those two data in an
