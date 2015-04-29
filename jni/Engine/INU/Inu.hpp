@@ -28,8 +28,6 @@
  */
 
 #include <valarray>
-#include "Engine/Kalman/kalman/kvector.hpp"
-#include "Engine/Kalman/kalman/kmatrix.hpp"
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
 
