@@ -36,6 +36,8 @@ INUKalman::INUKalman(float dT, int m)
   this->P.resize(14, 14);
   this->Q.resize(14, 14);
   this->K.resize(14, 14);
+  this->A.resize(14, 14);
+  this->H.resize(14, 14);
   this->DT = this->m * this->dT;
   }
 
