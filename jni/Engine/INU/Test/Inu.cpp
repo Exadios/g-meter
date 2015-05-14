@@ -26,7 +26,7 @@
 int main(int argc, const char *argv[])
   {
     {
-    std::cout << "Test 1" << std::endl;
+    std::cout <<std::endl << "Test 1" << std::endl;
     Inu inu(1.0);
     int i;
     IMUvector w = IMUvector(3, float(0.0));
@@ -41,38 +41,50 @@ int main(int argc, const char *argv[])
         exit(1);
         }
       }
-    std::cout << "v_dot_super_e: " << inu.v_dot_super_e() << std::endl;
-    std::cout << "Omega_sub_eb_super_b: " << inu.Omega_sub_eb_super_b() << std::endl;
-    std::cout << "R_sub_b_super_e: " << inu.R_sub_b_super_e() << std::endl;
+    std::cout << "v_dot_super_e: "
+              << inu.v_dot_super_e() << std::endl;
+    std::cout << "Omega_sub_eb_super_b: "
+              << inu.Omega_sub_eb_super_b() << std::endl;
+    std::cout << "R_sub_b_super_e: "
+              << inu.R_sub_b_super_e() << std::endl;
     }
     
     {
-    std::cout << "Test 2" << std::endl;
+    std::cout << std::endl << "Test 2" << std::endl;
     Inu inu(1.0);
     IMUvector w = IMUvector(3, float(0.0));
     IMUvector f = IMUvector(3, float(0.0));
     IMUvector v = IMUvector(3, float(0.0));
 
-    std::cout << "v_dot_super_e: " << inu.v_dot_super_e() << std::endl;
-    std::cout << "Omega_sub_eb_super_b: " << inu.Omega_sub_eb_super_b() << std::endl;
-    std::cout << "R_sub_b_super_e: " << inu.R_sub_b_super_e() << std::endl;
+    std::cout << "v_dot_super_e: "
+              << inu.v_dot_super_e() << std::endl;
+    std::cout << "Omega_sub_eb_super_b: "
+              << inu.Omega_sub_eb_super_b() << std::endl;
+    std::cout << "R_sub_b_super_e: "
+              << inu.R_sub_b_super_e() << std::endl;
     if(inu.Update(w, f, v, inu.gfh(0.0)) == false)
       {
       std::cerr << "Could not compute" << std::endl;
       exit(1);
       }
-    std::cout << "v_dot_super_e: " << inu.v_dot_super_e() << std::endl;
-    std::cout << "Omega_sub_eb_super_b: " << inu.Omega_sub_eb_super_b() << std::endl;
-    std::cout << "R_sub_b_super_e: " << inu.R_sub_b_super_e() << std::endl;
+    std::cout << "v_dot_super_e: "
+              << inu.v_dot_super_e() << std::endl;
+    std::cout << "Omega_sub_eb_super_b: "
+              << inu.Omega_sub_eb_super_b() << std::endl;
+    std::cout << "R_sub_b_super_e: "
+              << inu.R_sub_b_super_e() << std::endl;
     f(1) = 1.0;
     if (inu.Update(w, f, v, inu.gfh(0.0)) == false)
       {
       std::cerr << "Could not compute" << std::endl;
       exit(1);
       }
-    std::cout << "v_dot_super_e: " << inu.v_dot_super_e() << std::endl;
-    std::cout << "Omega_sub_eb_super_b: " << inu.Omega_sub_eb_super_b() << std::endl;
-    std::cout << "R_sub_b_super_e: " << inu.R_sub_b_super_e() << std::endl;
+    std::cout << "v_dot_super_e: "
+              << inu.v_dot_super_e() << std::endl;
+    std::cout << "Omega_sub_eb_super_b: "
+              << inu.Omega_sub_eb_super_b() << std::endl;
+    std::cout << "R_sub_b_super_e: "
+              << inu.R_sub_b_super_e() << std::endl;
 
     f(1) = 0.0;
     if (inu.Update(w, f, v, inu.gfh(0.0)) == false)
@@ -80,9 +92,56 @@ int main(int argc, const char *argv[])
       std::cerr << "Could not compute" << std::endl;
       exit(1);
       }
-    std::cout << "v_dot_super_e: " << inu.v_dot_super_e() << std::endl;
-    std::cout << "Omega_sub_eb_super_b: " << inu.Omega_sub_eb_super_b() << std::endl;
-    std::cout << "R_sub_b_super_e: " << inu.R_sub_b_super_e() << std::endl;
+    std::cout << "v_dot_super_e: "
+              << inu.v_dot_super_e() << std::endl;
+    std::cout << "Omega_sub_eb_super_b: "
+              << inu.Omega_sub_eb_super_b() << std::endl;
+    std::cout << "R_sub_b_super_e: "
+              << inu.R_sub_b_super_e() << std::endl;
+    }
+
+    {
+    std::cout << std::endl << "Test 3" << std::endl;
+    Inu inu(1.0);
+    IMUvector w = IMUvector(3, float(0.0));
+    IMUvector v = IMUvector(3, float(0.0));
+
+    std::cout << "v_dot_super_e: "
+              << inu.v_dot_super_e() << std::endl;
+    std::cout << "Omega_sub_eb_super_b: "
+              << inu.Omega_sub_eb_super_b() << std::endl;
+    std::cout << "R_sub_b_super_e: "
+              << inu.R_sub_b_super_e() << std::endl;
+      {
+      IMUvector f = IMUvector(3, float(1.0));
+
+      if (inu.Update(w, f, v, inu.gfh(0.0)) == false)
+        {
+        std::cerr << "Could not compute" << std::endl;
+        exit(1);
+        }
+      }
+    std::cout << "v_dot_super_e: "
+              << inu.v_dot_super_e() << std::endl;
+    std::cout << "Omega_sub_eb_super_b: "
+              << inu.Omega_sub_eb_super_b() << std::endl;
+    std::cout << "R_sub_b_super_e: "
+              << inu.R_sub_b_super_e() << std::endl;
+      {
+      IMUvector f = IMUvector(3, float(-1.0));
+
+      if (inu.Update(w, f, v, inu.gfh(0.0)) == false)
+        {
+        std::cerr << "Could not compute" << std::endl;
+        exit(1);
+        }
+      }
+    std::cout << "v_dot_super_e: "
+              << inu.v_dot_super_e() << std::endl;
+    std::cout << "Omega_sub_eb_super_b: "
+              << inu.Omega_sub_eb_super_b() << std::endl;
+    std::cout << "R_sub_b_super_e: "
+              << inu.R_sub_b_super_e() << std::endl;
     }
 
   return 0;
