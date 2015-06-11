@@ -21,6 +21,9 @@ doc/Design/*.png
 lib*.so
 lib*.a
 *.o
+*.elf
+*.eep
+*.hex
 *.class
 jni/.Makefile.depends
 jni/build/*
