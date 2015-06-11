@@ -6,9 +6,11 @@ project(ArduIMU)
 
 add_custom_command(OUTPUT Arduimu.hex
                    COMMAND avr-objcopy -O ihex -R .eeprom Arduimu.elf Arduimu.hex
+                  DEPENDS Arduimu.elf
                   )
 add_custom_command(OUTPUT Arduimu.eep
                    COMMAND avr-objcopy -O ihex -j .eeprom Arduimu.elf Arduimu.eep
+                   DEPENDS Arduimu.elf
                   )
 
 add_custom_target(hex
