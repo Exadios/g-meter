@@ -2,28 +2,18 @@ cmake_minimum_required(VERSION 2.8.5)
 
 #set(CMAKE_TOOLCHAIN_FILE ./ArduinoToolchain.cmake)
 
-#project(ArduIMU)
-
-#generate_arduino_firmware(Ardimu
-#                          BOARD uno
-#                          SRCS FreeIMU.cpp
-#                               HMC58X3.cpp
-#                               I2Cdev.cpp
-#                               IMU/IMU.ino
-#                               ITG3200.cpp
-#                               MPU60X0.cpp
-#                               MS561101BA.cpp
-#                               bma180.cpp
-#                          PORT /dev/ttyUSB0
-#                         )
+project(ArduIMU)
 
 add_custom_command(OUTPUT Arduimu.hex
-                   COMMAND avr-objcopy -O ihex -R .eeprom
-                   DEPENDS Arduimu.elf)
+                   COMMAND avr-objcopy -O ihex -R .eeprom Arduimu.elf Arduimu.hex
+                  )
 add_custom_command(OUTPUT Arduimu.eep
-                   COMMAND avr-objcopy -O ihex -j .eeprom
-                   DEPENDS Arduimu.elf)
+                   COMMAND avr-objcopy -O ihex -j .eeprom Arduimu.elf Arduimu.eep
+                  )
 
+add_custom_target(hex
+                  DEPENDS Arduimu.hex Arduimu.eep
+                 )
 add_custom_target(upload /usr/share/arduino/hardware/tools/avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:Arduimu.hex:i
                  DEPENDS Arduimu.hex
                  COMMENT Uploading Arduimu.hex

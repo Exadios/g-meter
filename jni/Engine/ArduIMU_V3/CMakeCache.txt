@@ -205,7 +205,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/avr-objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/avr-objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Project
+CMAKE_PROJECT_NAME:STATIC=ArduIMU
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/avr-ranlib
