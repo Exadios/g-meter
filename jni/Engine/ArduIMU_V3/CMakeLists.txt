@@ -30,6 +30,14 @@ add_library(Arduino STATIC
             ${ARDUINO_LIBRARY_SRCDIR}/Wire/utility/twi.c
            )
 
+add_library(IMU STATIC
+            HMC58X3.cpp
+            ITG3200.cpp
+            MPU60X0.cpp
+            MS561101BA.cpp
+            bma180.cpp
+           )
+
 add_library(core STATIC
             ${ARDUINO_LIBRARY_CORES}/wiring_digital.c
             ${ARDUINO_LIBRARY_CORES}/wiring_analog.c
@@ -53,15 +61,26 @@ add_library(core STATIC
 
 add_executable(Arduimu.elf
                FreeIMU.cpp
-               HMC58X3.cpp
                I2Cdev.cpp
                IMU.cpp
-               ITG3200.cpp
-               MPU60X0.cpp
-               MS561101BA.cpp
-               bma180.cpp
               )
 
-target_link_libraries(Arduimu.elf Arduino core)
-set_target_properties(Arduimu.elf PROPERTIES LINK_FLAGS -lm
-                                             LINK_FLAGS -Wl,--gc-sections)
+add_executable(CalibrateIMUFirmware.elf
+               CalibrateIMUFirmware.cpp
+               FilteringScheme.cpp
+               RunningAverage.cpp
+               MovingAvarageFilter.cpp
+               FreeIMU.cpp
+               I2Cdev.cpp
+               CommunicationUtils.cpp
+               MovingAvarageFilter.cpp
+              )
+
+target_link_libraries(Arduimu.elf IMU Arduino core)
+set_target_properties(Arduimu.elf PROPERTIES LINK_FLAGS -Wl,-lm,--gc-sections,-Map,Arduimu.map)
+
+# Due to some symbols defined in both libm and libgcc force the libm linkage
+# to libm only - by putting it first and using -nodefaultlibs. Otherwise get
+# relocation errors because libgcc too far from libm.
+target_link_libraries(CalibrateIMUFirmware.elf IMU Arduino core m gcc c gcc)
+set_target_properties(CalibrateIMUFirmware.elf PROPERTIES LINK_FLAGS "-nodefaultlibs -Wl,-Map,CalibrateIMUFirmware.map,--gc-sections")

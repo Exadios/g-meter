@@ -24,6 +24,8 @@ lib*.a
 *.elf
 *.eep
 *.hex
+*.d
+*.map
 *.class
 jni/.Makefile.depends
 jni/build/*
