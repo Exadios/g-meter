@@ -12,13 +12,27 @@ add_custom_command(OUTPUT Arduimu.eep
                    COMMAND avr-objcopy -O ihex -j .eeprom Arduimu.elf Arduimu.eep
                    DEPENDS Arduimu.elf
                   )
-
+add_custom_command(OUTPUT CalibrateIMUFirmware.hex
+                   COMMAND avr-objcopy -O ihex -R .eeprom CalibrateIMUFirmware.elf CalibrateIMUFirmware.hex
+                  DEPENDS CalibrateIMUFirmware.elf
+                  )
+add_custom_command(OUTPUT CalibrateIMUFirmware.eep
+                   COMMAND avr-objcopy -O ihex -j .eeprom CalibrateIMUFirmware.elf CalibrateIMUFirmware.eep
+                   DEPENDS CalibrateIMUFirmware.elf
+                  )
 add_custom_target(hex
-                  DEPENDS Arduimu.hex Arduimu.eep
+                  DEPENDS Arduimu.hex 
+                          Arduimu.eep
+                          CalibrateIMUFirmware.hex
+                          CalibrateIMUFirmware.eep
                  )
-add_custom_target(upload /usr/share/arduino/hardware/tools/avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:Arduimu.hex:i
+add_custom_target(upload_Arduimu /usr/share/arduino/hardware/tools/avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:Arduimu.hex:i
                  DEPENDS Arduimu.hex
                  COMMENT Uploading Arduimu.hex
+                 )
+add_custom_target(upload_CalibrateIMUFirmware /usr/share/arduino/hardware/tools/avrdude -C/usr/share/arduino/hardware/tools/avrdude.conf -patmega328p -carduino -P/dev/ttyUSB0 -b57600 -D -Uflash:w:CalibrateIMUFirmware.hex:i
+                 DEPENDS CalibrateIMUFirmware.hex
+                 COMMENT Uploading CalibrateIMUFirmware.hex
                  )
 
 set(ARDUINO_LIBRARY_SRCDIR "/usr/share/arduino/libraries")
