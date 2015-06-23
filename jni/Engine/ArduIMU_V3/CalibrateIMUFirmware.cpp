@@ -26,7 +26,7 @@ void loop();
 char serial_busy_wait();
 
 float q[4];
-int raw_values[9];
+int raw_values[12];
 float ypr[3]; // yaw pitch roll
 char str[256];
 float val[9];
@@ -81,6 +81,25 @@ void loop() {
         Serial.println();
       }
     }
+    else if(cmd == 'f')
+      {
+      uint8_t count = serial_busy_wait();
+      for(uint8_t i = 0; i < count; i++)
+        {
+        my3IMU.accgyro.getMotion6(&raw_values[0], &raw_values[1], &raw_values[2], &raw_values[3], &raw_values[4], &raw_values[5]);
+        my3IMU.magn.getValues(&raw_values[6], &raw_values[7], &raw_values[8]);
+        sprintf(str, "%d %d %d %d %d %d %d %d %d\r\n", raw_values[0],
+                                                       raw_values[1],
+                                                       raw_values[2],
+                                                       raw_values[3],
+                                                       raw_values[4],
+                                                       raw_values[5],
+                                                       raw_values[6],
+                                                       raw_values[7],
+                                                       raw_values[8]);
+        Serial.print(str);
+        }
+      }
     else if(cmd == 'q') {
       uint8_t count = serial_busy_wait();
       for(uint8_t i=0; i<count; i++) {

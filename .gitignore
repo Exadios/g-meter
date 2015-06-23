@@ -14,6 +14,7 @@ doc/Design/*.png
 *.out
 *.pdf
 *.toc
+*.txt
 *.zip
 *.swp
 *.log
