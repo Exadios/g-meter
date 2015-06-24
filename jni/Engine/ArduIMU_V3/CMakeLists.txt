@@ -77,6 +77,7 @@ add_executable(Arduimu.elf
                FreeIMU.cpp
                I2Cdev.cpp
                IMU.cpp
+               CommunicationUtils.cpp
               )
 
 add_executable(CalibrateIMUFirmware.elf
