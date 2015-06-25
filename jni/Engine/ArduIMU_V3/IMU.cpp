@@ -52,7 +52,7 @@ FreeIMU my3IMU = FreeIMU();
 
 void setup()
   { 
-  Serial.begin(921600);
+  Serial.begin(230400);
   Wire.begin();
   
   delay(500);
@@ -71,7 +71,7 @@ void loop()
     last_time = this_time;
     writeVar(&this_time, sizeof(unsigned long));
     my3IMU.getValues(val);
-    writeArr(val, 9, sizeof(int));
+    writeArr(val, 9, sizeof(float));
     Serial.print("\r\n");
     }
   }
