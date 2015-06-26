@@ -1,7 +1,8 @@
 /**
  * Streams calibrated sensors readings.
  *
- * @author Fabio Varesano - fvaresano at yahoo dot it
+ * @author Fabio Varesano - fvaresano at yahoo dot it and
+ * Peter F Bradshaw - pfb@exadios.com
 */ 
 
 /*
