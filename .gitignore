@@ -51,3 +51,4 @@ Inu.*.dir/
 jni/Engine/INU/Test/INUKalman.debug
 jni/Engine/INU/Test/INUKalman.release
 INUKalman.*.dir/
+ArduIMUDump
