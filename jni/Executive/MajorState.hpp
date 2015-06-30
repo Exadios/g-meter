@@ -90,7 +90,7 @@ public:
 
 private:
   /**
-   * Ctor. Called from GPSSensor::Instance() only.
+   * Ctor. Called from MajorState::Instance() only.
    */
   MajorState();
 
