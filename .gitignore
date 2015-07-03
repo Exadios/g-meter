@@ -52,3 +52,6 @@ jni/Engine/INU/Test/INUKalman.debug
 jni/Engine/INU/Test/INUKalman.release
 INUKalman.*.dir/
 ArduIMUDump
+ins-unix32-debug
+ins-unix32-release
+ins-unixkobo-release
