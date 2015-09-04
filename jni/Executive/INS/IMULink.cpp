@@ -49,7 +49,6 @@ IMULink::IMULink(boost::asio::io_service& io, std::string& port)
   driver.c_iflag |= IGNPAR | IGNBRK ;   // No parity or break. 
   driver.c_cflag &= ~(CSTOPB | PARENB); // One stop and no parity.
   tcsetattr(this->serial_port.native_handle(), TCSANOW, &driver);
-//  this->serial_port.set_option(&driver);
   }
 
 //------------------------------------------------------------------------------
