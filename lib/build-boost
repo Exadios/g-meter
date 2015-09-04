@@ -1,0 +1,12 @@
+#!/bin/bash
+
+export BOOST_BUILD_PATH=${PWD}
+
+pushd boost 2> /dev/null
+#./b2 toolset=gcc-arm link=static -s NO_BZIP2=1 --without-mpi --without-thread
+#./b2 link=static threading=single -s NO_BZIP2=1 --without-mpi --without-thread
+./b2 toolset=gcc-arm link=static --without-python --without-wave --without-context --without-coroutine --without-mpi --without-test --without-graph --without-graph_parallel -sNO_BZIP2=1 --prefix=${BOOST_BUILD_PATH}/local/boost/arm/ --stagedir=./stage-arm
+./b2 toolset=gcc-arm link=static --without-python --without-wave --without-context --without-coroutine --without-mpi --without-test --without-graph --without-graph_parallel -sNO_BZIP2=1 --prefix=${BOOST_BUILD_PATH}/local/boost/arm/ --stagedir=./stage-arm install
+./b2 toolset=gcc-x86_32 link=static --without-python --without-wave --without-context --without-coroutine --without-mpi --without-test --without-graph --without-graph_parallel -sNO_BZIP2=1 --prefix=${BOOST_BUILD_PATH}/local/boost/x86_32/ --stagedir=${BOOST_BUILD_PATH}/boost/stage-x86_32 #install
+./b2 toolset=gcc-x86_32 link=static --without-python --without-wave --without-context --without-coroutine --without-mpi --without-test --without-graph --without-graph_parallel -sNO_BZIP2=1 --prefix=${BOOST_BUILD_PATH}/local/boost/x86_32/ --stagedir=${BOOST_BUILD_PATH}/boost/stage-x86_32 install
+popd 2> /dev/null

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export BOOST_BUILD_PATH=${PWD}
+
+pushd boost 2> /dev/null
+#./b2 toolset=gcc-arm link=static -s NO_BZIP2=1 --without-mpi --without-thread
+#./b2 link=static threading=single -s NO_BZIP2=1 --without-mpi --without-thread
+./b2 toolset=gcc-arm --clean
+./b2 toolset=gcc-x86_32 --clean
+popd 2> /dev/null
