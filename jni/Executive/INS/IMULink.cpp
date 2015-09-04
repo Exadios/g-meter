@@ -34,99 +34,112 @@ Copyright_License {
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <string.h>
+#include <boost/asio.hpp>   // For Proactor pattern.
 
 //------------------------------------------------------------------------------
-IMULink::IMULink()
-  : fd(-1),
-    serial(NULL)
+IMULink::IMULink(boost::asio::io_service& io, std::string& port)
+  : serial_port(io),
+    state(IMULink::SEARCH)
   {
-  this->state = SEARCH;
-  this->fd    = open(this->serial_port, O_NOCTTY, O_RDWR);
-    {
-    struct termios driver;
-    cfmakeraw(&driver);                   // Turn off cannonical etc.
-    cfsetspeed(&driver, B230400);
-    driver.c_iflag &= ~IXOFF;             // No flow control.
-    driver.c_iflag |= IGNPAR | IGNBRK ;   // No parity or break. 
-    driver.c_cflag &= ~(CSTOPB | PARENB); // One stop and no parity.
-    tcsetattr(this->fd, TCSANOW, &driver);
-    }
-  if (this->fd != -1)
-    this->serial = fdopen(fd, "rw");
+  this->serial_port.open(port);
+  struct termios driver;
+  cfmakeraw(&driver);                   // Turn off cannonical etc.
+  cfsetspeed(&driver, B230400);
+  driver.c_iflag &= ~IXOFF;             // No flow control.
+  driver.c_iflag |= IGNPAR | IGNBRK ;   // No parity or break. 
+  driver.c_cflag &= ~(CSTOPB | PARENB); // One stop and no parity.
+  tcsetattr(this->serial_port.native_handle(), TCSANOW, &driver);
+//  this->serial_port.set_option(&driver);
   }
 
 //------------------------------------------------------------------------------
-bool
-IMULink::Read()
+void
+IMULink::Initialize()
   {
-  if (this->serial == NULL)
-    return false;
-
-  do
+  this->state = IMULink::SEARCH;
+  this->PostRead(this->frame_length);
+  }
+//------------------------------------------------------------------------------
+void
+IMULink::ReadH(const boost::system::error_code& error)
+  {
+  switch (this->state)
     {
-    char buf[128];
-
-    switch (this->state)
+    case INIT:
       {
-      case INIT:
-        {
-        this->state = SEARCH;
-        break;
-        }
-      case SEARCH:
-        {
-        unsigned int i;
-
-        fread(buf, sizeof(char), this->frame_length, this->serial);
-        for (i = 0; i < this->frame_length - 1; i++)
-          {
-          if (buf[i] == '\r' && buf[i + 1] == '\n')
-            {
-            fread(buf, sizeof(char), i + 2, serial);
-            this->state = VERIFY;
-            break;
-            }
-          }
-        if (this->state != VERIFY)
-          fread(buf, sizeof(char), 1, this->serial);  // Read just in case sync
-                                                      // on buffer boundry.
-        break;
-        }
-      case VERIFY:
-        {
-        int i, v;
-
-        for (i = 0, v = 0; i < 8; i++)
-          {
-          fread(buf, sizeof(char), frame_length, this->serial);
-          for (unsigned int j = 0; j < frame_length - 1; j++)
-            if (buf[j] == '\r' && buf[j + 1] == '\n')
-            v++;
-          }
-        if (v == i)
-          this->state = SYNC;
-        else if (v == i - 1)
-          this->state = VERIFY;   // Try another VERIFY
-        else
-          this->state = SEARCH;   // Something terribly wrong!
-        break;
-        }
-      case SYNC:
-        {
-        char eor[2];
-
-        fread(&this->tick, sizeof(this->tick), 1, this->serial);
-        fread(&this->acc, sizeof(this->acc), 1, this->serial);
-        fread(&this->gyro, sizeof(this->gyro), 1, this->serial);
-        fread(&this->mag, sizeof(this->mag), 1, this->serial);
-        fread(eor, sizeof(char), sizeof(eor) / sizeof(char), serial);
-        if (eor[0] == '\r' && eor[1] == '\n')
-          return true;
-        else
-          this->state = VERIFY;   // Error.
-        break;
-        }
+      this->state = SEARCH;
+      break;
       }
-    } while (true);
+    case SEARCH:
+      {
+      unsigned int i;
+
+      for (i = 0; i < this->frame_length - 1; i++)
+        {
+        if (this->buffer[i] == '\r' && this->buffer[i + 1] == '\n')
+          {
+          this->state = PREVERIFY;
+          break;
+          }
+        }
+      if (this->state != PREVERIFY)
+        this->PostRead(1);  // Read just in case sync on buffer boundry.
+      else
+        this->PostRead(i + 2);  // Align.
+      break;
+      }
+    case PREVERIFY:
+      this->vv = this->vi = 0;
+      this->state = IMULink::VERIFY;
+      this->PostRead(this->frame_length);
+      break;
+    case VERIFY:
+      {
+      if (this->buffer[this->frame_length - 2] == '\r' &&
+          this->buffer[this->frame_length - 1] == '\n')
+        this->vv++;
+      if (this->vv == 7 && this->vi == 7)
+        this->state = SYNC;
+      else if (this->vv == (this->vi - 1))
+        {
+        this->vv = this->vi = 0;
+        this->state = VERIFY;   // Try another VERIFY
+        }
+      else
+        this->state = SEARCH;   // Something terribly wrong!
+      this->PostRead(this->frame_length);
+      break;
+      }
+    case SYNC:
+      {
+      int p = 0;
+
+      memcpy(&this->tick, &this->buffer[p], sizeof(this->tick));
+      p += sizeof(this->tick);
+      memcpy(&this->acc,  &this->buffer[p], sizeof(this->acc));
+      p += sizeof(this->acc);
+      memcpy(&this->gyro, &this->buffer[p], sizeof(this->gyro));
+      p += sizeof(this->gyro);
+      memcpy(&this->mag,  &this->buffer[p], sizeof(this->mag));
+      p += sizeof(this->mag);
+      if (this->buffer[p] == '\r' && this->buffer[p + 1] == '\n')
+        this->state = SYNC;
+      else
+        this->state = VERIFY; // Error.
+      this->PostRead(this->frame_length);
+      break;
+      }
+    }
   }
 
+//------------------------------------------------------------------------------
+void
+IMULink::PostRead(int nbytes)
+  {
+  boost::asio::async_read(this->serial_port,
+                          boost::asio::buffer(this->buffer, nbytes),
+                          boost::bind(&IMULink::ReadH,
+                                      this,
+                                      boost::asio::placeholders::error)
+                         );
+  }

@@ -30,10 +30,13 @@
 
 // TODO Unit test this.
 
-#ifndef LINK_HPP
-#define LINK_HPP
+#ifndef IMULINK_HPP
+#define IMULINK_HPP
 
 #include <tuple>
+#include <string>
+#include <boost/asio.hpp>
+#include <boost/bind.hpp>
 
 typedef std::tuple<float, float, float> Tuple3f;
 
@@ -46,17 +49,17 @@ class IMULink
   {
 public:
   /**
-   * Get a reference to the Singleton IMULink object. If the object does not
-   * yet it exist then it is created. This is the only way that the object
-   * of this class may be created.
-   * @return The reference the object. This reference is always valid at the
-   *         time this function is called.
+   * Ctor.
+   * @param io The controlling io_service.
+   * @param port The FQ special file specifying the serial port - 
+   *             e.g. "/dev/ttyUSB0".
    */
-  static IMULink& Instance()
-      {
-      static IMULink instance;
-      return instance;
-      }
+  IMULink(boost::asio::io_service& io, std::string& port);
+
+  /**
+   * Initialize the link by starting a sync.
+   */
+  void Initialize();
 
   /**
    * Read a frame from the IMU. This function will block until the frame is
@@ -64,7 +67,7 @@ public:
    * system.
    * @return If the link has failed then false.
    */
-  bool Read();
+  void ReadH(const boost::system::error_code& error);
 
   /**
    * Give the current timer tick as set by the previous Read().
@@ -92,34 +95,36 @@ public:
 
 private:
   /**
-   * Ctor. Called from IMULink::Instance() only.
-   */
-  IMULink();
-
-  /**
    * Do not allow copy operator!
    */
   IMULink& operator=(const IMULink&);
 
   enum state_t
     {
-    INIT = 0,   // Initial state.
-    SEARCH = 1, // Search for buffer frame by looking for '\r', '\n' pair.
-    VERIFY = 2, // Verify sync.
-    SYNC = 3    // Have frame sync. Read data.
+    INIT = 0,       // Initial state.
+    SEARCH = 1,     // Search for buffer frame by looking for '\r', '\n' pair.
+    PREVERIFY = 2,  // Setup for a VERIFY
+    VERIFY = 3,     // Verify sync.
+    SYNC = 4        // Have frame sync. Read data.
   };
 
+  int vv;           // Verify count.
+  int vi;           // Number of VERIFYs
+
+  boost::asio::serial_port serial_port;
   state_t state;
 
-  const char *serial_port = "/dev/ttyUSB0";
-  const size_t frame_length = sizeof(unsigned int) +
-                              9 * sizeof(float) +
-                              2 * sizeof(char);
+#define FRAME_LENGTH (sizeof(unsigned int) + 9 * sizeof(float) + 2 * sizeof(char))
+  const size_t frame_length = FRAME_LENGTH;
+  char buffer[FRAME_LENGTH * 2];
 
   char *sync_and_read();
 
-  int fd;
-  FILE *serial;
+  /**
+   * Post a non blocking read.
+   * @param nbytes The number of bytes to read.
+   */
+  void PostRead(int nbytes);
 
   unsigned int tick;
   float acc[3];
@@ -127,4 +132,4 @@ private:
   float mag[3];
   };
 
-#endif  // LINK_HPP
+#endif  // IMULINK_HPP

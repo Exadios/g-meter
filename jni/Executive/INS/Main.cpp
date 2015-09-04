@@ -23,6 +23,7 @@ Copyright_License {
 
 // TODO Implement.
 
+//#include <boost/asio.hpp>   // To use Proactor pattern.
 #include "IMULink.hpp"
 
 int Main(int, const char *[]);
@@ -31,9 +32,12 @@ int Main(int, const char *[]);
 int
 Main(int argc, const char *argv[])
   {   // Do nothing yet.
-  IMULink imulink = IMULink::Instance();
 
-  imulink.Read();   // Dummy for linking.
+  boost::asio::io_service io;
+  std::string port(argv[1]);
+  IMULink imulink(io, port);
+
+  imulink.Initialize();   // Dummy for linking.
 
   return 0;
   }

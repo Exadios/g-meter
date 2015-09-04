@@ -1,5 +1,6 @@
 bin/
 gen/
+lib/local
 */bin/
 */gen/
 .metadata/*
@@ -14,7 +15,7 @@ doc/Design/*.png
 *.out
 *.pdf
 *.toc
-*.txt
+jni/Engine/ArduIMU_V3/test/dump.txt
 *.zip
 *.swp
 *.log
