@@ -56,18 +56,25 @@ public:
    */
   IMULink(boost::asio::io_service& io, std::string& port);
 
+  enum state_t
+    {
+    INIT = 0,       // Initial state.
+    SEARCH = 1,     // Search for buffer frame by looking for '\r', '\n' pair.
+    PREVERIFY = 2,  // Setup for a VERIFY
+    VERIFY = 3,     // Verify sync.
+    SYNC = 4        // Have frame sync. Read data.
+    };
+
   /**
    * Initialize the link by starting a sync.
    */
   void Initialize();
 
   /**
-   * Read a frame from the IMU. This function will block until the frame is
-   * read so a return from this function can be used to time the calling
-   * system.
-   * @return If the link has failed then false.
+   * Give the current state.
+   * @return The state of the link.
    */
-  void ReadH(const boost::system::error_code& error);
+  enum state_t State() const;
 
   /**
    * Give the current timer tick as set by the previous Read().
@@ -99,14 +106,11 @@ private:
    */
   IMULink& operator=(const IMULink&);
 
-  enum state_t
-    {
-    INIT = 0,       // Initial state.
-    SEARCH = 1,     // Search for buffer frame by looking for '\r', '\n' pair.
-    PREVERIFY = 2,  // Setup for a VERIFY
-    VERIFY = 3,     // Verify sync.
-    SYNC = 4        // Have frame sync. Read data.
-  };
+  /**
+   * Read a frame from the IMU. This function is called by the Proactor
+   * pattern when the requested number of bytes have been read.
+   */
+  void ReadH(const boost::system::error_code& error);
 
   int vv;           // Verify count.
   int vi;           // Number of VERIFYs

@@ -58,6 +58,14 @@ IMULink::Initialize()
   this->state = IMULink::SEARCH;
   this->PostRead(this->frame_length);
   }
+
+//------------------------------------------------------------------------------
+enum IMULink::state_t
+IMULink::State() const
+  {
+  return (this->state);
+  }
+
 //------------------------------------------------------------------------------
 void
 IMULink::ReadH(const boost::system::error_code& error)
