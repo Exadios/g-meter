@@ -62,13 +62,20 @@ public:
     SEARCH = 1,     // Search for buffer frame by looking for '\r', '\n' pair.
     PREVERIFY = 2,  // Setup for a VERIFY
     VERIFY = 3,     // Verify sync.
-    SYNC = 4        // Have frame sync. Read data.
+    SYNC = 4,       // Have frame sync. Read data.
+    TERMINATE = 5   // The link operation is to terminate.
     };
 
   /**
-   * Initialize the link by starting a sync.
+   * Initialize the link by starting a sync. This will result in the Proactor
+   * read loop starting.
    */
   void Initialize();
+
+  /**
+   * Terminate the Proactor read loop.
+   */
+  void Terminate();
 
   /**
    * Give the current state.

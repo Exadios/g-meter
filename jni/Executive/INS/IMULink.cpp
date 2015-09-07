@@ -33,6 +33,7 @@ Copyright_License {
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <unistd.h>
 #include <string.h>
 #include <boost/asio.hpp>   // For Proactor pattern.
 
@@ -57,6 +58,13 @@ IMULink::Initialize()
   {
   this->state = IMULink::SEARCH;
   this->PostRead(this->frame_length);
+  }
+
+//------------------------------------------------------------------------------
+void
+IMULink::Terminate()
+  {
+  this->state = TERMINATE;
   }
 
 //------------------------------------------------------------------------------
@@ -136,6 +144,8 @@ IMULink::ReadH(const boost::system::error_code& error)
       this->PostRead(this->frame_length);
       break;
       }
+    case TERMINATE:
+      break;  // Terminate by not calling PostRead().
     }
   }
 
