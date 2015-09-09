@@ -93,19 +93,19 @@ public:
    * Give the current accelerometer state as set by the previous Read().
    * @return The accelerometer state.
    */
-  Tuple3f& Acc() const;
+  const Tuple3f& Acc() const;
 
   /**
    * Give the current gyro state as set by the previous Read().
    * @return The gyro state.
    */
-  Tuple3f& Gyro() const;
+  const Tuple3f& Gyro() const;
 
   /**
    * Give the current magnetometer state as set by the previous Read().
    * @return The magnetometer state.
    */
-  Tuple3f& Mag() const;
+  const Tuple3f& Mag() const;
 
 private:
   /**
@@ -120,13 +120,12 @@ private:
   void ReadH(const boost::system::error_code& error);
 
   int vv;           // Verify count.
-  int vi;           // Number of VERIFYs
 
   boost::asio::serial_port serial_port;
-  state_t state;
+  state_t state, state_jk;
 
 #define FRAME_LENGTH (sizeof(unsigned int) + 9 * sizeof(float) + 2 * sizeof(char))
-  const size_t frame_length = FRAME_LENGTH;
+  const size_t frame_length = FRAME_LENGTH;  //+ 20;
   char buffer[FRAME_LENGTH * 2];
 
   char *sync_and_read();
@@ -138,9 +137,9 @@ private:
   void PostRead(int nbytes);
 
   unsigned int tick;
-  float acc[3];
-  float gyro[3];
-  float mag[3];
+  Tuple3f acc;
+  Tuple3f gyro;
+  Tuple3f mag;
   };
 
 #endif  // IMULINK_HPP

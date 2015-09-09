@@ -40,7 +40,8 @@ Copyright_License {
 //------------------------------------------------------------------------------
 IMULink::IMULink(boost::asio::io_service& io, std::string& port)
   : serial_port(io),
-    state(IMULink::SEARCH)
+    state(IMULink::SEARCH),
+    state_jk(IMULink::SEARCH)
   {
   this->serial_port.open(port);
   struct termios driver;
@@ -56,7 +57,7 @@ IMULink::IMULink(boost::asio::io_service& io, std::string& port)
 void
 IMULink::Initialize()
   {
-  this->state = IMULink::SEARCH;
+  this->state_jk = this->state = IMULink::SEARCH;
   this->PostRead(this->frame_length);
   }
 
@@ -64,7 +65,7 @@ IMULink::Initialize()
 void
 IMULink::Terminate()
   {
-  this->state = TERMINATE;
+  this->state_jk = TERMINATE;
   }
 
 //------------------------------------------------------------------------------
@@ -75,76 +76,128 @@ IMULink::State() const
   }
 
 //------------------------------------------------------------------------------
+unsigned int
+IMULink::Tick() const
+  {
+  return this->tick;
+  }
+
+//------------------------------------------------------------------------------
+const Tuple3f&
+IMULink::Acc() const
+  {
+  return this->acc;
+  }
+
+//------------------------------------------------------------------------------
+const Tuple3f&
+IMULink::Gyro() const
+  {
+  return this->gyro;
+  }
+
+//------------------------------------------------------------------------------
+const Tuple3f&
+IMULink::Mag() const
+  {
+  return this->mag;
+  }
+
+//------------------------------------------------------------------------------
 void
 IMULink::ReadH(const boost::system::error_code& error)
   {
+  this->state = this->state_jk;
   switch (this->state)
     {
     case INIT:
       {
-      this->state = SEARCH;
+//      std::cout << "INIT\n";
+      this->state_jk = SEARCH;
+      this->PostRead(this->frame_length);
       break;
       }
     case SEARCH:
       {
+//      std::cout << "SEARCH\n";
       unsigned int i;
 
       for (i = 0; i < this->frame_length - 1; i++)
         {
         if (this->buffer[i] == '\r' && this->buffer[i + 1] == '\n')
           {
-          this->state = PREVERIFY;
+          this->state_jk = IMULink::PREVERIFY;
           break;
           }
         }
-      if (this->state != PREVERIFY)
-        this->PostRead(1);  // Read just in case sync on buffer boundry.
+      if (this->state_jk != IMULink::PREVERIFY)
+        {
+        this->state_jk = IMULink::INIT;
+        this->PostRead(1);  // Read just in case sync on buffer boundary.
+        }
       else
-        this->PostRead(i + 2);  // Align.
+        {
+        this->PostRead(this->frame_length + i + 2);  // Align.
+//        std::cout << "i = " << i << "frame_length = " << this->frame_length << "\n";
+        }
       break;
       }
     case PREVERIFY:
-      this->vv = this->vi = 0;
-      this->state = IMULink::VERIFY;
+      {
+//      std::cout << "PREVERIFY\n";
+      this->vv = 0;
+      this->state_jk = IMULink::VERIFY;
       this->PostRead(this->frame_length);
       break;
+      }
     case VERIFY:
       {
+//      std::cout << "VERIFY\n";
       if (this->buffer[this->frame_length - 2] == '\r' &&
           this->buffer[this->frame_length - 1] == '\n')
         this->vv++;
-      if (this->vv == 7 && this->vi == 7)
-        this->state = SYNC;
-      else if (this->vv == (this->vi - 1))
-        {
-        this->vv = this->vi = 0;
-        this->state = VERIFY;   // Try another VERIFY
-        }
       else
-        this->state = SEARCH;   // Something terribly wrong!
+        this->state_jk = IMULink::SEARCH;
+      if (this->vv >= 32)
+        this->state_jk = IMULink::SYNC;
       this->PostRead(this->frame_length);
       break;
       }
     case SYNC:
       {
+//      std::cout << "SYNC\n";
       int p = 0;
 
       memcpy(&this->tick, &this->buffer[p], sizeof(this->tick));
       p += sizeof(this->tick);
-      memcpy(&this->acc,  &this->buffer[p], sizeof(this->acc));
-      p += sizeof(this->acc);
-      memcpy(&this->gyro, &this->buffer[p], sizeof(this->gyro));
-      p += sizeof(this->gyro);
+      std::get<0>(this->acc) = this->buffer[p];
+      p += sizeof(float);
+      std::get<1>(this->acc) = this->buffer[p];
+      p += sizeof(float);
+      std::get<2>(this->acc) = this->buffer[p];
+      p += sizeof(float);
+      std::get<0>(this->gyro) = this->buffer[p];
+      p += sizeof(float);
+      std::get<1>(this->gyro) = this->buffer[p];
+      p += sizeof(float);
+      std::get<2>(this->gyro) = this->buffer[p];
+      p += sizeof(float);
       memcpy(&this->mag,  &this->buffer[p], sizeof(this->mag));
-      p += sizeof(this->mag);
+      std::get<0>(this->mag) = this->buffer[p];
+      p += sizeof(float);
+      std::get<1>(this->mag) = this->buffer[p];
+      p += sizeof(float);
+      std::get<2>(this->mag) = this->buffer[p];
+      p += sizeof(float);
       if (this->buffer[p] == '\r' && this->buffer[p + 1] == '\n')
-        this->state = SYNC;
+        this->state_jk = IMULink::SYNC;
       else
-        this->state = VERIFY; // Error.
+        this->state_jk = IMULink::VERIFY; // Error.
       this->PostRead(this->frame_length);
       break;
       }
     case TERMINATE:
+//      std::cout << "TERMINATE\n";
       break;  // Terminate by not calling PostRead().
     }
   }
@@ -153,6 +206,7 @@ IMULink::ReadH(const boost::system::error_code& error)
 void
 IMULink::PostRead(int nbytes)
   {
+  memset(this->buffer, 0, this->frame_length + 1);
   boost::asio::async_read(this->serial_port,
                           boost::asio::buffer(this->buffer, nbytes),
                           boost::bind(&IMULink::ReadH,
