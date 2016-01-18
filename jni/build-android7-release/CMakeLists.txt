@@ -1,7 +1,0 @@
-
-set_property(GLOBAL PROPERTY ALLOW_DUPLICATE_CUSTOM_TARGETS)
-
-set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
-set(CMAKE_BUILD_TYPE "Release")
-
-add_library(GMeter-android-release SHARED ${ALLSRCS}) 

@@ -56,3 +56,4 @@ ArduIMUDump
 ins-unix32-debug
 ins-unix32-release
 ins-unixkobo-release
+out/

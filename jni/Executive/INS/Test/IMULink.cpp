@@ -24,6 +24,11 @@ Copyright_License {
 #include "../IMULink.hpp"
 #include <boost/date_time/posix_time/posix_time.hpp>
 
+void timerC(const boost::system::error_code&,
+            boost::asio::deadline_timer,
+            IMULink *);
+int Main(int argc, const char *argv[]);
+
 //------------------------------------------------------------------------------
 void timerC(const boost::system::error_code&,/*e*/
             boost::asio::deadline_timer *t,
