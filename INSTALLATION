@@ -1,0 +1,6 @@
+To install from a clean pull:
+
+mkdir out
+cd out
+cmake -G "Unix Makefiles" ..
+make
