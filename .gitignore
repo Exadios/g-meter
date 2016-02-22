@@ -29,9 +29,7 @@ lib*.a
 *.d
 *.map
 *.class
-jni/.Makefile.depends
-jni/build/*
-jni/Native/*.h
+build/Native/*.h
 *.dblite
 CMakeFiles/
 CMakeCache.txt
