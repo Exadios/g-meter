@@ -34,6 +34,7 @@ jni/build/*
 jni/Native/*.h
 *.dblite
 CMakeFiles/
+CMakeCache.txt
 CopyOfCMakeCache.txt
 Makefile
 cmake_install.cmake
