@@ -23,6 +23,7 @@ Copyright_License {
 
 // TODO Unit test this.
 
+#include <boost/config/compiler/gcc.hpp>
 #include "IMULink.hpp"
 #include <iostream>
 #include <stdio.h>

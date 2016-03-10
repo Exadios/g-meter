@@ -21,31 +21,42 @@ Copyright_License {
 }
 */
 
-// TODO Implement.
-
-#include <boost/asio.hpp>   // To use Proactor pattern.
+#include "Executive.hpp"
 #include <boost/config/compiler/gcc.hpp>
-#include "IMULink.hpp"
+#include <boost/asio.hpp>
+#include <iostream>
 
-int Main(int, const char *[]);
+Executive *executive;
+std::queue<std::string> xcsoar_deliver;
+std::queue<std::string> xcsoar_receive;
+std::queue<std::string> ins_deliver;
+std::queue<std::string> ins_receive;
+std::queue<std::string> serial_deliver;
+std::queue<std::string> serial_receive;
+
+int Main(int argc, const char *argv[]);
 
 //------------------------------------------------------------------------------
-int
-Main(int argc, const char *argv[])
-  {   // Do nothing yet.
+int Main(int argc, const char *argv[])
+  {
+  try
+    {
+    boost::asio::io_service io;
+    Executive e(io, 4352, 4400, "/dev/ttyUSB1");
+    ::executive = &e;
 
-  boost::asio::io_service io;
-  std::string port(argv[1]);
-  IMULink imulink(io, port);
-
-  imulink.Initialize();   // Dummy for linking.
-
+    ::executive->Run();
+    }
+  catch (std::exception& e)
+    {
+    std::cerr << "Exception: " << e.what() << "\n";
+    }
   return 0;
   }
 
 //------------------------------------------------------------------------------
 int
-main(int argc, const char*argv[])
+main(int argc, const char *argv[])
   {
   return Main(argc, argv);
   }

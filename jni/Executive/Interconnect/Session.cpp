@@ -21,31 +21,25 @@ Copyright_License {
 }
 */
 
-// TODO Implement.
+#include "Session.hpp"
+#include <queue>
 
-#include <boost/asio.hpp>   // To use Proactor pattern.
-#include <boost/config/compiler/gcc.hpp>
-#include "IMULink.hpp"
-
-int Main(int, const char *[]);
+class Executive;
+extern Executive *executive;
+extern std::queue<std::string> xcsoar_deliver;
+extern std::queue<std::string> xcsoar_receive;
+extern std::queue<std::string> ins_deliver;
+extern std::queue<std::string> ins_receive;
+extern std::queue<std::string> serial_deliver;
+extern std::queue<std::string> serial_receive;
 
 //------------------------------------------------------------------------------
-int
-Main(int argc, const char *argv[])
-  {   // Do nothing yet.
-
-  boost::asio::io_service io;
-  std::string port(argv[1]);
-  IMULink imulink(io, port);
-
-  imulink.Initialize();   // Dummy for linking.
-
-  return 0;
+Session::Session(boost::asio::io_service& io)
+  : io(io)
+  {
   }
 
 //------------------------------------------------------------------------------
-int
-main(int argc, const char*argv[])
+Session::~Session()
   {
-  return Main(argc, argv);
   }

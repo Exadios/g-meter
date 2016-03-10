@@ -21,31 +21,38 @@ Copyright_License {
 }
 */
 
-// TODO Implement.
+#include "SerialLink.hpp"
+#include "Executive.hpp"
+#include <queue>
+#include <string>
 
-#include <boost/asio.hpp>   // To use Proactor pattern.
-#include <boost/config/compiler/gcc.hpp>
-#include "IMULink.hpp"
-
-int Main(int, const char *[]);
+extern std::queue<std::string> serial_deliver;
+extern std::queue<std::string> serial_receive;
+extern Executive *executive;
 
 //------------------------------------------------------------------------------
-int
-Main(int argc, const char *argv[])
-  {   // Do nothing yet.
-
-  boost::asio::io_service io;
-  std::string port(argv[1]);
-  IMULink imulink(io, port);
-
-  imulink.Initialize();   // Dummy for linking.
-
-  return 0;
+SerialLink::SerialLink(boost::asio::io_service& io, const std::string tty)
+  : UpstreamSession(io, tty)
+  {
   }
 
 //------------------------------------------------------------------------------
-int
-main(int argc, const char*argv[])
+void
+SerialLink::ReadNotify()
   {
-  return Main(argc, argv);
+  ::executive->SerialReadHandled();
+  }
+
+//------------------------------------------------------------------------------
+std::queue<std::string>&
+SerialLink::ReceiveQueue() const
+  {
+  return ::serial_receive;
+  }
+
+//------------------------------------------------------------------------------
+std::queue<std::string>&
+SerialLink::DeliverQueue() const
+  {
+  return ::serial_deliver;
   }

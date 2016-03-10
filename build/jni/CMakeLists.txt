@@ -17,15 +17,35 @@
 #    ${JNISRC}/Java/com_exadios_g_meter_NonGPSSensors.cpp
 #    ${JNISRC}/Java/com_exadios_g_meter_Timer.cpp)
 set(INSSRC ${JNISRC}/Executive/INS)
-set(UNIXSRCS
+set(INUSRC ${JNISRC}/Engine/INU)
+set(INTERCONNECTSRC ${JNISRC}/Executive/Interconnect)
+set(INSMAIN ${INSSRC}/Main.cpp)
+set(INTERCONNECTMAIN ${INTERCONNECTSRC}/Main.cpp)
+
+set(INSSRCS
     ${INSSRC}/Main.cpp
     ${INSSRC}/IMULink.cpp
-    ${INSSRC}/Interconnect.cpp
+    ${INUSRC}/Inu.cpp
+    ${INUSRC}/INUKalman.cpp
+    ${JNISRC}/Engine/Kalman/kstatics.cpp
+    CACHE INTERNAL "INS Sources"
    )
+set(INTERCONNECTSRCS
+    ${INTERCONNECTSRC}/Session.cpp
+    ${INTERCONNECTSRC}/DownstreamSession.cpp
+    ${INTERCONNECTSRC}/UpstreamSession.cpp
+    ${INTERCONNECTSRC}/SerialLink.cpp
+    ${INTERCONNECTSRC}/InsLink.cpp
+    ${INTERCONNECTSRC}/XcsoarLink.cpp
+    ${INTERCONNECTSRC}/Executive.cpp
+    ${INTERCONNECTSRC}/Main.cpp
+    CACHE INTERNAL "Interconnect Sources"
+   )
+set(UNIXSRCS ${INSSRCS} ${INTERCONNECTSRCS})
 set(ALLSRCS ${ANDROIDSRCS} ${UNIXSRCS})
 
 set(warnings "-Wno-error=unused-parameter -Wall -Wextra -Wwrite-strings -Wcast-qual -Wpointer-arith -Wsign-compare -Wundef -Wmissing-declarations -Wredundant-decls -Wmissing-noreturn -Wno-unused-parameter -Wno-missing-field-initializers  -Wcast-align -Werror")
-set(flags "-fno-exceptions -fno-rtti -std=gnu++0x -fno-threadsafe-statics -fmerge-all-constants -fvisibility=hidden -fpic -funwind-tables -finput-charset=utf-8")
+set(flags "-fno-rtti -std=gnu++0x -fno-threadsafe-statics -fmerge-all-constants -fvisibility=hidden -fpic -funwind-tables -finput-charset=utf-8")
 set(defines "")
     set(CMAKE_CXX_FLAGS "${warnings} ${defines} ${flags}"
         CACHE STRING "Flags used by the compiler during all build types." FORCE)
@@ -40,7 +60,7 @@ add_subdirectory(unix)
 
 link_directories("${BOOST}/x86_32/lib")
 include_directories("${BOOST}/x86_32/include")
-add_executable(IMULink EXCLUDE_FROM_ALL 
-                ${JNISRC}/Executive/INS/Test/IMULink.cpp
-                ${JNISRC}/Executive/INS/IMULink.cpp)
-target_link_libraries(IMULink boost_system)
+#add_executable(IMULink EXCLUDE_FROM_ALL 
+#                ${JNISRC}/Executive/INS/Test/IMULink.cpp
+#                ${JNISRC}/Executive/INS/IMULink.cpp)
+#target_link_libraries(IMULink boost_system)

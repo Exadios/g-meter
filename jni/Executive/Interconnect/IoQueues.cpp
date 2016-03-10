@@ -21,31 +21,9 @@ Copyright_License {
 }
 */
 
-// TODO Implement.
-
-#include <boost/asio.hpp>   // To use Proactor pattern.
-#include <boost/config/compiler/gcc.hpp>
-#include "IMULink.hpp"
-
-int Main(int, const char *[]);
+#include "IoQueues.hpp"
 
 //------------------------------------------------------------------------------
-int
-Main(int argc, const char *argv[])
-  {   // Do nothing yet.
-
-  boost::asio::io_service io;
-  std::string port(argv[1]);
-  IMULink imulink(io, port);
-
-  imulink.Initialize();   // Dummy for linking.
-
-  return 0;
-  }
-
-//------------------------------------------------------------------------------
-int
-main(int argc, const char*argv[])
+IoQueues::IoQueues()
   {
-  return Main(argc, argv);
   }

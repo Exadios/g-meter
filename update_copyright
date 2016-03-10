@@ -1,0 +1,39 @@
+#!/bin/bash
+
+if [ $# -ne 1 ]
+then
+  echo "Usage: ${0} <from_year>"
+  exit 1
+fi
+
+year=$(date | awk '{ print $6 }')
+echo ${year}
+
+for file in $(find ./jni -type f -name "*.cpp")
+do
+  cat ${file} | sed -e 's/^  Copyright (C) .*-${1}/&x-Replace with yearx/' | \
+                sed -e 's/-${1}x-Replace with yearx/-${year}/' > ${file}.tmp
+  echo ${file}
+  cat ${file} | sed -e 's/^  Copyright (C) .*-${1}/&x-Replace with yearx/' | \
+                sed -e 's/-${1}x-Replace with yearx/-${year}/' | less
+  echo " cat ${file} | sed -e 's/^  Copyright (C) .*-${1}/&x-Replace with yearx/' | \
+                sed -e 's/-${1}x-Replace with yearx/-${year}/' > ${file}.tmp"
+  grep "^  Copyright" ${file}.tmp
+  mv ${file}.tmp ${file}
+  grep "^  Copyright" ${file}
+done
+
+for file in $(find ./src -type f -name "*.java")
+do
+  cat ${file} | sed -e 's/^  Copyright (C) .*-${1}/&x-Replace with yearx/' | \
+                sed -e 's/-${1}x-Replace with yearx/-${year}/' > ${file}.tmp
+  mv ${file}.tmp ${file}
+done
+
+for file in $(find ./jni -type f -name "*.hpp")
+do
+  cat ${file} | sed -e 's/^ \* Copyright (C) .*-${1}/&x-Replace with yearx/' | \
+                sed -e 's/-${1}x-Replace with yearx/-${year}/' > ${file}.tmp
+  mv ${file}.tmp ${file}
+done
+

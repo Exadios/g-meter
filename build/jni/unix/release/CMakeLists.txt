@@ -1,2 +1,7 @@
 set(CMAKE_BUILD_TYPE "Release")
-add_library(GMeter-unix32-release SHARED ${UNIXSRCS})
+find_library(STATICSYS NAMES boost_exception)
+set(SYSLIBS ${STATICSYS} boost_system ${STATICSYS})
+add_executable(ins.release ${INSSRCS})
+target_link_libraries(ins.release ${SYSLIBS})
+add_executable(interconnect.release ${INTERCONNECTSRCS})
+target_link_libraries(interconnect.release ${SYSLIBS})

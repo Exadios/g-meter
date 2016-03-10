@@ -21,31 +21,38 @@ Copyright_License {
 }
 */
 
-// TODO Implement.
+#include "XcsoarLink.hpp"
+#include "Executive.hpp"
+#include <queue>
+#include <string>
 
-#include <boost/asio.hpp>   // To use Proactor pattern.
-#include <boost/config/compiler/gcc.hpp>
-#include "IMULink.hpp"
-
-int Main(int, const char *[]);
+extern std::queue<std::string> xcsoar_receive;
+extern std::queue<std::string> xcsoar_deliver;
+extern Executive *executive;
 
 //------------------------------------------------------------------------------
-int
-Main(int argc, const char *argv[])
-  {   // Do nothing yet.
-
-  boost::asio::io_service io;
-  std::string port(argv[1]);
-  IMULink imulink(io, port);
-
-  imulink.Initialize();   // Dummy for linking.
-
-  return 0;
+XcsoarLink::XcsoarLink(boost::asio::io_service& io, int xcsoar_port)
+  : DownstreamSession(io, xcsoar_port)
+  {
   }
 
 //------------------------------------------------------------------------------
-int
-main(int argc, const char*argv[])
+void
+XcsoarLink::ReadNotify()
   {
-  return Main(argc, argv);
+  ::executive->XcsoarReadHandled();
+  }
+
+//------------------------------------------------------------------------------
+std::queue<std::string>&
+XcsoarLink::ReceiveQueue() const
+  {
+  return ::xcsoar_receive;
+  }
+
+//------------------------------------------------------------------------------
+std::queue<std::string>&
+XcsoarLink::DeliverQueue() const
+  {
+  return ::xcsoar_deliver;
   }

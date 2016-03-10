@@ -1,2 +1,7 @@
 set(CMAKE_BUILD_TYPE "Debug")
-add_library(GMeter-unix32-debug SHARED ${UNIXSRCS})
+find_library(STATICSYS NAMES boost_exception)
+set(SYSLIBS ${STATICSYS} boost_system ${STATICSYS})
+add_executable(ins.debug ${INSSRCS})
+target_link_libraries(ins.debug ${SYSLIBS})
+add_executable(interconnect.debug ${INTERCONNECTSRCS})
+target_link_libraries(interconnect.debug ${SYSLIBS})

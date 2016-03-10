@@ -21,31 +21,38 @@ Copyright_License {
 }
 */
 
-// TODO Implement.
+#include "InsLink.hpp"
+#include "Executive.hpp"
+#include <queue>
+#include <string>
 
-#include <boost/asio.hpp>   // To use Proactor pattern.
-#include <boost/config/compiler/gcc.hpp>
-#include "IMULink.hpp"
-
-int Main(int, const char *[]);
+extern std::queue<std::string> ins_deliver;
+extern std::queue<std::string> ins_receive;
+extern Executive *executive;
 
 //------------------------------------------------------------------------------
-int
-Main(int argc, const char *argv[])
-  {   // Do nothing yet.
-
-  boost::asio::io_service io;
-  std::string port(argv[1]);
-  IMULink imulink(io, port);
-
-  imulink.Initialize();   // Dummy for linking.
-
-  return 0;
+InsLink::InsLink(boost::asio::io_service& io, int ins_port)
+  : DownstreamSession(io, ins_port)
+  {
   }
 
 //------------------------------------------------------------------------------
-int
-main(int argc, const char*argv[])
+void
+InsLink::ReadNotify()
   {
-  return Main(argc, argv);
+  ::executive->InsReadHandled();
+  }
+
+//------------------------------------------------------------------------------
+std::queue<std::string>&
+InsLink::ReceiveQueue() const
+  {
+  return ::ins_receive;
+  }
+
+//------------------------------------------------------------------------------
+std::queue<std::string>&
+InsLink::DeliverQueue() const
+  {
+  return ins_deliver;
   }

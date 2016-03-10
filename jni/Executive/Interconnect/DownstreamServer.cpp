@@ -21,31 +21,30 @@ Copyright_License {
 }
 */
 
-// TODO Implement.
-
-#include <boost/asio.hpp>   // To use Proactor pattern.
-#include <boost/config/compiler/gcc.hpp>
-#include "IMULink.hpp"
-
-int Main(int, const char *[]);
+#include "DownstreamServer.hpp"
+#include "DownstreamSession.hpp"
 
 //------------------------------------------------------------------------------
-int
-Main(int argc, const char *argv[])
-  {   // Do nothing yet.
-
-  boost::asio::io_service io;
-  std::string port(argv[1]);
-  IMULink imulink(io, port);
-
-  imulink.Initialize();   // Dummy for linking.
-
-  return 0;
-  }
-
-//------------------------------------------------------------------------------
-int
-main(int argc, const char*argv[])
+DownstreamServer::DownstreamServer(boost::asio::io_service& io_service,
+                                   const tcp::endpoint& endpoint)
+  : acceptor_(io_service, endpoint),
+    socket_(io_service)
   {
-  return Main(argc, argv);
+  DoAccept();
   }
+
+void
+DownstreamServer::DoAccept()
+  {
+  this->acceptor.async_accept(this->socket,
+                              [this](boost::system::error_code ec)
+    {
+    if (!ec)
+      {
+      std::make_shared<DownstreamSession>(std::move(this->socket))->Start();
+      }
+
+    this->DoAccept();
+    });
+  }
+};
