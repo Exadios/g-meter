@@ -10,3 +10,10 @@ set(ANDROID_SDK_DIR /home/pfb/opt/android-sdk-linux/platforms/android-19/android
 add_subdirectory(src)
 add_subdirectory(Native)
 add_subdirectory(jni)
+
+add_custom_target(
+                  doco
+                  COMMAND doxygen ../../../Doxyfile
+                  WORKING_DIRECTORY doc
+                 )
+
