@@ -35,6 +35,11 @@
 #include <boost/bind.hpp>
 #include "Session.hpp"
 
+/**
+ * A class to manage a session to an upstream device. In general upstream
+ * devices generate position and other sensor data. They may accept commands
+ * from downstream devices.
+ */
 class UpstreamSession : public Session
   {
 public:

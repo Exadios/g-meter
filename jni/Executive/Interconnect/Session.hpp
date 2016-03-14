@@ -67,20 +67,50 @@ protected:
    */
   Session(boost::asio::io_service& io);
 
+  /**
+   * The Proactor pattern read completion handler.
+   * @param ec The error code of the read operation.
+   * @param n Number of bytes read.
+   */
   virtual void ReadHandler(const boost::system::error_code ec,
                            std::size_t n) = 0;
 
+  /**
+   * The Proactor pattern write completion handler.
+   * @param ec The error code of the write operation.
+   */
   virtual void WriteHandler(const boost::system::error_code ec) = 0;
 
+  /**
+   * Initiate a write operation.
+   */
   virtual void Write() = 0;
 
+  /**
+   * Notify the Executive that the read has completed.
+   */
   virtual void ReadNotify() = 0;
 
+  /**
+   * Give the queue of records read.
+   * @return The link dependant receive queue.
+   */
   virtual std::queue<std::string>& ReceiveQueue() const = 0;
 
+  /**
+   * Give the queue of records to write.
+   * @return The link dependant deliver queue.
+   */
   virtual std::queue<std::string>& DeliverQueue() const = 0;
 
+  /**
+   * The io service in use.
+   */
   boost::asio::io_service& io;
+
+  /**
+   * A streambuf.
+   */
   boost::asio::streambuf b; // Device streambuf.
   };
 

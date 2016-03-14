@@ -33,11 +33,16 @@
 
 #include "DownstreamSession.hpp"
 
+/**
+ * The link to XCSoar.
+ */
 class XcsoarLink : public DownstreamSession
   {
 public:
   /**
    * Ctor.
+   * io The io service in use.
+   * xcsoar_port The port used by XCSoar.
    */
   XcsoarLink(boost::asio::io_service& io, int xcsoar_port);
 

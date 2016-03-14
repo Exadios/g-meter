@@ -39,7 +39,9 @@
 #include <queue>
 
 /**
- * A class to manage the downstream (i.e. to and from XCSoar) session.
+ * A class to manage the session to a downstream device. In general the
+ * downstream devices accept position and other sensor data. Downstream devices
+ * may issue commands and requests to upstream devices.
  */
 class DownstreamSession : public Session
   {

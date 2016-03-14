@@ -33,11 +33,16 @@
 
 #include "UpstreamSession.hpp"
 
+/**
+ * The serial link to the Flarm / IGC logger.
+ */
 class SerialLink : public UpstreamSession
   {
 public:
   /**
    * Ctor.
+   * @param io The io service in use.
+   * @param tty The fully qualified device name in use - e.g. "/dev/ttyUSB0".
    */
   SerialLink(boost::asio::io_service& io, const std::string tty);
 

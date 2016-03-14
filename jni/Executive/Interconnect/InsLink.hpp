@@ -33,11 +33,16 @@
 
 #include "DownstreamSession.hpp"
 
+/**
+ * The INS link.
+ */
 class InsLink : public DownstreamSession
   {
 public:
   /**
    * Ctor
+   * @param io The io service in use.
+   * @param ins_port The TCP port used by the INS link.
    */
   InsLink(boost::asio::io_service& io, int ins_port);
 

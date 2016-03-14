@@ -50,6 +50,10 @@ class Executive : public boost::noncopyable
 public:
   /**
    * Executive ctor.
+   * @param io The io service in use.
+   * @param xcsoar_port The TCP port used by the XCSoar link.
+   * @param ins_port The TCP port used by the INS link.
+   * @param tty The fully qualified serial device name - e.g. "/dev/ttyUSB0".
    */
   Executive(boost::asio::io_service& io,
             int xcsoar_port,
@@ -92,7 +96,7 @@ public:
   void InsReadHandled();
 
   /**
-   * The serail stream read has completed.
+   * The serial stream read has completed.
    */
   void SerialReadHandled();
 
