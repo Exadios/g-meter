@@ -62,14 +62,19 @@ public:
   void Run();
 
   /**
-   * Close the downstream.
+   * Close the INS.
    */
-  void CloseDownstream();
+  void CloseIns();
 
   /**
-   * Close the upstream.
+   * Close the XCSoar link.
    */
-  void CloseUpstream();
+  void CloseXcsoar();
+
+  /**
+   * Close the serial.
+   */
+  void CloseSerial();
 
   /**
    * Terminate.

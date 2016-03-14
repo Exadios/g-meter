@@ -52,20 +52,32 @@ Executive::Run()
 
 //------------------------------------------------------------------------------
 void
-Executive::CloseDownstream()
+Executive::CloseIns()
   {
+  this->ins_link.~InsLink();
   }
 
 //------------------------------------------------------------------------------
 void
-Executive::CloseUpstream()
+Executive::CloseXcsoar()
   {
+  this->xcsoar_link.~XcsoarLink();
+  }
+
+//------------------------------------------------------------------------------
+void
+Executive::CloseSerial()
+  {
+  this->serial_link.~SerialLink();
   }
 
 //------------------------------------------------------------------------------
 void
 Executive::Terminate()
   {
+  this->CloseSerial();
+  this->CloseXcsoar();
+  this->CloseIns();
   }
 
 //------------------------------------------------------------------------------
