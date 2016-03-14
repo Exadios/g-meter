@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 project(G-Meter)
 
 set(GMeterRoot ${G-Meter_SOURCE_DIR})
+enable_testing()
 
 add_subdirectory(build)
 
