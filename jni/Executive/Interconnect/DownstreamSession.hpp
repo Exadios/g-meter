@@ -54,7 +54,7 @@ public:
   /**
    * Dtor. Cleanup.
    */
-  ~DownstreamSession();
+  virtual ~DownstreamSession();
 
   /**
    * Start by scheduling a read on the downstream.

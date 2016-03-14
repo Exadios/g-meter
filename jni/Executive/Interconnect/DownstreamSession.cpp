@@ -42,7 +42,7 @@ DownstreamSession::DownstreamSession(boost::asio::io_service& io, int port)
 //------------------------------------------------------------------------------
 DownstreamSession::~DownstreamSession()
   {
-  // TODO Cleanup.
+  this->socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
   }
 
 //------------------------------------------------------------------------------
