@@ -41,7 +41,7 @@ UpstreamSession::UpstreamSession(boost::asio::io_service& io,
 //------------------------------------------------------------------------------
 UpstreamSession::~UpstreamSession()
   {
-  // TODO Cleanup.
+  this->Shutdown();
   }
 
 //------------------------------------------------------------------------------
@@ -108,3 +108,10 @@ UpstreamSession::Write()
                           );
   }
 
+//------------------------------------------------------------------------------
+void
+UpstreamSession::Shutdown()
+  {
+  if(this->serial_port.is_open())
+    this->serial_port.close();
+  }

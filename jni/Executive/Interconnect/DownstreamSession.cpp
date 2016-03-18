@@ -42,7 +42,7 @@ DownstreamSession::DownstreamSession(boost::asio::io_service& io, int port)
 //------------------------------------------------------------------------------
 DownstreamSession::~DownstreamSession()
   {
-  this->socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+  this->Shutdown();
   }
 
 //------------------------------------------------------------------------------
@@ -134,4 +134,11 @@ DownstreamSession::AcceptHandler(boost::system::error_code ec)
     }
   else
     ::executive->Terminate();
+  }
+
+//------------------------------------------------------------------------------
+void
+DownstreamSession::Shutdown()
+  {
+  this->socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
   }

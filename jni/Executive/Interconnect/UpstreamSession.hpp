@@ -66,6 +66,11 @@ public:
    */
   void Deliver();
 
+  /**
+   * Shutdown the link.
+   */
+  void Shutdown();
+
 private:
   void ReadHandler(const boost::system::error_code ec, std::size_t n);
 

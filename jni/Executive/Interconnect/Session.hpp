@@ -104,6 +104,11 @@ protected:
   virtual std::queue<std::string>& DeliverQueue() const = 0;
 
   /**
+   * Shutdown the link.
+   */
+  virtual void Shutdown() = 0;
+
+  /**
    * The io service in use.
    */
   boost::asio::io_service& io;
