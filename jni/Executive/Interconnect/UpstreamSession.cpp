@@ -70,8 +70,7 @@ UpstreamSession::Deliver()
 
 //------------------------------------------------------------------------------
 void
-UpstreamSession::ReadHandler(const boost::system::error_code ec,
-                             std::size_t n)
+UpstreamSession::ReadHandler(const boost::system::error_code ec, std::size_t n)
   {
   this->b.commit(n);
   std::istream input(&this->b);
