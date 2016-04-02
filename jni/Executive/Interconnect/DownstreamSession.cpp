@@ -67,7 +67,7 @@ DownstreamSession::Receive()
                                             this,
                                             boost::asio::placeholders::error,
                                             boost::asio::placeholders::bytes_transferred)
-                                );
+                               );
   }
 
 //------------------------------------------------------------------------------
