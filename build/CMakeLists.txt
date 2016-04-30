@@ -4,6 +4,8 @@ set(CLASS_DST ${GMeterRoot}/out/build/src)
 set(SUBMODULES ${GMeterRoot}/lib)
 set(BOOST ${SUBMODULES}/local/boost)
 
+enable_testing()
+
 # TODO remove hardcoded ANDROID_SDK_DIR and find android.jar automatically!
 set(ANDROID_SDK_DIR /home/pfb/opt/android-sdk-linux/platforms/android-19/android.jar)
 # TODO move target src up one level.
