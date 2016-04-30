@@ -4,3 +4,17 @@ add_executable(ins.${BUILDEXT} ${INSSRCS})
 target_link_libraries(ins.${BUILDEXT} ${SYSLIBS})
 add_executable(interconnect.${BUILDEXT} ${INTERCONNECTSRCS})
 target_link_libraries(interconnect.${BUILDEXT} ${SYSLIBS})
+add_executable(
+               interconnect.test.${BUILDEXT}
+               EXCLUDE_FROM_ALL
+               ${INTERCONNECT.TEST.SRCS}
+              )
+target_link_libraries(interconnect.test.${BUILDEXT} ${SYSLIBS} "pthread")
+add_test(
+         NAME faketest
+         COMMAND echo "fake test"
+        )
+add_test(
+         NAME interconnect.test
+         COMMAND interconnect.test.${BUILDEXT}
+        )
