@@ -21,18 +21,86 @@ Copyright_License {
 }
 */
 
+#include <boost/config/compiler/gcc.hpp>
 #include "Interconnect.test.hpp"
 #include <boost/bind.hpp>
+#include <termios.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 //------------------------------------------------------------------------------
-XCSoarSession::XCSoarSession(boost::asio::io_service& io, int port)
-  : 
-    io(io),
-    port(port),
+TestSession::TestSession(boost::asio::io_service& io,
+                         const std::string& test_file)
+  : io(io)
+  {
+  this->in.open(test_file + ".in");
+  this->out.open(test_file + ".out");
+  }
+
+//------------------------------------------------------------------------------
+TestSession::~TestSession()
+  {
+  this->in.close();
+  this->out.close();
+  }
+
+//------------------------------------------------------------------------------
+void
+TestSession::Run()
+  {
+  this->io.run();
+  }
+
+//------------------------------------------------------------------------------
+void
+TestSession::Delivered(boost::system::error_code ec)
+  {
+  if (!ec)
+    {
+    this->Deliver();
+    }
+  }
+
+//------------------------------------------------------------------------------
+void
+TestSession::Received(const boost::system::error_code ec, std::size_t n)
+  {
+  std::istream input(&(this->downstream_buf));
+  std::string  record;
+  std::getline(input, record);
+  this->out << record;
+  }
+
+//------------------------------------------------------------------------------
+TcpCommon::TcpCommon(boost::asio::io_service& io, const std::string& test_file)
+  : TestSession(io, test_file),
     s(io)
   {
+  }
+
+//------------------------------------------------------------------------------
+TcpCommon::~TcpCommon()
+  {
+  }
+
+//------------------------------------------------------------------------------
+void
+TcpCommon::Connected(const boost::system::error_code& ec)
+  {
+  }
+
+//------------------------------------------------------------------------------
+XCSoarSession::XCSoarSession(boost::asio::io_service& io,
+                             const std::string& port)
+  : TcpCommon(io, "xcsoar")
+  {
   boost::asio::ip::tcp::resolver r(io);
-  boost::asio::ip::tcp::resolver::query q("4352");
+  boost::asio::ip::tcp::resolver::query q(port);
   boost::asio::ip::tcp::resolver::iterator i = r.resolve(q);
   boost::asio::async_connect(this->s,
                              i,
@@ -45,25 +113,17 @@ XCSoarSession::XCSoarSession(boost::asio::io_service& io, int port)
 //------------------------------------------------------------------------------
 XCSoarSession::~XCSoarSession()
   {
-  this->in.open("xcsoar.in");
-  this->out.open("xcsoar.out");
   }
 
 //------------------------------------------------------------------------------
 void
-XCSoarSession::Run()
-  {
-  }
-
-//------------------------------------------------------------------------------
-void
-XCSoarSession::DownstreamDeliver()
+XCSoarSession::Deliver()
   {
   std::string record;
   std::getline(this->in, record);
   boost::asio::async_write(this->s,
                            boost::asio::buffer(record, record.size()),
-                           boost::bind(&XCSoarSession::DownstreamDelivered,
+                           boost::bind(&XCSoarSession::Delivered,
                                        this,
                                        boost::asio::placeholders::error)
                           );
@@ -72,13 +132,12 @@ XCSoarSession::DownstreamDeliver()
 
 //------------------------------------------------------------------------------
 void
-XCSoarSession::DownstreamReceive()
+XCSoarSession::Receive()
   {
-  boost::asio::async_read_until(
-                                this->s,
+  boost::asio::async_read_until(this->s,
                                 this->downstream_buf,
                                 std::string("\r\n"),  // Delimeter.
-                                boost::bind(&XCSoarSession::DownstreamReceived,
+                                boost::bind(&XCSoarSession::Received,
                                             this,
                                             boost::asio::placeholders::error,
                                             boost::asio::placeholders::bytes_transferred)
@@ -86,33 +145,35 @@ XCSoarSession::DownstreamReceive()
   }
 
 //------------------------------------------------------------------------------
-void
-XCSoarSession::DownstreamDelivered(boost::system::error_code ec)
+InsSession::InsSession(boost::asio::io_service& io,
+                             const std::string& port)
+  : TcpCommon(io, "ins")
   {
-  if (!ec)
-    {
-    this->DownstreamDeliver();
-    }
+  boost::asio::ip::tcp::resolver r(io);
+  boost::asio::ip::tcp::resolver::query q(port);
+  boost::asio::ip::tcp::resolver::iterator i = r.resolve(q);
+  boost::asio::async_connect(this->s,
+                             i,
+                             boost::bind(&InsSession::Connected,
+                                         this,
+                                         boost::asio::placeholders::error)
+                            );
+  }
+
+//------------------------------------------------------------------------------
+InsSession::~InsSession()
+  {
   }
 
 //------------------------------------------------------------------------------
 void
-XCSoarSession::DownstreamReceived(const boost::system::error_code ec,
-                                  std::size_t n)
+InsSession::Deliver()
   {
-  std::istream input(&(this->downstream_buf));
-  std::string  record;
-  std::getline(input, record);
-  this->out << record;
-  }
-
-//------------------------------------------------------------------------------
-void
-XCSoarSession::UpstreamDeliver()
-  {
+  std::string record;
+  std::getline(this->in, record);
   boost::asio::async_write(this->s,
-                           this->upstream_buf,
-                           boost::bind(&XCSoarSession::UpstreamDelivered,
+                           boost::asio::buffer(record, record.size()),
+                           boost::bind(&InsSession::Delivered,
                                        this,
                                        boost::asio::placeholders::error)
                           );
@@ -121,13 +182,12 @@ XCSoarSession::UpstreamDeliver()
 
 //------------------------------------------------------------------------------
 void
-XCSoarSession::UpstreamReceive()
+InsSession::Receive()
   {
-  boost::asio::async_read_until(
-                                this->s,
-                                this->upstream_buf,
+  boost::asio::async_read_until(this->s,
+                                this->downstream_buf,
                                 std::string("\r\n"),  // Delimeter.
-                                boost::bind(&XCSoarSession::UpstreamReceived,
+                                boost::bind(&InsSession::Received,
                                             this,
                                             boost::asio::placeholders::error,
                                             boost::asio::placeholders::bytes_transferred)
@@ -135,29 +195,52 @@ XCSoarSession::UpstreamReceive()
   }
 
 //------------------------------------------------------------------------------
-void
-XCSoarSession::UpstreamDelivered(const boost::system::error_code ec)
+FlarmSession::FlarmSession(boost::asio::io_service& io)
+  : TestSession(io, "flarm"),
+    serial_port(io)
   {
-  if (!ec)
-    this->UpstreamDeliver();
+  this->serial_port.open("/dev/ttyUSB0"); // Loopback port.
+  struct termios driver;
+  cfmakeraw(&driver);                   // Turn off cannonical etc.
+  cfsetspeed(&driver, B19200);
+  driver.c_iflag &= ~IXOFF;             // No flow control.
+  driver.c_iflag |= IGNPAR | IGNBRK ;   // No parity or break. 
+  driver.c_cflag &= ~(CSTOPB | PARENB); // One stop and no parity.
+  tcsetattr(this->serial_port.native_handle(), TCSANOW, &driver);
+  }
+
+//------------------------------------------------------------------------------
+FlarmSession::~FlarmSession()
+  {
+  this->serial_port.close();
   }
 
 //------------------------------------------------------------------------------
 void
-XCSoarSession::UpstreamReceived(const boost::system::error_code ec,
-                                  std::size_t n)
+FlarmSession::Deliver()
   {
-  std::istream input(&(this->upstream_buf));
-  std::string  record;
-  std::getline(input, record);
-  this->out << record;
-  this->UpstreamReceive();
+  std::string record;
+  std::getline(this->in, record);
+  boost::asio::async_write(this->serial_port,
+                           boost::asio::buffer(record, record.size()),
+                           boost::bind(&FlarmSession::Delivered,
+                                       this,
+                                       boost::asio::placeholders::error)
+                          );
   }
 
 //------------------------------------------------------------------------------
 void
-XCSoarSession::Connected(const boost::system::error_code& ec)
+FlarmSession::Receive()
   {
+  boost::asio::async_read_until(this->serial_port,
+                                this->downstream_buf,
+                                std::string("\r\n"),  // Delimeter.
+                                boost::bind(&FlarmSession::Received,
+                                            this,
+                                            boost::asio::placeholders::error,
+                                            boost::asio::placeholders::bytes_transferred)
+                               );
   }
 
 //------------------------------------------------------------------------------

@@ -41,7 +41,78 @@
 /**
  *
  */
-class XCSoarSession
+class TestSession
+  {
+public:
+  /**
+   * Dtor.
+   */
+  virtual ~TestSession();
+
+  /**
+   * Run the Proactor loop. Return on completion.
+   */
+  virtual void Run();
+
+protected:
+  /**
+   * Ctor.
+   * @param io  The Proactor io service.
+   * @param test_file Base name of the test files.
+   */
+  TestSession(boost::asio::io_service& io, const std::string& test_file);
+
+  virtual void Deliver() = 0;
+  virtual void Delivered(boost::system::error_code ec);
+
+  /**
+   *
+   */
+  virtual void Receive() = 0;
+
+  /**
+   *
+   */
+  virtual void Received(const boost::system::error_code ec, std::size_t n);
+
+  boost::asio::io_service& io;
+  std::ifstream in;
+  std::ofstream out;
+  boost::asio::streambuf downstream_buf;
+  boost::asio::streambuf upstream_buf;
+  };
+
+/**
+ *
+ */
+class TcpCommon : public TestSession
+  {
+public:
+  /**
+   * Dtor.
+   */
+  virtual ~TcpCommon();
+
+protected:
+  /**
+   * Ctor.
+   * @param io  The Proactor io service.
+   * @param test_file Base name of the test files.
+   */
+  TcpCommon(boost::asio::io_service& io, const std::string& test_file);
+
+  /**
+   *
+   */
+  virtual void Connected(const boost::system::error_code& ec);
+
+  boost::asio::ip::tcp::socket s;
+  };
+
+/**
+ *
+ */
+class XCSoarSession : public TcpCommon
   {
 public:
   /**
@@ -49,74 +120,84 @@ public:
    * @param io The Proactor io service.
    * @param port The port on which the server is running.
    */
-  XCSoarSession(boost::asio::io_service& io, int port);
+  XCSoarSession(boost::asio::io_service& io, const std::string& port);
 
   /**
    * Dtor.
    */
   ~XCSoarSession();
 
+private:
   /**
-   * Run the Proactor loop. Return on completion.
+   *
    */
-  void Run();
+  void Deliver();
+
+  /**
+   *
+   */
+  void Receive();
+  };
+
+/**
+ *
+ */
+class InsSession : public TcpCommon
+  {
+public:
+  /**
+   * Ctor.
+   * @param io The Proactor io service.
+   * @param port The port on which the server is running.
+   */
+  InsSession(boost::asio::io_service& io, const std::string& port);
+
+  /**
+   * Dtor.
+   */
+  ~InsSession();
 
 private:
   /**
    *
    */
-  void DownstreamDeliver();
+  void Deliver();
 
   /**
    *
    */
-  void DownstreamReceive();
-
-  /**
-   *
-   */
-  void DownstreamDelivered(boost::system::error_code ec);
-
-  /**
-   *
-   */
-  void DownstreamReceived(const boost::system::error_code ec,
-                          std::size_t n);
-
-  /**
-   *
-   */
-  void UpstreamDeliver();
-
-  /**
-   *
-   */
-  void UpstreamReceive();
-
-  /**
-   *
-   */
-  void UpstreamDelivered(const boost::system::error_code ec);
-
-  /**
-   *
-   */
-  void UpstreamReceived(const boost::system::error_code ec,
-                        std::size_t n);
-
-  /**
-   *
-   */
-  void Connected(const boost::system::error_code& ec);
-
-  std::ifstream in;
-  std::ofstream out;
-  boost::asio::io_service& io;
-  int port;
-  boost::asio::streambuf downstream_buf;
-  boost::asio::streambuf upstream_buf;
-  boost::asio::ip::tcp::socket s;
+  void Receive();
   };
 
+/**
+ *
+ */
+class FlarmSession : public TestSession
+  {
+public:
+  /**
+   * Ctor.
+   * @param io  The Proactor io service.
+   */
+  FlarmSession(boost::asio::io_service& io);
+
+  /**
+   * Dtor.
+   */
+  ~FlarmSession();
+
+private:
+  /**
+   *
+   */
+  void Deliver();
+
+  /**
+   *
+   */
+  void Receive();
+
+  boost::asio::serial_port serial_port;
+  };
 
 #endif  // _INTERCONNECT_TEST_HPP
