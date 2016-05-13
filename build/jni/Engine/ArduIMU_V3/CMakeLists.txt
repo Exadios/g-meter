@@ -167,11 +167,6 @@ add_library(core STATIC
             ${ARDUINO_LIBRARY_CORES}/HID.cpp
             ${ARDUINO_LIBRARY_CORES}/Tone.cpp
            )
-#target_include_directories(core SYSTEM
-#                           PUBLIC /usr/lib/avr/include
-#                           PUBLIC /usr/share/arduino/hardware/arduino/variants/mega/
-#                          )
-#target_compile_definitions(core PUBLIC __AVR_ATmega328P__)
 
 add_executable(Arduimu.elf
                ${ARDUIMUSRC}/FreeIMU.cpp
