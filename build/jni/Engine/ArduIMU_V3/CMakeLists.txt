@@ -9,21 +9,6 @@ set(ARDUINO_LIBRARY_SRCDIR "/usr/share/arduino/libraries")
 set(ARDUINO_LIBRARY_CORES  "/usr/share/arduino/hardware/arduino/cores/arduino")
 set(CMAKE_AR "/usr/bin/avr-ar")
 set(AVRSIZE_PROGRAM "/usr/bin/avr-size")
-#set(ARDUINO_AVRDUDE_CONFIG_PATH:FILEPATH
-#    "/usr/share/arduino/hardware/tools/avrdude.conf"
-#    CACHE EXTERNAL "Path to a program.")
-#set(ARDUINO_AVRDUDE_FLAGS:STRING "-V" CACHE EXTERNAL "")
-#set(ARDUINO_AVRDUDE_PROGRAM:FILEPATH "/usr/share/arduino/hardware/tools/avrdude"
-#    CACHE EXTERNAL "Path to a program.")
-#set(ARDUINO_BOARDS:STRING "uno;atmega328;diecimila;nano328;nano;mega2560;mega;leonardo;mini328;mini;ethernet;fio;bt328;bt;lilypad328;lilypad;pro5v328;pro5v;pro328;pro;atmega168;atmega8"
-#    CACHE EXTERNAL "List of detected Arduino Board configurations")
-#set(ARDUINO_BOARDS_PATH:FILEPATH
-#    "/usr/share/arduino/hardware/arduino/boards.txt"
-#    CACHE EXTERNAL "Path to Arduino boards definition file.")
-#set(ARDUINO_BOOTLOADERS_PATH:FILEPATH
-#    "/usr/share/arduino/hardware/arduino/bootloaders"
-#    CACHE EXTERNAL
-#    "Path to directory containing the Arduino bootloader images and sources.")
 set(CMAKE_BUILD_TYPE "MinSizeRel")
 set(CMAKE_CXX_COMPILER
     "/home/pfb/src/G-Meter/jni/Engine/ArduIMU_V3/kludged-avr-g++")

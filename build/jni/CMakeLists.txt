@@ -61,6 +61,8 @@ add_subdirectory(unix)
                             # using DIYDrones ArduIMU+ V3
 #add_subdirectory(unixkobo)
 
+add_subdirectory(Engine)
+
 link_directories("${BOOST}/x86_32/lib")
 include_directories("${BOOST}/x86_32/include")
 #add_executable(IMULink EXCLUDE_FROM_ALL 
