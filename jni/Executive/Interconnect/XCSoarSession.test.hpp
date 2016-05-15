@@ -28,9 +28,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _INTERCONNECT_TEST_HPP
-#define _INTERCONNECT_TEST_HPP
+#ifndef _XCSOARSESSION_TEST_HPP
+#define _XCSOARSESSION_TEST_HPP
 
+#include "Support.test.hpp"
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/utility.hpp>
@@ -38,4 +39,34 @@
 #include <iostream>
 #include <fstream>
 
-#endif  // _INTERCONNECT_TEST_HPP
+/**
+ * Class to provide a dummy XCSoar for Interconnect test.
+ */
+class XCSoarSession : public TcpCommon
+  {
+public:
+  /**
+   * Ctor.
+   * @param io The Proactor io service.
+   * @param port The port on which the server is running.
+   */
+  XCSoarSession(boost::asio::io_service& io, const std::string& port);
+
+  /**
+   * Dtor.
+   */
+  ~XCSoarSession();
+
+private:
+  /**
+   *
+   */
+  void Deliver();
+
+  /**
+   *
+   */
+  void Receive();
+  };
+
+#endif  // _XCSOARSESSION_TEST_HPP

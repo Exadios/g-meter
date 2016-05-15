@@ -46,6 +46,18 @@ set(ALLSRCS ${ANDROIDSRCS} ${UNIXSRCS})
 
 set(SERIALLINK.TEST.SRCS ${INTERCONNECTSRC}/SerialLink.test.cpp)
 set(INTERCONNECT.TEST.SRCS ${INTERCONNECTSRC}/Interconnect.test.cpp)
+set(XCSOAR.TEST.SRCS
+    ${INTERCONNECTSRC}/XCSoarSession.test.cpp
+    ${INTERCONNECTSRC}/Support.test.cpp
+   )
+set(INS.TEST.SRCS
+    ${INTERCONNECTSRC}/InsSession.test.cpp
+    ${INTERCONNECTSRC}/Support.test.cpp
+   )
+set(FLARM.TEST.SRCS
+    ${INTERCONNECTSRC}/FlarmSession.test.cpp
+    ${INTERCONNECTSRC}/Support.test.cpp
+   )
 
 set(warnings "-Wno-error=unused-parameter -Wall -Wextra -Wwrite-strings -Wcast-qual -Wpointer-arith -Wsign-compare -Wundef -Wmissing-declarations -Wredundant-decls -Wmissing-noreturn -Wno-unused-parameter -Wno-missing-field-initializers  -Wcast-align -Werror")
 set(flags "-fno-rtti -std=gnu++0x -fno-threadsafe-statics -fmerge-all-constants -fvisibility=hidden -fpic -funwind-tables -finput-charset=utf-8")

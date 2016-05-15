@@ -28,9 +28,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _INTERCONNECT_TEST_HPP
-#define _INTERCONNECT_TEST_HPP
+#ifndef _FLARMSESSION_TEST_HPP
+#define _FLARMSESSION_TEST_HPP
 
+#include "Support.test.hpp"
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/utility.hpp>
@@ -38,4 +39,35 @@
 #include <iostream>
 #include <fstream>
 
-#endif  // _INTERCONNECT_TEST_HPP
+/**
+ * Class to simulate a Flarm for the Interconnect test.
+ */
+class FlarmSession : public TestSession
+  {
+public:
+  /**
+   * Ctor.
+   * @param io  The Proactor io service.
+   */
+  FlarmSession(boost::asio::io_service& io);
+
+  /**
+   * Dtor.
+   */
+  ~FlarmSession();
+
+private:
+  /**
+   *
+   */
+  void Deliver();
+
+  /**
+   *
+   */
+  void Receive();
+
+  boost::asio::serial_port serial_port;
+  };
+
+#endif  // _FLARMSESSION_TEST_HPP

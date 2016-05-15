@@ -28,9 +28,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef _INTERCONNECT_TEST_HPP
-#define _INTERCONNECT_TEST_HPP
+#ifndef _INSSESSION_TEST_HPP
+#define _INSSESSION_TEST_HPP
 
+#include "Support.test.hpp"
 #include <boost/asio.hpp>
 #include <boost/thread.hpp>
 #include <boost/utility.hpp>
@@ -38,4 +39,34 @@
 #include <iostream>
 #include <fstream>
 
-#endif  // _INTERCONNECT_TEST_HPP
+/**
+ * Class to simulate the INS system for the Interconnect test.
+ */
+class InsSession : public TcpCommon
+  {
+public:
+  /**
+   * Ctor.
+   * @param io The Proactor io service.
+   * @param port The port on which the server is running.
+   */
+  InsSession(boost::asio::io_service& io, const std::string& port);
+
+  /**
+   * Dtor.
+   */
+  ~InsSession();
+
+private:
+  /**
+   *
+   */
+  void Deliver();
+
+  /**
+   *
+   */
+  void Receive();
+  };
+
+#endif  // _INSSESSION_TEST_HPP
