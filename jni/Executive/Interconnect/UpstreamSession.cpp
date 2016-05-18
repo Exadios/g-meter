@@ -25,7 +25,9 @@ Copyright_License {
 #include "IoQueues.hpp"
 #include "Executive.hpp"
 #include <boost/bind.hpp>
+#include <boost/system/system_error.hpp>
 #include <string>
+#include <iostream>
 
 extern Executive *executive;
 
@@ -72,14 +74,22 @@ UpstreamSession::Deliver()
 void
 UpstreamSession::ReadHandler(const boost::system::error_code ec, std::size_t n)
   {
-  this->b.commit(n);
-  std::istream input(&this->b);
-  std::string record;
-  std::getline(input, record);
-  this->ReceiveQueue().push(record);
-  this->b.consume(n);
-  this->ReadNotify();
-  this->Receive();
+  if (!ec)
+    {
+    this->b.commit(n);
+    std::istream input(&this->b);
+    std::string record;
+    std::getline(input, record);
+    this->ReceiveQueue().push(record);
+    this->b.consume(n);
+    this->ReadNotify();
+    this->Receive();
+    }
+  else
+    {
+    boost::system::system_error e(ec);
+    std::cerr << "UpstreamSession::ReadHandler: " <<  e.what() << std::endl;
+    }
   }
 
 //------------------------------------------------------------------------------
@@ -91,7 +101,11 @@ UpstreamSession::WriteHandler(const boost::system::error_code ec)
     this->DeliverQueue().pop();
     }
   else
+    {
+    boost::system::system_error e(ec);
+    std::cerr << "UpstreamSession::WriteHandler: " << e.what() << std::endl;
     ::executive->Terminate();
+    }
   }
 
 //------------------------------------------------------------------------------

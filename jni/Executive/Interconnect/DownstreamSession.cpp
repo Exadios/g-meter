@@ -25,6 +25,9 @@ Copyright_License {
 #include "IoQueues.hpp"
 #include "Executive.hpp"
 #include <boost/bind.hpp>
+#include <boost/system/error_code.hpp>
+#include <string>
+#include <iostream>
 
 extern Executive *executive;
 
@@ -111,7 +114,11 @@ DownstreamSession::WriteHandler(boost::system::error_code ec)
     this->DeliverQueue().pop();
     }
   else
+    {
+    boost::system::system_error e(ec);
+    std::cerr << "DownstreamSession::WriteHandler: " << e.what() << std::endl;
     ::executive->Terminate();
+    }
   }
 
 //------------------------------------------------------------------------------
@@ -133,7 +140,11 @@ DownstreamSession::AcceptHandler(boost::system::error_code ec)
     this->Receive();
     }
   else
+    {
+    boost::system::system_error e(ec);
+    std::cerr << "DownstreamSession::AcceptHandler: " << e.what() << std::endl;
     ::executive->Terminate();
+    }
   }
 
 //------------------------------------------------------------------------------
