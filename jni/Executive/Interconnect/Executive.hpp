@@ -61,6 +61,11 @@ public:
             const std::string& tty);
 
   /**
+   * Dtor.
+   */
+  ~Executive();
+
+  /**
    * Run the executive. Return when the queue is empty (for what ever reason).
    */
   void Run();

@@ -46,6 +46,11 @@ public:
    */
   XcsoarLink(boost::asio::io_service& io, int xcsoar_port);
 
+  /**
+   * Dtor.
+   */
+  ~XcsoarLink();
+
 private:
   /**
    * Notofication that a Receive() has completed.

@@ -46,6 +46,11 @@ public:
    */
   SerialLink(boost::asio::io_service& io, const std::string tty);
 
+  /**
+   * Dtor.
+   */
+  ~SerialLink();
+
 private:
   /**
    * Notification that a Receive has completed.

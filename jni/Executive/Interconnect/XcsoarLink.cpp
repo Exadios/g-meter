@@ -37,6 +37,11 @@ XcsoarLink::XcsoarLink(boost::asio::io_service& io, int xcsoar_port)
   }
 
 //------------------------------------------------------------------------------
+XcsoarLink::~XcsoarLink()
+  {
+  }
+
+//------------------------------------------------------------------------------
 void
 XcsoarLink::ReadNotify()
   {

@@ -37,6 +37,11 @@ SerialLink::SerialLink(boost::asio::io_service& io, const std::string tty)
   }
 
 //------------------------------------------------------------------------------
+SerialLink::~SerialLink()
+  {
+  }
+
+//------------------------------------------------------------------------------
 void
 SerialLink::ReadNotify()
   {

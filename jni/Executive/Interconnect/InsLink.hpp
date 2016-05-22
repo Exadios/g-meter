@@ -46,6 +46,11 @@ public:
    */
   InsLink(boost::asio::io_service& io, int ins_port);
 
+  /**
+   * Dtor.
+   */
+  ~InsLink();
+
 private:
   /**
    * Notification that a Receive() has completed.
