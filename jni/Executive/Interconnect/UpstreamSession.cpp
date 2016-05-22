@@ -37,7 +37,14 @@ UpstreamSession::UpstreamSession(boost::asio::io_service& io,
   : Session(io),
     serial_port(io)
   {
-  this->serial_port.open(port);
+  try
+    {
+    this->serial_port.open(port);
+    }
+  catch(std::exception& e)
+    {
+    std::cerr << port << " - " << e.what() << std::endl;
+    }
   }
 
 //------------------------------------------------------------------------------

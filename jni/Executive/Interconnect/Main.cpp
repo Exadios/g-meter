@@ -24,6 +24,8 @@ Copyright_License {
 #include "Executive.hpp"
 #include <boost/config/compiler/gcc.hpp>
 #include <boost/asio.hpp>
+#include <boost/system/error_code.hpp>
+#include <boost/system/system_error.hpp>
 #include <iostream>
 
 Executive *executive;
@@ -47,7 +49,7 @@ int Main(int argc, const char *argv[])
 
     ::executive->Run();
     }
-  catch (std::exception& e)
+  catch(std::exception& e)
     {
     std::cerr << "Exception: " << e.what() << "\n";
     }
