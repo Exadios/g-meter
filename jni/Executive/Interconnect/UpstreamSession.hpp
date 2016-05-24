@@ -49,7 +49,7 @@ public:
    * @param port The fully qualified device name of the serial port. For
    *             instance, "/dev/ttyUSB0".
    */
-  UpstreamSession(boost::asio::io_service& io, const std::string port);
+  UpstreamSession(asio::io_service& io, const std::string port);
 
   /**
    * Dtor.
@@ -72,9 +72,9 @@ public:
   void Shutdown();
 
 private:
-  void ReadHandler(const boost::system::error_code ec, std::size_t n);
+  void ReadHandler(const sys::error_code ec, std::size_t n);
 
-  void WriteHandler(const boost::system::error_code ec);
+  void WriteHandler(const sys::error_code ec);
 
   void Write();
 

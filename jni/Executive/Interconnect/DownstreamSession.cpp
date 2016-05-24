@@ -32,12 +32,10 @@ Copyright_License {
 extern Executive *executive;
 
 //------------------------------------------------------------------------------
-DownstreamSession::DownstreamSession(boost::asio::io_service& io, int port)
+DownstreamSession::DownstreamSession(asio::io_service& io, int port)
     :  Session(io),
        socket(io),
-       acceptor(io,
-                boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(),
-                                               port))
+       acceptor(io, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
   {
   this->Accept();
   }
@@ -62,15 +60,15 @@ DownstreamSession::Deliver()
 void
 DownstreamSession::Receive()
   {
-  boost::asio::async_read_until(
-                                this->socket,
-                                this->b,
-                                std::string("\r\n"),  // Delimeter.
-                                boost::bind(&DownstreamSession::ReadHandler,
-                                            this,
-                                            boost::asio::placeholders::error,
-                                            boost::asio::placeholders::bytes_transferred)
-                               );
+  asio::async_read_until(
+                         this->socket,
+                         this->b,
+                         std::string("\r\n"),  // Delimeter.
+                         boost::bind(&DownstreamSession::ReadHandler,
+                                     this,
+                                     asio::placeholders::error,
+                                     asio::placeholders::bytes_transferred)
+                        );
   }
 
 //------------------------------------------------------------------------------
@@ -78,18 +76,17 @@ void
 DownstreamSession::Write()
   {
   std::queue<std::string> q = this->DeliverQueue();
-  boost::asio::async_write(this->socket,
-                           boost::asio::buffer(q.front(), q.front().length()),
-                           boost::bind(&DownstreamSession::WriteHandler,
-                                       this,
-                                       boost::asio::placeholders::error)
-                          );
+  asio::async_write(this->socket,
+                    asio::buffer(q.front(), q.front().length()),
+                    bind(&DownstreamSession::WriteHandler,
+                         this,
+                         asio::placeholders::error)
+                   );
   }
 
 //------------------------------------------------------------------------------
 void
-DownstreamSession::ReadHandler(const boost::system::error_code ec,
-                               std::size_t n)
+DownstreamSession::ReadHandler(const sys::error_code ec, std::size_t n)
   {
   if (!ec)
     {
@@ -107,7 +104,7 @@ DownstreamSession::ReadHandler(const boost::system::error_code ec,
 
 //------------------------------------------------------------------------------
 void
-DownstreamSession::WriteHandler(boost::system::error_code ec)
+DownstreamSession::WriteHandler(sys::error_code ec)
   {
   if (!ec)
     {
@@ -115,7 +112,7 @@ DownstreamSession::WriteHandler(boost::system::error_code ec)
     }
   else
     {
-    boost::system::system_error e(ec);
+    sys::system_error e(ec);
     std::cerr << "DownstreamSession::WriteHandler: " << e.what() << std::endl;
     ::executive->Terminate();
     }
@@ -128,12 +125,13 @@ DownstreamSession::Accept()
   this->acceptor.async_accept(this->socket,
                               boost::bind(&DownstreamSession::AcceptHandler,
                                           this,
-                                          boost::asio::placeholders::error));
+                                          asio::placeholders::error)
+                             );
   }
 
 //------------------------------------------------------------------------------
 void
-DownstreamSession::AcceptHandler(boost::system::error_code ec)
+DownstreamSession::AcceptHandler(sys::error_code ec)
   {
   if (!ec)
     {
@@ -141,7 +139,7 @@ DownstreamSession::AcceptHandler(boost::system::error_code ec)
     }
   else
     {
-    boost::system::system_error e(ec);
+    sys::system_error e(ec);
     std::cerr << "DownstreamSession::AcceptHandler: " << e.what() << std::endl;
     ::executive->Terminate();
     }
@@ -151,5 +149,5 @@ DownstreamSession::AcceptHandler(boost::system::error_code ec)
 void
 DownstreamSession::Shutdown()
   {
-  this->socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
+  this->socket.shutdown(asio::ip::tcp::socket::shutdown_both);
   }

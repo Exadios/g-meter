@@ -44,7 +44,7 @@ public:
    * io The io service in use.
    * xcsoar_port The port used by XCSoar.
    */
-  XcsoarLink(boost::asio::io_service& io, int xcsoar_port);
+  XcsoarLink(asio::io_service& io, int xcsoar_port);
 
   /**
    * Dtor.

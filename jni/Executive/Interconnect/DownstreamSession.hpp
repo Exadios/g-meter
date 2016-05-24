@@ -51,7 +51,7 @@ public:
    * @param io The Io Service.
    * @param port TCP port on which to listen.
    */
-  DownstreamSession(boost::asio::io_service& io, int port);
+  DownstreamSession(asio::io_service& io, int port);
 
   /**
    * Dtor. Cleanup.
@@ -74,19 +74,18 @@ public:
   void Shutdown();
 
 private:
-  void ReadHandler(const boost::system::error_code ec, std::size_t n);
+  void ReadHandler(const sys::error_code ec, std::size_t n);
 
-  void WriteHandler(boost::system::error_code ec);
+  void WriteHandler(sys::error_code ec);
 
-  void AcceptHandler(boost::system::error_code ec);
+  void AcceptHandler(sys::error_code ec);
 
   void Write();
 
   void Accept();
 
-  boost::asio::ip::tcp::socket socket;
-  boost::asio::ip::tcp::acceptor acceptor;
+  asio::ip::tcp::socket socket;
+  asio::ip::tcp::acceptor acceptor;
   };
-
 
 #endif // _DOWNSTREAMSESSION_HPP

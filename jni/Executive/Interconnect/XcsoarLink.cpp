@@ -31,7 +31,7 @@ extern std::queue<std::string> xcsoar_deliver;
 extern Executive *executive;
 
 //------------------------------------------------------------------------------
-XcsoarLink::XcsoarLink(boost::asio::io_service& io, int xcsoar_port)
+XcsoarLink::XcsoarLink(asio::io_service& io, int xcsoar_port)
   : DownstreamSession(io, xcsoar_port)
   {
   }

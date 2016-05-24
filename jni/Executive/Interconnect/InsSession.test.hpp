@@ -50,7 +50,7 @@ public:
    * @param io The Proactor io service.
    * @param port The port on which the server is running.
    */
-  InsSession(boost::asio::io_service& io, const std::string& port);
+  InsSession(asio::io_service& io, const std::string& port);
 
   /**
    * Dtor.

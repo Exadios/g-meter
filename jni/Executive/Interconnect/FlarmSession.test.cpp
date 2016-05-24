@@ -34,7 +34,7 @@ Copyright_License {
 #include <unistd.h>
 
 //------------------------------------------------------------------------------
-FlarmSession::FlarmSession(boost::asio::io_service& io)
+FlarmSession::FlarmSession(asio::io_service& io)
   : TestSession(io, "flarm"),
     serial_port(io)
   {
@@ -60,26 +60,26 @@ FlarmSession::Deliver()
   {
   std::string record;
   std::getline(this->in, record);
-  boost::asio::async_write(this->serial_port,
-                           boost::asio::buffer(record, record.size()),
-                           boost::bind(&FlarmSession::Delivered,
-                                       this,
-                                       boost::asio::placeholders::error)
-                          );
+  asio::async_write(this->serial_port,
+                    asio::buffer(record, record.size()),
+                    boost::bind(&FlarmSession::Delivered,
+                                this,
+                                asio::placeholders::error)
+                   );
   }
 
 //------------------------------------------------------------------------------
 void
 FlarmSession::Receive()
   {
-  boost::asio::async_read_until(this->serial_port,
-                                this->downstream_buf,
-                                std::string("\r\n"),  // Delimeter.
-                                boost::bind(&FlarmSession::Received,
-                                            this,
-                                            boost::asio::placeholders::error,
-                                            boost::asio::placeholders::bytes_transferred)
-                               );
+  asio::async_read_until(this->serial_port,
+                         this->downstream_buf,
+                         std::string("\r\n"),  // Delimeter.
+                         boost::bind(&FlarmSession::Received,
+                                     this,
+                                     asio::placeholders::error,
+                                     asio::placeholders::bytes_transferred)
+                       );
   }
 
 //------------------------------------------------------------------------------

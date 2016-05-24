@@ -39,6 +39,9 @@
 #include <iostream>
 #include <fstream>
 
+namespace asio = boost::asio;
+namespace sys = boost::system;
+
 /**
  * Base class of Interconnect tests.
  */
@@ -61,10 +64,10 @@ protected:
    * @param io  The Proactor io service.
    * @param test_file Base name of the test files.
    */
-  TestSession(boost::asio::io_service& io, const std::string& test_file);
+  TestSession(asio::io_service& io, const std::string& test_file);
 
   virtual void Deliver() = 0;
-  virtual void Delivered(boost::system::error_code ec);
+  virtual void Delivered(sys::error_code ec);
 
   /**
    *
@@ -74,13 +77,13 @@ protected:
   /**
    *
    */
-  virtual void Received(const boost::system::error_code ec, std::size_t n);
+  virtual void Received(const sys::error_code ec, std::size_t n);
 
-  boost::asio::io_service& io;
+  asio::io_service& io;
   std::ifstream in;
   std::ofstream out;
-  boost::asio::streambuf downstream_buf;
-  boost::asio::streambuf upstream_buf;
+  asio::streambuf downstream_buf;
+  asio::streambuf upstream_buf;
   };
 
 /**
@@ -100,14 +103,14 @@ protected:
    * @param io  The Proactor io service.
    * @param test_file Base name of the test files.
    */
-  TcpCommon(boost::asio::io_service& io, const std::string& test_file);
+  TcpCommon(asio::io_service& io, const std::string& test_file);
 
   /**
    *
    */
-  virtual void Connected(const boost::system::error_code& ec);
+  virtual void Connected(const sys::error_code& ec);
 
-  boost::asio::ip::tcp::socket s;
+  asio::ip::tcp::socket s;
   };
 
 #endif  // _SUPPORT_TEST_HPP

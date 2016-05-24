@@ -147,7 +147,7 @@ public:
   PseudoSource(std::istream& in,
                std::ostream& out,
                const std::string dev,
-               boost::asio::io_service& io);
+               asio::io_service& io);
 
   /**
    * Dtor.
@@ -170,22 +170,22 @@ private:
 
   void InitiateWrite();
 
-  void HandleRead(const boost::system::error_code ec, std::size_t n);
+  void HandleRead(const sys::error_code ec, std::size_t n);
 
-  void HandleWrite(const boost::system::error_code ec);
+  void HandleWrite(const sys::error_code ec);
 
   std::istream& in;
   std::ostream& out;
-  boost::asio::io_service& io;
-  boost::asio::serial_port serial_port;
-  boost::asio::streambuf b;
+  asio::io_service& io;
+  asio::serial_port serial_port;
+  asio::streambuf b;
   };
 
 //------------------------------------------------------------------------------
 PseudoSource::PseudoSource(std::istream& in,
                            std::ostream& out,
                            const std::string dev,
-                           boost::asio::io_service& io)
+                           asio::io_service& io)
   : in(in),
     out(out),
     io(io),
@@ -222,14 +222,14 @@ PseudoSource::Go() const
 void
 PseudoSource::InitiateRead()
   {
-  boost::asio::async_read_until(this->serial_port,
-                                this->b,
-                                std::string("\r\n"),
-                                boost::bind(&PseudoSource::HandleRead,
-                                            this,
-                                            boost::asio::placeholders::error,
-                                            boost::asio::placeholders::bytes_transferred)
-                               );
+  asio::async_read_until(this->serial_port,
+                         this->b,
+                         std::string("\r\n"),
+                         boost::bind(&PseudoSource::HandleRead,
+                                     this,
+                                     asio::placeholders::error,
+                                     asio::placeholders::bytes_transferred)
+                        );
   }
 
 //------------------------------------------------------------------------------
@@ -238,17 +238,17 @@ PseudoSource::InitiateWrite()
   {
   std::string record;
   std::getline(this->in, record);
-  boost::asio::async_write(this->serial_port,
-                           boost::asio::buffer(record, record.size()),
-                           boost::bind(&PseudoSource::HandleWrite,
-                                       this,
-                                       boost::asio::placeholders::error)
-                          );
+  asio::async_write(this->serial_port,
+                    asio::buffer(record, record.size()),
+                    boost::bind(&PseudoSource::HandleWrite,
+                                this,
+                                asio::placeholders::error)
+                   );
   }
 
 //------------------------------------------------------------------------------
 void
-PseudoSource::HandleRead(const boost::system::error_code ec, std::size_t n)
+PseudoSource::HandleRead(const sys::error_code ec, std::size_t n)
   {
   this->b.commit(n);
   std::istream input(&this->b);
@@ -260,7 +260,7 @@ PseudoSource::HandleRead(const boost::system::error_code ec, std::size_t n)
 
 //------------------------------------------------------------------------------
 void
-PseudoSource::HandleWrite(const boost::system::error_code ec)
+PseudoSource::HandleWrite(const sys::error_code ec)
   {
   if (!ec)
     {
@@ -422,7 +422,7 @@ void TestMain(const char *tty);
 void
 TestMain(const char *tty)
   {
-  boost::asio::io_service io;
+  asio::io_service io;
   SerialLink ut(io, tty);
   io.run();
   }

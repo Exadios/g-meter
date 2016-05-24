@@ -34,19 +34,18 @@ Copyright_License {
 #include <unistd.h>
 
 //------------------------------------------------------------------------------
-InsSession::InsSession(boost::asio::io_service& io,
-                             const std::string& port)
+InsSession::InsSession(asio::io_service& io, const std::string& port)
   : TcpCommon(io, "ins")
   {
-  boost::asio::ip::tcp::resolver r(io);
-  boost::asio::ip::tcp::resolver::query q(port);
-  boost::asio::ip::tcp::resolver::iterator i = r.resolve(q);
-  boost::asio::async_connect(this->s,
-                             i,
-                             boost::bind(&InsSession::Connected,
-                                         this,
-                                         boost::asio::placeholders::error)
-                            );
+  asio::ip::tcp::resolver r(io);
+  asio::ip::tcp::resolver::query q(port);
+  asio::ip::tcp::resolver::iterator i = r.resolve(q);
+  asio::async_connect(this->s,
+                      i,
+                      boost::bind(&InsSession::Connected,
+                                  this,
+                                  asio::placeholders::error)
+                     );
   }
 
 //------------------------------------------------------------------------------
@@ -60,12 +59,12 @@ InsSession::Deliver()
   {
   std::string record;
   std::getline(this->in, record);
-  boost::asio::async_write(this->s,
-                           boost::asio::buffer(record, record.size()),
-                           boost::bind(&InsSession::Delivered,
-                                       this,
-                                       boost::asio::placeholders::error)
-                          );
+  asio::async_write(this->s,
+                    asio::buffer(record, record.size()),
+                    boost::bind(&InsSession::Delivered,
+                                this,
+                                asio::placeholders::error)
+                   );
 
   }
 
@@ -78,8 +77,8 @@ InsSession::Receive()
                                 std::string("\r\n"),  // Delimeter.
                                 boost::bind(&InsSession::Received,
                                             this,
-                                            boost::asio::placeholders::error,
-                                            boost::asio::placeholders::bytes_transferred)
+                                            asio::placeholders::error,
+                                            asio::placeholders::bytes_transferred)
                                );
   }
 

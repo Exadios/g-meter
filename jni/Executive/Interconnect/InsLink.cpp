@@ -31,7 +31,7 @@ extern std::queue<std::string> ins_receive;
 extern Executive *executive;
 
 //------------------------------------------------------------------------------
-InsLink::InsLink(boost::asio::io_service& io, int ins_port)
+InsLink::InsLink(asio::io_service& io, int ins_port)
   : DownstreamSession(io, ins_port)
   {
   }
@@ -59,5 +59,5 @@ InsLink::ReceiveQueue() const
 std::queue<std::string>&
 InsLink::DeliverQueue() const
   {
-  return ins_deliver;
+  return ::ins_deliver;
   }

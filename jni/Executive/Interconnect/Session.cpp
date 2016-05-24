@@ -34,7 +34,7 @@ extern std::queue<std::string> serial_deliver;
 extern std::queue<std::string> serial_receive;
 
 //------------------------------------------------------------------------------
-Session::Session(boost::asio::io_service& io)
+Session::Session(asio::io_service& io)
   : io(io)
   {
   }

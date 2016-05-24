@@ -49,7 +49,7 @@ public:
    * Ctor.
    * @param io  The Proactor io service.
    */
-  FlarmSession(boost::asio::io_service& io);
+  FlarmSession(asio::io_service& io);
 
   /**
    * Dtor.
@@ -67,7 +67,7 @@ private:
    */
   void Receive();
 
-  boost::asio::serial_port serial_port;
+  asio::serial_port serial_port;
   };
 
 #endif  // _FLARMSESSION_TEST_HPP

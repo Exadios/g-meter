@@ -31,7 +31,7 @@ extern std::queue<std::string> serial_receive;
 extern Executive *executive;
 
 //------------------------------------------------------------------------------
-SerialLink::SerialLink(boost::asio::io_service& io, const std::string tty)
+SerialLink::SerialLink(asio::io_service& io, const std::string tty)
   : UpstreamSession(io, tty)
   {
   }

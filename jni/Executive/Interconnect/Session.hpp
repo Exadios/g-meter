@@ -37,6 +37,8 @@
 #include <queue>
 
 class Executive;
+namespace asio = boost::asio;
+namespace sys = boost::system;
 
 /**
  * A pure virtual session class.
@@ -65,21 +67,20 @@ protected:
    * Ctor.
    * @param io The Io Service.
    */
-  Session(boost::asio::io_service& io);
+  Session(asio::io_service& io);
 
   /**
    * The Proactor pattern read completion handler.
    * @param ec The error code of the read operation.
    * @param n Number of bytes read.
    */
-  virtual void ReadHandler(const boost::system::error_code ec,
-                           std::size_t n) = 0;
+  virtual void ReadHandler(const sys::error_code ec, std::size_t n) = 0;
 
   /**
    * The Proactor pattern write completion handler.
    * @param ec The error code of the write operation.
    */
-  virtual void WriteHandler(const boost::system::error_code ec) = 0;
+  virtual void WriteHandler(const sys::error_code ec) = 0;
 
   /**
    * Initiate a write operation.
@@ -111,12 +112,12 @@ protected:
   /**
    * The io service in use.
    */
-  boost::asio::io_service& io;
+  asio::io_service& io;
 
   /**
    * A streambuf.
    */
-  boost::asio::streambuf b; // Device streambuf.
+  asio::streambuf b; // Device streambuf.
   };
 
 #endif  // _SESSION_HPP

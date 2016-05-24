@@ -34,19 +34,19 @@ Copyright_License {
 #include <unistd.h>
 
 //------------------------------------------------------------------------------
-XCSoarSession::XCSoarSession(boost::asio::io_service& io,
+XCSoarSession::XCSoarSession(asio::io_service& io,
                              const std::string& port)
   : TcpCommon(io, "xcsoar")
   {
-  boost::asio::ip::tcp::resolver r(io);
-  boost::asio::ip::tcp::resolver::query q(port);
-  boost::asio::ip::tcp::resolver::iterator i = r.resolve(q);
-  boost::asio::async_connect(this->s,
-                             i,
-                             boost::bind(&XCSoarSession::Connected,
-                                         this,
-                                         boost::asio::placeholders::error)
-                            );
+  asio::ip::tcp::resolver r(io);
+  asio::ip::tcp::resolver::query q(port);
+  asio::ip::tcp::resolver::iterator i = r.resolve(q);
+  asio::async_connect(this->s,
+                      i,
+                      boost::bind(&XCSoarSession::Connected,
+                                  this,
+                                  asio::placeholders::error)
+                     );
   }
 
 //------------------------------------------------------------------------------
@@ -60,27 +60,26 @@ XCSoarSession::Deliver()
   {
   std::string record;
   std::getline(this->in, record);
-  boost::asio::async_write(this->s,
-                           boost::asio::buffer(record, record.size()),
-                           boost::bind(&XCSoarSession::Delivered,
-                                       this,
-                                       boost::asio::placeholders::error)
-                          );
-
+  asio::async_write(this->s,
+                    asio::buffer(record, record.size()),
+                    boost::bind(&XCSoarSession::Delivered,
+                                this,
+                                asio::placeholders::error)
+                   );
   }
 
 //------------------------------------------------------------------------------
 void
 XCSoarSession::Receive()
   {
-  boost::asio::async_read_until(this->s,
-                                this->downstream_buf,
-                                std::string("\r\n"),  // Delimeter.
-                                boost::bind(&XCSoarSession::Received,
-                                            this,
-                                            boost::asio::placeholders::error,
-                                            boost::asio::placeholders::bytes_transferred)
-                               );
+  asio::async_read_until(this->s,
+                         this->downstream_buf,
+                         std::string("\r\n"),  // Delimeter.
+                         boost::bind(&XCSoarSession::Received,
+                                     this,
+                                     asio::placeholders::error,
+                                     asio::placeholders::bytes_transferred)
+                        );
   }
 
 //------------------------------------------------------------------------------

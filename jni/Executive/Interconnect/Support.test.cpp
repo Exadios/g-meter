@@ -34,7 +34,7 @@ Copyright_License {
 #include <unistd.h>
 
 //------------------------------------------------------------------------------
-TestSession::TestSession(boost::asio::io_service& io,
+TestSession::TestSession(asio::io_service& io,
                          const std::string& test_file)
   : io(io)
   {
@@ -58,7 +58,7 @@ TestSession::Run()
 
 //------------------------------------------------------------------------------
 void
-TestSession::Delivered(boost::system::error_code ec)
+TestSession::Delivered(sys::error_code ec)
   {
   if (!ec)
     {
@@ -68,7 +68,7 @@ TestSession::Delivered(boost::system::error_code ec)
 
 //------------------------------------------------------------------------------
 void
-TestSession::Received(const boost::system::error_code ec, std::size_t n)
+TestSession::Received(const sys::error_code ec, std::size_t n)
   {
   std::istream input(&(this->downstream_buf));
   std::string  record;
@@ -77,7 +77,7 @@ TestSession::Received(const boost::system::error_code ec, std::size_t n)
   }
 
 //------------------------------------------------------------------------------
-TcpCommon::TcpCommon(boost::asio::io_service& io, const std::string& test_file)
+TcpCommon::TcpCommon(asio::io_service& io, const std::string& test_file)
   : TestSession(io, test_file),
     s(io)
   {
@@ -90,6 +90,6 @@ TcpCommon::~TcpCommon()
 
 //------------------------------------------------------------------------------
 void
-TcpCommon::Connected(const boost::system::error_code& ec)
+TcpCommon::Connected(const sys::error_code& ec)
   {
   }

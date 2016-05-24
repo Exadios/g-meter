@@ -44,7 +44,7 @@ public:
    * @param io The io service in use.
    * @param tty The fully qualified device name in use - e.g. "/dev/ttyUSB0".
    */
-  SerialLink(boost::asio::io_service& io, const std::string tty);
+  SerialLink(asio::io_service& io, const std::string tty);
 
   /**
    * Dtor.

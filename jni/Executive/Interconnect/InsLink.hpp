@@ -44,7 +44,7 @@ public:
    * @param io The io service in use.
    * @param ins_port The TCP port used by the INS link.
    */
-  InsLink(boost::asio::io_service& io, int ins_port);
+  InsLink(asio::io_service& io, int ins_port);
 
   /**
    * Dtor.

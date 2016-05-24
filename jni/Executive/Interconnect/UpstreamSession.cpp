@@ -32,8 +32,7 @@ Copyright_License {
 extern Executive *executive;
 
 //------------------------------------------------------------------------------
-UpstreamSession::UpstreamSession(boost::asio::io_service& io,
-                                 const std::string port)
+UpstreamSession::UpstreamSession(asio::io_service& io, const std::string port)
   : Session(io),
     serial_port(io)
   {
@@ -57,14 +56,14 @@ UpstreamSession::~UpstreamSession()
 void
 UpstreamSession::Receive()
   {
-  boost::asio::async_read_until(this->serial_port,
-                                this->b,
-                                std::string("\r\n"),  // Delimeter
-                                boost::bind(&UpstreamSession::ReadHandler,
-                                            this,
-                                            boost::asio::placeholders::error,
-                                            boost::asio::placeholders::bytes_transferred)
-                               );
+  asio::async_read_until(this->serial_port,
+                         this->b,
+                         std::string("\r\n"),  // Delimeter
+                         boost::bind(&UpstreamSession::ReadHandler,
+                                     this,
+                                     asio::placeholders::error,
+                                     asio::placeholders::bytes_transferred)
+                        );
   }
 
 //------------------------------------------------------------------------------
@@ -79,7 +78,7 @@ UpstreamSession::Deliver()
 
 //------------------------------------------------------------------------------
 void
-UpstreamSession::ReadHandler(const boost::system::error_code ec, std::size_t n)
+UpstreamSession::ReadHandler(const sys::error_code ec, std::size_t n)
   {
   if (!ec)
     {
@@ -94,14 +93,14 @@ UpstreamSession::ReadHandler(const boost::system::error_code ec, std::size_t n)
     }
   else
     {
-    boost::system::system_error e(ec);
+    sys::system_error e(ec);
     std::cerr << "UpstreamSession::ReadHandler: " <<  e.what() << std::endl;
     }
   }
 
 //------------------------------------------------------------------------------
 void
-UpstreamSession::WriteHandler(const boost::system::error_code ec)
+UpstreamSession::WriteHandler(const sys::error_code ec)
   {
     if (!ec)
     {
@@ -109,7 +108,7 @@ UpstreamSession::WriteHandler(const boost::system::error_code ec)
     }
   else
     {
-    boost::system::system_error e(ec);
+    sys::system_error e(ec);
     std::cerr << "UpstreamSession::WriteHandler: " << e.what() << std::endl;
     ::executive->Terminate();
     }
@@ -120,12 +119,12 @@ void
 UpstreamSession::Write()
   {
   std::queue<std::string>& q = this->DeliverQueue();
-  boost::asio::async_write(this->serial_port,
-                           boost::asio::buffer(q.front(), q.front().length()),
-                           boost::bind(&UpstreamSession::WriteHandler,
-                                       this,
-                                       boost::asio::placeholders::error)
-                          );
+  asio::async_write(this->serial_port,
+                    asio::buffer(q.front(), q.front().length()),
+                    bind(&UpstreamSession::WriteHandler,
+                         this,
+                         asio::placeholders::error)
+                   );
   }
 
 //------------------------------------------------------------------------------
